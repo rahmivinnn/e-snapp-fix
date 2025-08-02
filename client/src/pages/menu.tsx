@@ -32,12 +32,15 @@ export default function MenuPage() {
 
   const handleLogout = () => {
     if (confirm("Are you sure you want to logout?")) {
-      alert("Logout functionality would be implemented here");
+      // Clear all localStorage data
+      localStorage.clear();
+      // Redirect to login page
+      window.location.href = '/login';
     }
   };
 
   const handleSettings = () => {
-    alert("Settings functionality would be implemented here");
+    window.location.href = '/settings';
   };
 
   const handleAbout = () => {

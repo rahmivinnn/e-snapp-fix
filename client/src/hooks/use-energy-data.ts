@@ -60,8 +60,17 @@ export function useRealtimeData() {
         }
       };
 
-      ws.onerror = () => {
-        console.warn('WebSocket connection failed, falling back to simulation');
+      ws.onerror = (error) => {
+        console.warn('WebSocket connection failed, falling back to simulation:', error);
+        startSimulation();
+      };
+
+      ws.onopen = () => {
+        console.log('WebSocket connected successfully');
+      };
+
+      ws.onclose = () => {
+        console.log('WebSocket connection closed, falling back to simulation');
         startSimulation();
       };
 

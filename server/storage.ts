@@ -1,4 +1,6 @@
-import { type User, type InsertUser, type EnergyData, type InsertEnergyData, type BillingData, type InsertBillingData, type Notification, type InsertNotification, type UserSettings, type InsertUserSettings } from "@shared/schema";
+import { users, energyData, billingData, notifications, userSettings, type User, type InsertUser, type EnergyData, type InsertEnergyData, type BillingData, type InsertBillingData, type Notification, type InsertNotification, type UserSettings, type InsertUserSettings } from "@shared/schema";
+import { db } from "./db";
+import { eq, desc, sql } from "drizzle-orm";
 import { randomUUID } from "crypto";
 
 export interface IStorage {
@@ -250,4 +252,117 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+export class DatabaseStorage implements IStorage {
+  async getUser(id: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user || undefined;
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const [user] = await db
+      .insert(users)
+      .values(insertUser)
+      .returning();
+    return user;
+  }
+
+  async getEnergyData(userId: string, limit: number = 100): Promise<EnergyData[]> {
+    return await db
+      .select()
+      .from(energyData)
+      .where(eq(energyData.userId, userId))
+      .orderBy(desc(energyData.timestamp))
+      .limit(limit);
+  }
+
+  async createEnergyData(data: InsertEnergyData): Promise<EnergyData> {
+    const [energy] = await db
+      .insert(energyData)
+      .values(data)
+      .returning();
+    return energy;
+  }
+
+  async getLatestEnergyData(userId: string): Promise<EnergyData | undefined> {
+    const [latest] = await db
+      .select()
+      .from(energyData)
+      .where(eq(energyData.userId, userId))
+      .orderBy(desc(energyData.timestamp))
+      .limit(1);
+    return latest || undefined;
+  }
+
+  async getBillingData(userId: string): Promise<BillingData | undefined> {
+    const [billing] = await db
+      .select()
+      .from(billingData)
+      .where(eq(billingData.userId, userId))
+      .orderBy(desc(billingData.id))
+      .limit(1);
+    return billing || undefined;
+  }
+
+  async createBillingData(data: InsertBillingData): Promise<BillingData> {
+    const [billing] = await db
+      .insert(billingData)
+      .values(data)
+      .returning();
+    return billing;
+  }
+
+  async getNotifications(userId: string): Promise<Notification[]> {
+    return await db
+      .select()
+      .from(notifications)
+      .where(eq(notifications.userId, userId))
+      .orderBy(desc(notifications.createdAt));
+  }
+
+  async createNotification(notification: InsertNotification): Promise<Notification> {
+    const [notif] = await db
+      .insert(notifications)
+      .values(notification)
+      .returning();
+    return notif;
+  }
+
+  async markNotificationAsRead(id: string): Promise<void> {
+    await db
+      .update(notifications)
+      .set({ read: true })
+      .where(eq(notifications.id, id));
+  }
+
+  async getUserSettings(userId: string): Promise<UserSettings | undefined> {
+    const [settings] = await db
+      .select()
+      .from(userSettings)
+      .where(eq(userSettings.userId, userId));
+    return settings || undefined;
+  }
+
+  async createUserSettings(settings: InsertUserSettings): Promise<UserSettings> {
+    const [userSetting] = await db
+      .insert(userSettings)
+      .values(settings)
+      .returning();
+    return userSetting;
+  }
+
+  async updateUserSettings(userId: string, settingsUpdate: Partial<UserSettings>): Promise<UserSettings> {
+    const [updated] = await db
+      .update(userSettings)
+      .set(settingsUpdate)
+      .where(eq(userSettings.userId, userId))
+      .returning();
+    return updated;
+  }
+}
+
+export const storage = new DatabaseStorage();

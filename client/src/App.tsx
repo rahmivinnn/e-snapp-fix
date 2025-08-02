@@ -12,6 +12,7 @@ import Trends from "@/pages/trends";
 import Realtime from "@/pages/realtime";
 import Economics from "@/pages/economics";
 import Menu from "@/pages/menu";
+import Settings from "@/pages/settings";
 import SetupWizard from "@/pages/setup-wizard";
 
 import BottomNavigation from "@/components/layout/bottom-navigation";
@@ -39,6 +40,7 @@ function Router() {
       <Route path="/realtime" component={Realtime} />
       <Route path="/economics" component={Economics} />
       <Route path="/menu" component={Menu} />
+      <Route path="/settings" component={Settings} />
       <Route path="/" component={Splash} />
       <Route component={NotFound} />
     </Switch>

@@ -109,10 +109,18 @@ export default function ProfileModal({ isOpen, onClose, onOpen }: ProfileModalPr
 
   const handleLogout = () => {
     if (confirm("Are you sure you want to logout?")) {
+      // Clear all localStorage data
+      localStorage.clear();
+      // Show toast message
       toast({
-        title: "Logout functionality would be implemented here",
-        duration: 3000,
+        title: "Logged out successfully",
+        description: "You have been logged out of your account.",
+        duration: 2000,
       });
+      // Redirect to login page after a short delay
+      setTimeout(() => {
+        window.location.href = '/login';
+      }, 1000);
     }
   };
 

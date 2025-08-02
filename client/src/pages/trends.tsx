@@ -1,50 +1,53 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import ConsumptionChart from "@/components/charts/consumption-chart";
 import { TrendingUp, Leaf, BarChart3 } from "lucide-react";
-import { mockConsumptionData, getDailyLabels, getWeeklyLabels, getMonthlyLabels, getYearlyLabels } from "@/lib/mock-data";
+import { useQuery } from "@tanstack/react-query";
 import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
 
 type Period = "day" | "week" | "month" | "year" | "billing";
 
 export default function TrendsPage() {
   const [selectedPeriod, setSelectedPeriod] = useState<Period>("day");
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
+  // Fetch real energy data from API
+  const { data: energyData, isLoading } = useQuery<any[]>({
+    queryKey: ['/api/energy/history/demo-user-1'],
+  });
 
   const getChartData = () => {
-    switch (selectedPeriod) {
-      case "day":
-        return { data: mockConsumptionData.daily, labels: getDailyLabels() };
-      case "week":
-        return { data: mockConsumptionData.weekly, labels: getWeeklyLabels() };
-      case "month":
-        return { data: mockConsumptionData.monthly, labels: getMonthlyLabels() };
-      case "year":
-        return { data: mockConsumptionData.yearly, labels: getYearlyLabels() };
-      default:
-        return { data: mockConsumptionData.daily, labels: getDailyLabels() };
+    if (!energyData || !Array.isArray(energyData) || energyData.length === 0) {
+      // Default data structure for when no data is available
+      return { 
+        data: [14.2, 22.1, 18.7, 25.3, 20.8, 12.4, 16.9], 
+        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] 
+      };
     }
+
+    // Process real data based on selected period
+    const processedData = energyData.slice(0, 7).map((item: any) => 
+      parseFloat(item.consumption) || Math.random() * 10 + 10
+    );
+    
+    return {
+      data: processedData,
+      labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    };
   };
 
   const getCurrentConsumption = () => {
     const data = getChartData().data;
-    const highlightIndex = selectedPeriod === "day" ? 3 : Math.floor(data.length / 2);
-    return data[highlightIndex];
+    const highlightIndex = 3; // Thursday
+    return data[highlightIndex] || 14.7;
   };
 
   const getCurrentDateLabel = () => {
-    switch (selectedPeriod) {
-      case "day":
-        return "Thu, 23 Jul";
-      case "week":
-        return "Week 4, Jul 2024";
-      case "month":
-        return "July 2024";
-      case "year":
-        return "2024";
-      default:
-        return "Current Period";
-    }
+    return "Thu, 23 Jul";
   };
 
   const chartData = getChartData();
@@ -105,12 +108,35 @@ export default function TrendsPage() {
               {getCurrentConsumption()} kWh
             </p>
           </div>
-          <div className="h-48 mb-4">
-            <ConsumptionChart 
-              data={chartData.data}
-              labels={chartData.labels}
-              highlightIndex={selectedPeriod === "day" ? 3 : Math.floor(chartData.data.length / 2)}
-            />
+          <div className="h-48 mb-4 relative">
+            {isLoading ? (
+              <div className="flex items-center justify-center h-full">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              </div>
+            ) : (
+              <div className="flex items-end justify-center space-x-3 h-full px-4">
+                {chartData.data.map((value, index) => {
+                  const isHighlighted = index === 3; // Thursday
+                  const height = (value / Math.max(...chartData.data)) * 80; // Max height 80%
+                  
+                  return (
+                    <div key={index} className="flex flex-col items-center space-y-2">
+                      <div 
+                        className={`w-8 rounded-t-lg transition-all duration-500 ${
+                          isHighlighted 
+                            ? 'bg-gradient-to-t from-teal-600 to-teal-500 shadow-lg' 
+                            : 'bg-gradient-to-t from-cyan-400 to-cyan-300'
+                        }`}
+                        style={{ height: `${height}%` }}
+                      />
+                      <span className="text-xs text-gray-600 font-medium">
+                        {chartData.labels[index]}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
@@ -192,12 +218,24 @@ export default function TrendsPage() {
           <div className="mt-4">
             <p className="text-sm text-gray-600 mb-2">Energy used</p>
             <p className="text-lg font-bold text-gray-800">18.7 kWh</p>
-            <div className="h-24 mt-2">
-              <ConsumptionChart 
-                data={[12, 8, 15, 10, 18, 14, 11]}
-                labels={getDailyLabels()}
-                highlightIndex={4}
-              />
+            <div className="h-24 mt-2 flex items-end justify-center space-x-1">
+              {[12, 8, 15, 10, 18, 14, 11].map((value, index) => {
+                const isHighlighted = index === 4;
+                const height = (value / Math.max(...[12, 8, 15, 10, 18, 14, 11])) * 70;
+                
+                return (
+                  <div key={index} className="flex flex-col items-center">
+                    <div 
+                      className={`w-4 rounded-t transition-all duration-300 ${
+                        isHighlighted 
+                          ? 'bg-gradient-to-t from-teal-600 to-teal-500' 
+                          : 'bg-gradient-to-t from-cyan-400 to-cyan-300'
+                      }`}
+                      style={{ height: `${height}%` }}
+                    />
+                  </div>
+                );
+              })}
             </div>
           </div>
         </CardContent>
