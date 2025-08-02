@@ -26,11 +26,15 @@ export default function SplashPage() {
 
     // Navigate after splash
     const navTimer = setTimeout(() => {
+      sessionStorage.setItem('splashShown', 'true');
       const isLoggedIn = localStorage.getItem('isLoggedIn');
+      const onboardingCompleted = localStorage.getItem('onboardingCompleted');
       const setupCompleted = localStorage.getItem('setupCompleted');
       
-      if (isLoggedIn && setupCompleted) {
+      if (isLoggedIn && onboardingCompleted && setupCompleted) {
         setLocation("/home");
+      } else if (isLoggedIn && onboardingCompleted) {
+        setLocation("/setup-wizard");
       } else if (isLoggedIn) {
         setLocation("/onboarding");
       } else {

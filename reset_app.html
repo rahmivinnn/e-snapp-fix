@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reset e-snapp App</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 400px; 
+            margin: 50px auto; 
+            padding: 20px; 
+            text-align: center;
+        }
+        .reset-btn { 
+            background: #3b82f6; 
+            color: white; 
+            padding: 15px 30px; 
+            border: none; 
+            border-radius: 10px; 
+            font-size: 16px; 
+            cursor: pointer;
+            margin: 10px;
+        }
+        .reset-btn:hover { background: #2563eb; }
+        .status { margin: 20px 0; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h2>Reset e-snapp App</h2>
+    <p>Klik tombol di bawah untuk reset aplikasi dan menampilkan splash screen + onboarding lagi.</p>
+    
+    <button class="reset-btn" onclick="resetApp()">Reset App ke Awal</button>
+    <button class="reset-btn" onclick="openApp()">Buka e-snapp</button>
+    
+    <div class="status" id="status"></div>
+
+    <script>
+        function resetApp() {
+            // Clear all localStorage data
+            localStorage.clear();
+            sessionStorage.clear();
+            
+            document.getElementById('status').innerHTML = '✅ App berhasil di-reset! Sekarang splash screen dan onboarding akan muncul lagi.';
+            
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1500);
+        }
+        
+        function openApp() {
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>

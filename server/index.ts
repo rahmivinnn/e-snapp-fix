@@ -1,4 +1,5 @@
 import express, { type Request, Response, NextFunction } from "express";
+import path from "path";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { seedDatabase } from "./seed";
@@ -19,6 +20,11 @@ app.use(express.static('public', {
     }
   }
 }));
+
+// Serve reset page
+app.get('/reset', (req, res) => {
+  res.sendFile(path.join(process.cwd(), 'reset_app.html'));
+});
 
 app.use((req, res, next) => {
   const start = Date.now();

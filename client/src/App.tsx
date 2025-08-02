@@ -73,6 +73,12 @@ function App() {
       return;
     }
     
+    // Always start with splash screen for new sessions
+    if (location === '/' && !sessionStorage.getItem('splashShown')) {
+      setLocation('/splash');
+      return;
+    }
+    
     if (!isLoggedIn) {
       setLocation('/splash');
     } else if (!onboardingCompleted) {
