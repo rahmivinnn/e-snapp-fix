@@ -8,6 +8,11 @@ export default function SplashPage() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    // Clear all app data on splash to ensure fresh start
+    localStorage.clear();
+    sessionStorage.clear();
+    console.log('🎬 Splash screen loaded - app data cleared');
+    
     // Animate logo entrance
     const logoTimer = setTimeout(() => {
       setLogoVisible(true);

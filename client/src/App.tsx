@@ -23,7 +23,6 @@ import ProfileModal from "@/components/modals/profile-modal";
 import TariffModal from "@/components/modals/tariff-modal";
 
 import NotFound from "@/pages/not-found";
-import { AppResetter } from "@/components/AppResetter";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 
@@ -74,19 +73,24 @@ function App() {
       return;
     }
     
-    // Force splash screen on root path
+    // Always show splash first, then check login state
     if (location === '/') {
       setLocation('/splash');
       return;
     }
     
+    // Don't redirect if already on splash or auth pages
+    if (['/splash', '/login', '/signup'].includes(location)) {
+      return;
+    }
+    
     if (!isLoggedIn) {
-      setLocation('/splash');
+      setLocation('/login');
     } else if (!onboardingCompleted) {
       setLocation('/onboarding');
     } else if (!setupCompleted) {
       setLocation('/setup-wizard');
-    } else if (location === '/') {
+    } else {
       setLocation('/home');
     }
     
@@ -104,7 +108,6 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <AppResetter />
         <div className="min-h-screen bg-background">
           <div className={hasCompletedSetup ? "pb-20" : ""}>
             <Router />
