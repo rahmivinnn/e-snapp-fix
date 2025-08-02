@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { User, Bell, Headphones, Settings, Info, LogOut, Trash2, ChevronRight } from "lucide-react";
 import type { User as UserType } from "@shared/schema";
+import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
 
 const userId = "demo-user-1"; // In a real app, this would come from auth context
 
@@ -48,7 +49,7 @@ export default function MenuPage() {
       {/* Logo Section */}
       <div className="flex justify-center mb-6">
         <img 
-          src="@assets/e snapp logo 1 (1)_1754147457582.png" 
+          src={logoImage} 
           alt="e-snapp" 
           className="h-16 w-auto"
         />

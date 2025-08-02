@@ -2,6 +2,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import LiveChart from "@/components/charts/live-chart";
 import { useRealtimeData } from "@/hooks/use-energy-data";
 import { Zap, Activity, Sun, Car, Battery, Plug } from "lucide-react";
+import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
 
 export default function RealtimePage() {
   const { realtimeData, currentPower } = useRealtimeData();
@@ -19,7 +20,7 @@ export default function RealtimePage() {
       {/* Logo Section */}
       <div className="flex justify-center mb-6">
         <img 
-          src="@assets/e snapp logo 1 (1)_1754147457582.png" 
+          src={logoImage} 
           alt="e-snapp" 
           className="h-16 w-auto"
         />

@@ -7,6 +7,7 @@ import { useEnergyData } from "@/hooks/use-energy-data";
 import { mockUsageData } from "@/lib/mock-data";
 import { Zap, Home, Lightbulb, Leaf, TrendingUp, RotateCcw } from "lucide-react";
 import type { BillingData } from "@shared/schema";
+import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
 
 export default function HomePage() {
   const { billingData } = useEnergyData();
@@ -19,7 +20,7 @@ export default function HomePage() {
       {/* Logo Section */}
       <div className="flex justify-center mb-6">
         <img 
-          src="@assets/e snapp logo 1 (1)_1754149374420.png" 
+          src={logoImage} 
           alt="e-snapp" 
           className="h-16 w-auto"
         />
