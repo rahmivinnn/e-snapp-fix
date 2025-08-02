@@ -50,9 +50,6 @@ function App() {
 
   // Check if user has completed setup
   useEffect(() => {
-    // Clear setup completion for testing
-    localStorage.removeItem('setupCompleted');
-    
     const setupCompleted = localStorage.getItem('setupCompleted');
     console.log('Setup completed:', setupCompleted, 'Current location:', location);
     

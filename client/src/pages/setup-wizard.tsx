@@ -10,7 +10,7 @@ import { useLocation } from "wouter";
 import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
 import houseImage from "@assets/Rectangle 102_1754150724561.png";
 
-type SetupStep = "device" | "qr-scan" | "wifi-list" | "wifi-password" | "wifi-connect" | "device-naming" | "home" | "appliances" | "tariff-type" | "tariff-details" | "tariff-variable" | "bill-upload";
+type SetupStep = "device" | "qr-scan" | "wifi-list" | "wifi-password" | "wifi-connect" | "device-naming" | "home" | "appliances" | "tariff-type" | "tariff-details" | "bill-upload";
 
 export default function SetupWizard() {
   const [, setLocation] = useLocation();
@@ -39,7 +39,7 @@ export default function SetupWizard() {
   });
 
   const handleNext = () => {
-    const steps: SetupStep[] = ["device", "qr-scan", "wifi-list", "wifi-password", "wifi-connect", "device-naming", "home", "appliances", "tariff-type", "tariff-details", "tariff-variable", "bill-upload"];
+    const steps: SetupStep[] = ["device", "qr-scan", "wifi-list", "wifi-password", "wifi-connect", "device-naming", "home", "appliances", "tariff-type", "tariff-details", "bill-upload"];
     const currentIndex = steps.indexOf(currentStep);
     if (currentIndex < steps.length - 1) {
       setCurrentStep(steps[currentIndex + 1]);
@@ -51,7 +51,7 @@ export default function SetupWizard() {
   };
 
   const handleBack = () => {
-    const steps: SetupStep[] = ["device", "qr-scan", "wifi-list", "wifi-password", "wifi-connect", "device-naming", "home", "appliances", "tariff-type", "tariff-details", "tariff-variable", "bill-upload"];
+    const steps: SetupStep[] = ["device", "qr-scan", "wifi-list", "wifi-password", "wifi-connect", "device-naming", "home", "appliances", "tariff-type", "tariff-details", "bill-upload"];
     const currentIndex = steps.indexOf(currentStep);
     if (currentIndex > 0) {
       setCurrentStep(steps[currentIndex - 1]);
@@ -695,8 +695,14 @@ export default function SetupWizard() {
       </div>
       
       <div className="p-6 space-y-4">
-        <Button onClick={handleNext} className="w-full bg-primary hover:bg-primary/90 text-white h-12 rounded-lg">
-          Next <ArrowRight className="ml-2 h-4 w-4" />
+        <Button 
+          onClick={() => {
+            localStorage.setItem('setupCompleted', 'true');
+            setLocation("/home");
+          }}
+          className="w-full bg-primary hover:bg-primary/90 text-white h-12 rounded-lg"
+        >
+          Save and Continue
         </Button>
         <button 
           onClick={handleSkip}
@@ -720,7 +726,7 @@ export default function SetupWizard() {
       {currentStep === "appliances" && renderAppliances()}
       {currentStep === "tariff-type" && renderTariffType()}
       {currentStep === "tariff-details" && renderTariffDetails()}
-      {currentStep === "tariff-variable" && renderTariffVariable()}
+
       {currentStep === "bill-upload" && renderBillUpload()}
     </div>
   );
