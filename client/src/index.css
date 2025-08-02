@@ -111,23 +111,26 @@
   @apply animate-float;
 }
 
-/* Mobile Portrait Optimization */
+/* Mobile Portrait Optimization - Ultra Compact */
 @media (max-width: 480px) {
   html, body {
     max-width: 100vw !important;
     overflow-x: hidden;
-    font-size: 12px;
+    overflow-y: hidden;
+    font-size: 11px;
+    height: 100vh !important;
   }
   
   .max-w-md {
     max-width: 100vw !important;
-    padding-left: 8px !important;
-    padding-right: 8px !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
   }
   
-  .h-screen {
+  .h-screen, .min-h-screen {
     height: 100vh !important;
     max-height: 100vh !important;
+    overflow-y: auto !important;
   }
   
   /* Bottom Navigation Mobile Optimization */
@@ -135,82 +138,143 @@
     left: 0 !important;
     right: 0 !important;
     width: 100% !important;
+    height: 60px !important;
   }
   
-  /* Card spacing adjustments */
-  .space-y-4 > * + *, .space-y-3 > * + * {
-    margin-top: 8px !important;
+  /* Prevent scrolling by adjusting bottom padding */
+  .pb-20 {
+    padding-bottom: 60px !important;
   }
   
-  /* Text size adjustments */
+  .pb-16 {
+    padding-bottom: 60px !important;
+  }
+  
+  /* Card spacing adjustments - ultra compact */
+  .space-y-4 > * + *, .space-y-3 > * + *, .space-y-2 > * + * {
+    margin-top: 4px !important;
+  }
+  
+  /* Text size adjustments - smaller */
+  .text-base {
+    font-size: 0.9rem !important;
+  }
+  
   .text-lg {
-    font-size: 1rem !important;
+    font-size: 0.95rem !important;
   }
   
   .text-xl {
-    font-size: 1.1rem !important;
+    font-size: 1rem !important;
   }
   
   .text-2xl {
-    font-size: 1.2rem !important;
+    font-size: 1.1rem !important;
   }
   
   .text-3xl {
-    font-size: 1.3rem !important;
+    font-size: 1.2rem !important;
   }
   
-  /* Padding adjustments */
+  /* Padding adjustments - minimal */
+  .p-2 {
+    padding: 6px !important;
+  }
+  
   .p-3 {
-    padding: 8px !important;
+    padding: 6px !important;
   }
   
   .p-4 {
-    padding: 10px !important;
+    padding: 8px !important;
   }
   
   .p-6 {
-    padding: 12px !important;
+    padding: 10px !important;
+  }
+  
+  .px-2 {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
   }
   
   .px-3 {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+  
+  .px-4 {
     padding-left: 8px !important;
     padding-right: 8px !important;
   }
   
-  .px-4 {
-    padding-left: 10px !important;
-    padding-right: 10px !important;
+  /* Margin adjustments - minimal */
+  .mb-1 {
+    margin-bottom: 2px !important;
   }
   
-  /* Margin adjustments */
   .mb-2 {
-    margin-bottom: 4px !important;
+    margin-bottom: 3px !important;
   }
   
   .mb-3 {
-    margin-bottom: 6px !important;
+    margin-bottom: 4px !important;
   }
   
   .mb-4 {
-    margin-bottom: 8px !important;
+    margin-bottom: 6px !important;
   }
   
-  /* Height adjustments */
+  .mt-1 {
+    margin-top: 2px !important;
+  }
+  
+  .mt-2 {
+    margin-top: 3px !important;
+  }
+  
+  /* Height adjustments - very compact */
+  .h-32 {
+    height: 6rem !important;
+  }
+  
   .h-48 {
-    height: 10rem !important;
+    height: 8rem !important;
   }
   
   .h-64 {
-    height: 12rem !important;
+    height: 10rem !important;
   }
   
-  /* Logo size */
+  /* Logo size - smaller */
+  .h-8 {
+    height: 1.5rem !important;
+  }
+  
   .h-10 {
-    height: 2rem !important;
+    height: 1.75rem !important;
   }
   
   .h-12 {
-    height: 2.25rem !important;
+    height: 2rem !important;
+  }
+  
+  /* Ultra compact for specific heights */
+  div[style*="height: 180px"] {
+    height: 120px !important;
+  }
+  
+  div[style*="height: 240px"] {
+    height: 140px !important;
+  }
+  
+  /* Logo size extra small */
+  .h-8 {
+    height: 1.75rem !important;
+  }
+  
+  .h-16 {
+    height: 2.5rem !important;
   }
 }
 

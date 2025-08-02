@@ -48,7 +48,9 @@ class PWAManager {
   private async registerServiceWorker() {
     if ('serviceWorker' in navigator) {
       try {
-        const registration = await navigator.serviceWorker.register('/sw.js');
+        const registration = await navigator.serviceWorker.register('/sw.js', {
+          scope: '/'
+        });
         console.log('Service Worker registered successfully:', registration);
         
         // Listen for updates
@@ -63,7 +65,7 @@ class PWAManager {
           }
         });
       } catch (error) {
-        console.error('Service Worker registration failed:', error);
+        console.warn('Service Worker registration failed (this is normal in development):', error);
       }
     }
   }

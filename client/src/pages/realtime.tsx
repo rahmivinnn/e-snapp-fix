@@ -14,7 +14,7 @@ export default function RealtimePage() {
   }, []);
 
   return (
-    <div className="max-w-md mx-auto px-2 space-y-2 pb-16 min-h-screen">
+    <div className="max-w-md mx-auto px-2 space-y-1 pb-16 min-h-screen">
       {/* Header with Logo and Actions */}
       <div className={`flex items-center justify-between mb-1 pt-1 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         <img 
@@ -93,37 +93,37 @@ export default function RealtimePage() {
 
       {/* Realtime Data Section */}
       <div className={`transition-all duration-700 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        <h2 className="text-lg font-bold text-gray-800 mb-4">Realtime Data</h2>
+        <h2 className="text-sm font-bold text-gray-800 mb-2">Realtime Data</h2>
         
         {/* Real-time Data Grid */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-2">
           <Card className="bg-white hover:scale-105 hover:shadow-xl transition-all duration-300">
-            <CardContent className="p-4 text-center">
-              <p className="text-sm text-gray-600 mb-1">Active Power</p>
-              <p className="text-2xl font-bold text-gray-800 animate-pulse" key={currentPower}>
+            <CardContent className="p-2 text-center">
+              <p className="text-xs text-gray-600 mb-0.5">Active Power</p>
+              <p className="text-lg font-bold text-gray-800 animate-pulse" key={currentPower}>
                 {currentPower || "245"} W
               </p>
             </CardContent>
           </Card>
 
           <Card className="bg-white hover:scale-105 hover:shadow-xl transition-all duration-300">
-            <CardContent className="p-4 text-center">
-              <p className="text-sm text-gray-600 mb-1">Reactive Power</p>
-              <p className="text-2xl font-bold text-gray-800">246 VAR</p>
+            <CardContent className="p-2 text-center">
+              <p className="text-xs text-gray-600 mb-0.5">Reactive Power</p>
+              <p className="text-lg font-bold text-gray-800">246 VAR</p>
             </CardContent>
           </Card>
 
           <Card className="bg-white hover:scale-105 hover:shadow-xl transition-all duration-300">
-            <CardContent className="p-4 text-center">
-              <p className="text-sm text-gray-600 mb-1">Voltage</p>
-              <p className="text-2xl font-bold text-gray-800">220 V</p>
+            <CardContent className="p-2 text-center">
+              <p className="text-xs text-gray-600 mb-0.5">Voltage</p>
+              <p className="text-lg font-bold text-gray-800">220 V</p>
             </CardContent>
           </Card>
 
           <Card className="bg-white hover:scale-105 hover:shadow-xl transition-all duration-300">
-            <CardContent className="p-4 text-center">
-              <p className="text-sm text-gray-600 mb-1">Power Factor</p>
-              <p className="text-2xl font-bold text-gray-800">0.5</p>
+            <CardContent className="p-2 text-center">
+              <p className="text-xs text-gray-600 mb-0.5">Power Factor</p>
+              <p className="text-lg font-bold text-gray-800">0.92</p>
             </CardContent>
           </Card>
         </div>

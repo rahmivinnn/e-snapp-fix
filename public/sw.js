@@ -1,31 +1,55 @@
 const CACHE_NAME = 'e-snapp-v1';
 const urlsToCache = [
   '/',
-  '/static/js/bundle.js',
-  '/static/css/main.css',
   '/manifest.json'
 ];
 
 // Install event - cache resources
 self.addEventListener('install', (event) => {
+  console.log('Service Worker installing...');
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
         console.log('Opened cache');
-        return cache.addAll(urlsToCache);
+        return cache.addAll(urlsToCache).catch(err => {
+          console.log('Cache addAll failed:', err);
+          return Promise.resolve();
+        });
+      })
+      .catch(err => {
+        console.log('Cache open failed:', err);
+        return Promise.resolve();
       })
   );
+  self.skipWaiting();
 });
 
 // Fetch event - serve from cache, fallback to network
 self.addEventListener('fetch', (event) => {
+  // Skip cross-origin requests
+  if (event.request.url.startsWith('chrome-extension://') || 
+      event.request.url.startsWith('moz-extension://') ||
+      !event.request.url.startsWith(self.location.origin)) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
         // Return cached version or fetch from network
-        return response || fetch(event.request);
-      }
-    )
+        return response || fetch(event.request).catch(() => {
+          // Return a basic offline page for navigation requests
+          if (event.request.mode === 'navigate') {
+            return new Response('Offline - Please check your connection', {
+              status: 200,
+              headers: { 'Content-Type': 'text/html' }
+            });
+          }
+        });
+      })
+      .catch(() => {
+        return fetch(event.request);
+      })
   );
 });
 
