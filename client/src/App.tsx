@@ -3,6 +3,10 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import Splash from "@/pages/splash";
+import Login from "@/pages/login";
+import SignUp from "@/pages/signup";
+import Onboarding from "@/pages/onboarding";
 import Home from "@/pages/home";
 import Trends from "@/pages/trends";
 import Realtime from "@/pages/realtime";
@@ -25,13 +29,17 @@ import { useLocation } from "wouter";
 function Router() {
   return (
     <Switch>
-      <Route path="/setup" component={SetupWizard} />
+      <Route path="/splash" component={Splash} />
+      <Route path="/login" component={Login} />
+      <Route path="/signup" component={SignUp} />
+      <Route path="/onboarding" component={Onboarding} />
+      <Route path="/setup-wizard" component={SetupWizard} />
       <Route path="/home" component={Home} />
       <Route path="/trends" component={Trends} />
       <Route path="/realtime" component={Realtime} />
       <Route path="/economics" component={Economics} />
       <Route path="/menu" component={Menu} />
-      <Route path="/" component={SetupWizard} />
+      <Route path="/" component={Splash} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -48,15 +56,30 @@ function App() {
     tariffs: false,
   });
 
-  // Check if user has completed setup
+  // Check authentication and setup flow
   useEffect(() => {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const onboardingCompleted = localStorage.getItem('onboardingCompleted');
     const setupCompleted = localStorage.getItem('setupCompleted');
-    console.log('Setup completed:', setupCompleted, 'Current location:', location);
     
-    if (!setupCompleted && location !== '/setup' && location !== '/') {
-      console.log('Redirecting to setup wizard');
-      setLocation('/');
+    console.log('Auth state:', { isLoggedIn, onboardingCompleted, setupCompleted, location });
+    
+    // Skip redirects for specific paths
+    const skipPaths = ['/splash', '/login', '/signup', '/onboarding', '/setup-wizard'];
+    if (skipPaths.includes(location)) {
+      return;
     }
+    
+    if (!isLoggedIn) {
+      setLocation('/splash');
+    } else if (!onboardingCompleted) {
+      setLocation('/onboarding');
+    } else if (!setupCompleted) {
+      setLocation('/setup-wizard');
+    } else if (location === '/') {
+      setLocation('/home');
+    }
+    
     setHasCompletedSetup(!!setupCompleted);
   }, [location, setLocation]);
 
@@ -72,10 +95,10 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <div className="min-h-screen bg-background">
-          <div className="pb-20">
+          <div className={hasCompletedSetup ? "pb-20" : ""}>
             <Router />
           </div>
-          <BottomNavigation />
+          {hasCompletedSetup && <BottomNavigation />}
           
           {/* Modals */}
           <NotificationModal 
