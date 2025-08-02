@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import ConsumptionChart from "@/components/charts/consumption-chart";
 import { TrendingUp, Leaf, BarChart3 } from "lucide-react";
 import { mockConsumptionData, getDailyLabels, getWeeklyLabels, getMonthlyLabels, getYearlyLabels } from "@/lib/mock-data";
+import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
 
 type Period = "day" | "week" | "month" | "year" | "billing";
 
@@ -53,7 +54,7 @@ export default function TrendsPage() {
       {/* Logo Section */}
       <div className="flex justify-center mb-6">
         <img 
-          src="@assets/e snapp logo 1 (1)_1754147457582.png" 
+          src={logoImage} 
           alt="e-snapp" 
           className="h-16 w-auto"
         />
