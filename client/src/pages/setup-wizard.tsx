@@ -8,8 +8,9 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ArrowLeft, ArrowRight, Camera, Upload } from "lucide-react";
 import { useLocation } from "wouter";
 import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
+import houseImage from "@assets/Rectangle 102_1754150724561.png";
 
-type SetupStep = "device" | "home" | "appliances" | "tariff-type" | "tariff-details" | "tariff-variable" | "bill-upload";
+type SetupStep = "device" | "qr-scan" | "wifi-list" | "wifi-password" | "wifi-connect" | "device-naming" | "home" | "appliances" | "tariff-type" | "tariff-details" | "tariff-variable" | "bill-upload";
 
 export default function SetupWizard() {
   const [, setLocation] = useLocation();
@@ -38,7 +39,7 @@ export default function SetupWizard() {
   });
 
   const handleNext = () => {
-    const steps: SetupStep[] = ["device", "home", "appliances", "tariff-type", "tariff-details", "tariff-variable", "bill-upload"];
+    const steps: SetupStep[] = ["device", "qr-scan", "wifi-list", "wifi-password", "wifi-connect", "device-naming", "home", "appliances", "tariff-type", "tariff-details", "tariff-variable", "bill-upload"];
     const currentIndex = steps.indexOf(currentStep);
     if (currentIndex < steps.length - 1) {
       setCurrentStep(steps[currentIndex + 1]);
@@ -50,7 +51,7 @@ export default function SetupWizard() {
   };
 
   const handleBack = () => {
-    const steps: SetupStep[] = ["device", "home", "appliances", "tariff-type", "tariff-details", "tariff-variable", "bill-upload"];
+    const steps: SetupStep[] = ["device", "qr-scan", "wifi-list", "wifi-password", "wifi-connect", "device-naming", "home", "appliances", "tariff-type", "tariff-details", "tariff-variable", "bill-upload"];
     const currentIndex = steps.indexOf(currentStep);
     if (currentIndex > 0) {
       setCurrentStep(steps[currentIndex - 1]);
@@ -73,6 +74,234 @@ export default function SetupWizard() {
         : [...prev.appliances, appliance]
     }));
   };
+
+  const renderQRScan = () => (
+    <div className="flex flex-col h-full">
+      <div className="flex items-center justify-between p-4 border-b">
+        <ArrowLeft className="h-6 w-6 text-gray-600 cursor-pointer" onClick={handleBack} />
+        <h1 className="text-lg font-semibold text-gray-800">Device Setup Wizard</h1>
+        <div></div>
+      </div>
+      
+      <div className="flex-1 flex flex-col justify-center items-center px-6 space-y-8">
+        <div className="text-center space-y-2">
+          <h2 className="text-xl font-semibold">Pair your Smart Energy Meter</h2>
+          <p className="text-gray-600">Use your phone camera to scan the QR code on</p>
+          <p className="text-gray-600">the back of your device.</p>
+        </div>
+        
+        <div className="w-64 h-64 bg-gray-200 rounded-lg flex items-center justify-center relative">
+          <div className="w-48 h-48 border-2 border-white bg-white rounded-lg flex items-center justify-center">
+            <div className="w-40 h-40 bg-black grid grid-cols-8 gap-px">
+              {Array.from({length: 64}).map((_, i) => (
+                <div key={i} className={`${Math.random() > 0.5 ? 'bg-black' : 'bg-white'}`}></div>
+              ))}
+            </div>
+          </div>
+        </div>
+        
+        <div className="w-full space-y-4">
+          <Button 
+            onClick={handleNext}
+            className="w-full bg-primary hover:bg-primary/90 text-white h-12 rounded-lg"
+          >
+            Scan QR Code
+          </Button>
+          
+          <button 
+            onClick={handleNext}
+            className="w-full text-gray-500 text-center py-4"
+          >
+            Enter Code Manually
+          </button>
+        </div>
+      </div>
+      
+      <div className="p-6">
+        <button 
+          onClick={handleSkip}
+          className="w-full text-gray-500 text-center py-4"
+        >
+          Skip for now
+        </button>
+      </div>
+    </div>
+  );
+
+  const renderWiFiList = () => (
+    <div className="flex flex-col h-full">
+      <div className="flex items-center justify-between p-4 border-b">
+        <ArrowLeft className="h-6 w-6 text-gray-600 cursor-pointer" onClick={handleBack} />
+        <h1 className="text-lg font-semibold text-gray-800">Wi-Fi Setup</h1>
+        <div></div>
+      </div>
+      
+      <div className="flex-1 px-6 pt-6">
+        <div className="text-center space-y-2 mb-6">
+          <h2 className="text-xl font-semibold">Connect to Wi-Fi</h2>
+          <p className="text-gray-600">Choose a Wi-Fi network to connect your device</p>
+          <p className="text-gray-600">to the internet.</p>
+        </div>
+        
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <span className="text-gray-700">Networks Nearby</span>
+            <div className="w-5 h-5 border-2 border-gray-400 rounded-full animate-spin border-t-transparent"></div>
+          </div>
+          
+          {Array.from({length: 6}).map((_, i) => (
+            <div 
+              key={i}
+              onClick={handleNext}
+              className="flex items-center justify-between p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"
+            >
+              <div className="flex items-center space-x-3">
+                <div className="w-5 h-5">
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.07 2.93 1 9zm8 8l3 3 3-3c-1.65-1.65-4.34-1.65-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/>
+                  </svg>
+                </div>
+                <span>WIFI Router {i + 1}</span>
+              </div>
+              <div className="w-5 h-5 text-gray-400">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10A2,2 0 0,1 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z"/>
+                </svg>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderWiFiPassword = () => (
+    <div className="flex flex-col h-full">
+      <div className="flex items-center justify-between p-4 border-b">
+        <ArrowLeft className="h-6 w-6 text-gray-600 cursor-pointer" onClick={handleBack} />
+        <h1 className="text-lg font-semibold text-gray-800">Wi-Fi Setup</h1>
+        <div></div>
+      </div>
+      
+      <div className="flex-1 px-6 pt-6">
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold mb-4">WIFI Router 1</h2>
+          
+          <div className="space-y-4">
+            <div>
+              <label className="block text-gray-700 mb-2">Password</label>
+              <input 
+                type="password"
+                placeholder="Password"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </div>
+            
+            <div className="flex items-center space-x-2">
+              <input type="checkbox" id="showPassword" className="w-4 h-4" />
+              <label htmlFor="showPassword" className="text-gray-700">Show Password</label>
+            </div>
+          </div>
+        </div>
+        
+        <div className="space-y-4">
+          <Button 
+            onClick={handleNext}
+            className="w-full bg-primary hover:bg-primary/90 text-white h-12 rounded-lg"
+          >
+            Connect
+          </Button>
+          
+          <button 
+            onClick={handleBack}
+            className="w-full text-gray-500 text-center py-4"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderWiFiConnect = () => (
+    <div className="flex flex-col h-full">
+      <div className="flex items-center justify-between p-4 border-b">
+        <ArrowLeft className="h-6 w-6 text-gray-600 cursor-pointer" onClick={handleBack} />
+        <h1 className="text-lg font-semibold text-gray-800">Wi-Fi Setup</h1>
+        <div></div>
+      </div>
+      
+      <div className="flex-1 flex flex-col justify-center items-center px-6 space-y-8">
+        <div className="mb-6">
+          <h2 className="text-lg font-semibold mb-4">WIFI Router 1</h2>
+        </div>
+        
+        <div className="w-24 h-24 bg-primary rounded-full flex items-center justify-center">
+          <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+          </svg>
+        </div>
+        
+        <div className="text-center">
+          <h3 className="text-lg font-semibold text-primary">Connected successfully</h3>
+        </div>
+        
+        <Button 
+          onClick={handleNext}
+          className="w-full bg-primary hover:bg-primary/90 text-white h-12 rounded-lg"
+        >
+          Continue
+        </Button>
+      </div>
+    </div>
+  );
+
+  const renderDeviceNaming = () => (
+    <div className="flex flex-col h-full">
+      <div className="flex items-center justify-between p-4 border-b">
+        <ArrowLeft className="h-6 w-6 text-gray-600 cursor-pointer" onClick={handleBack} />
+        <h1 className="text-lg font-semibold text-gray-800">Device Naming</h1>
+        <div></div>
+      </div>
+      
+      <div className="flex-1 flex flex-col justify-center items-center px-6 space-y-8">
+        <div className="w-32 h-24 bg-gray-200 rounded-lg flex items-center justify-center">
+          <div className="relative">
+            <div className="w-16 h-12 bg-white rounded border border-gray-300 flex items-center justify-center">
+              <div className="w-8 h-1 bg-gray-400 rounded"></div>
+            </div>
+            <div className="absolute -top-4 left-2 space-x-1 flex">
+              <div className="w-1 h-6 bg-gray-600 rounded"></div>
+              <div className="w-1 h-8 bg-gray-600 rounded"></div>
+              <div className="w-1 h-6 bg-gray-600 rounded"></div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="text-center space-y-2">
+          <h2 className="text-lg font-semibold">Give your device a name</h2>
+        </div>
+        
+        <div className="w-full space-y-4">
+          <div>
+            <label className="block text-gray-700 mb-2">Device Name</label>
+            <input 
+              type="text"
+              placeholder="Smart Energy Meter"
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+          
+          <Button 
+            onClick={handleNext}
+            className="w-full bg-primary hover:bg-primary/90 text-white h-12 rounded-lg"
+          >
+            Finish Setup
+          </Button>
+        </div>
+      </div>
+    </div>
+  );
 
   const renderDeviceSetup = () => (
     <div className="flex flex-col h-full">
@@ -131,17 +360,14 @@ export default function SetupWizard() {
   const renderHomeSetup = () => (
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between p-4 border-b">
-        <ArrowLeft className="h-6 w-6 text-gray-600" onClick={handleBack} />
+        <ArrowLeft className="h-6 w-6 text-gray-600 cursor-pointer" onClick={handleBack} />
         <div></div>
         <div></div>
       </div>
       
       <div className="flex-1 px-6 pt-4">
-        <div className="mb-6 bg-gradient-to-br from-blue-50 to-cyan-50 rounded-lg h-48 flex items-center justify-center">
-          <div className="text-center">
-            <div className="text-6xl mb-2">🏠</div>
-            <p className="text-gray-600 font-medium">Your Smart Home</p>
-          </div>
+        <div className="mb-6 rounded-lg h-48 overflow-hidden">
+          <img src={houseImage} alt="Modern House" className="w-full h-full object-cover rounded-lg" />
         </div>
         
         <h2 className="text-xl font-bold text-gray-800 mb-6">Let's set up your Home</h2>
@@ -485,10 +711,16 @@ export default function SetupWizard() {
   return (
     <div className="min-h-screen bg-white">
       {currentStep === "device" && renderDeviceSetup()}
+      {currentStep === "qr-scan" && renderQRScan()}
+      {currentStep === "wifi-list" && renderWiFiList()}
+      {currentStep === "wifi-password" && renderWiFiPassword()}
+      {currentStep === "wifi-connect" && renderWiFiConnect()}
+      {currentStep === "device-naming" && renderDeviceNaming()}
       {currentStep === "home" && renderHomeSetup()}
       {currentStep === "appliances" && renderAppliances()}
       {currentStep === "tariff-type" && renderTariffType()}
       {currentStep === "tariff-details" && renderTariffDetails()}
+      {currentStep === "tariff-variable" && renderTariffVariable()}
       {currentStep === "bill-upload" && renderBillUpload()}
     </div>
   );
