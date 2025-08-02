@@ -124,21 +124,39 @@ export default function TrendsPage() {
                     const heightPx = Math.max((value / 25) * 200, 20); // Scale to pixels, min 20px
                     
                     return (
-                      <div key={index} className="flex flex-col items-center space-y-2">
+                      <div 
+                        key={index} 
+                        className="flex flex-col items-center space-y-2 group cursor-pointer"
+                        style={{ 
+                          animationDelay: `${index * 100}ms`,
+                          animation: `slideUp 0.8s ease-out forwards`
+                        }}
+                      >
                         <div 
-                          className={`w-8 rounded-t-lg transition-all duration-500 ${
+                          className={`w-8 rounded-t-lg transition-all duration-500 transform group-hover:scale-110 group-hover:shadow-xl ${
                             isHighlighted 
-                              ? 'bg-teal-600 shadow-lg' 
-                              : 'bg-sky-400'
+                              ? 'bg-gradient-to-t from-teal-700 to-teal-500 shadow-lg animate-pulse' 
+                              : 'bg-gradient-to-t from-sky-500 to-sky-300 group-hover:from-sky-600 group-hover:to-sky-400'
                           }`}
                           style={{ 
                             height: `${heightPx}px`,
-                            minHeight: '20px'
+                            minHeight: '20px',
+                            animationDelay: `${index * 150}ms`,
+                            animation: `growUp 1s ease-out ${index * 150}ms forwards`,
+                            transform: `scaleY(0)`,
+                            transformOrigin: 'bottom'
                           }}
                         />
-                        <span className="text-xs font-medium text-gray-600">
+                        <span className={`text-xs font-medium transition-colors duration-300 ${
+                          isHighlighted ? 'text-teal-600 font-semibold' : 'text-gray-600 group-hover:text-gray-800'
+                        }`}>
                           {chartData.labels[index]}
                         </span>
+                        
+                        {/* Hover tooltip */}
+                        <div className="absolute -top-8 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+                          {value.toFixed(1)} kWh
+                        </div>
                       </div>
                     );
                   })}
