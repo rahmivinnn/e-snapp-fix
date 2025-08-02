@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import onboarding1Image from "@assets/On boarding (1)_1754153067275.png";
+import houseImage from "@assets/Rectangle 95 (1)_1754157653123.png";
 import onboarding2Image from "@assets/On boarding 2_1754153067274.png";
 import onboarding3Image from "@assets/On boarding 3_1754153067273.png";
 
@@ -19,9 +19,9 @@ export default function OnboardingPage() {
 
   const onboardingSteps = [
     {
-      image: onboarding1Image,
-      title: "Track Live Consumption",
-      description: "Lorem Ipsum Dolor Sit Amet Consectetur. Quis Tortor Risus Lacus.",
+      image: houseImage,
+      title: "Smart Energy Monitoring",
+      description: "Monitor your home's energy consumption in real-time with our advanced smart home technology.",
     },
     {
       image: onboarding2Image,
