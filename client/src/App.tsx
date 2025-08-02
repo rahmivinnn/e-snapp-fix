@@ -8,6 +8,7 @@ import Trends from "@/pages/trends";
 import Realtime from "@/pages/realtime";
 import Economics from "@/pages/economics";
 import Menu from "@/pages/menu";
+import SetupWizard from "@/pages/setup-wizard";
 
 import BottomNavigation from "@/components/layout/bottom-navigation";
 import NotificationModal from "@/components/modals/notification-modal";
@@ -23,11 +24,13 @@ import { useState } from "react";
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Home} />
+      <Route path="/setup" component={SetupWizard} />
+      <Route path="/home" component={Home} />
       <Route path="/trends" component={Trends} />
       <Route path="/realtime" component={Realtime} />
       <Route path="/economics" component={Economics} />
       <Route path="/menu" component={Menu} />
+      <Route path="/" component={SetupWizard} />
       <Route component={NotFound} />
     </Switch>
   );
