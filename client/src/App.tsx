@@ -8,7 +8,7 @@ import Trends from "@/pages/trends";
 import Realtime from "@/pages/realtime";
 import Economics from "@/pages/economics";
 import Menu from "@/pages/menu";
-import Header from "@/components/layout/header";
+
 import BottomNavigation from "@/components/layout/bottom-navigation";
 import NotificationModal from "@/components/modals/notification-modal";
 import NotificationSettingsModal from "@/components/modals/notification-settings-modal";
@@ -67,8 +67,7 @@ function App() {
       <TooltipProvider>
         <div className="min-h-screen bg-background pb-20">
           <StatusBar />
-          <Header onNotificationsClick={() => openModal('notifications')} />
-          <div className="pt-20">
+          <div className="pt-4">
             <Router />
           </div>
           <BottomNavigation />
@@ -77,6 +76,7 @@ function App() {
           <NotificationModal 
             isOpen={activeModals.notifications}
             onClose={() => closeModal('notifications')}
+            onOpen={() => openModal('notifications')}
           />
           <NotificationSettingsModal
             isOpen={activeModals.notificationSettings}

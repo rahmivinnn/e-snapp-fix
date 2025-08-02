@@ -50,6 +50,15 @@ export default function TrendsPage() {
 
   return (
     <div className="px-4 space-y-6">
+      {/* Logo Section */}
+      <div className="flex justify-center mb-6">
+        <img 
+          src="@assets/e snapp logo 1 (1)_1754147457582.png" 
+          alt="e-snapp" 
+          className="h-16 w-auto"
+        />
+      </div>
+
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-800">Energy Consumption</h1>

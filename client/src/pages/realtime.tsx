@@ -16,6 +16,15 @@ export default function RealtimePage() {
 
   return (
     <div className="px-4 space-y-6">
+      {/* Logo Section */}
+      <div className="flex justify-center mb-6">
+        <img 
+          src="@assets/e snapp logo 1 (1)_1754147457582.png" 
+          alt="e-snapp" 
+          className="h-16 w-auto"
+        />
+      </div>
+
       {/* Header */}
       <h1 className="text-2xl font-bold text-gray-800">Live Power Usage</h1>
 
