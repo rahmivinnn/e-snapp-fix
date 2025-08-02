@@ -122,14 +122,27 @@
     height: 100vh !important;
     max-height: 100vh !important;
   }
+  
+  /* Bottom Navigation Mobile Optimization */
+  nav {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+  }
 }
 
 .tab-button {
   @apply transition-all duration-300 ease-in-out;
+  min-width: 60px;
 }
 
 .tab-button.active {
   @apply text-primary -translate-y-0.5;
+}
+
+.tab-button span {
+  font-size: 10px;
+  line-height: 1.2;
 }
 
 .period-btn {
@@ -170,4 +183,17 @@
 .modal-backdrop {
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+}
+
+/* Bottom Navigation Mobile Optimizations */
+@media (max-width: 480px) {
+  .tab-button span {
+    font-size: 9px !important;
+    line-height: 1.1 !important;
+  }
+  
+  .tab-button {
+    min-width: 50px !important;
+    padding: 6px 4px !important;
+  }
 }
