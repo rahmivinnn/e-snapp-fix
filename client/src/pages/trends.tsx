@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { TrendingUp, Leaf, BarChart3 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
+import houseVideo from "@assets/Administrator_ animation - rumah - Windows, Mac, Linux - Unity 6DX11_ 2025-07-27 13-37-39 (online-video-cutter.com)_1754152375569.mp4";
 
 type Period = "day" | "week" | "month" | "year" | "billing";
 
@@ -99,13 +100,29 @@ export default function TrendsPage() {
         </CardContent>
       </Card>
 
+      {/* House Video Card */}
+      <Card className={`relative overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 transition-all duration-700 delay-300 hover:scale-105 hover:shadow-xl ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ height: "200px" }}>
+        <CardContent className="p-0 h-full">
+          <div className="relative h-full rounded-lg overflow-hidden">
+            {/* Video Background - Clean, no overlays */}
+            <video 
+              src={houseVideo}
+              autoPlay 
+              loop 
+              muted 
+              className="w-full h-full object-cover"
+            />
+          </div>
+        </CardContent>
+      </Card>
+
       {/* Consumption Chart Card */}
-      <Card className="card-hover">
+      <Card className={`card-hover transition-all duration-700 delay-400 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         <CardContent className="p-4">
           <div className="text-center mb-4">
             <p className="text-sm text-gray-600">{getCurrentDateLabel()}</p>
             <p className="text-3xl font-bold text-gray-800">
-              {getCurrentConsumption()} kWh
+              {getCurrentConsumption().toFixed(1)} kWh
             </p>
           </div>
           <div className="h-48 mb-4 relative">
