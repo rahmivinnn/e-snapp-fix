@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button";
 import { TrendingUp, Leaf, BarChart3 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
-import houseVideo from "@assets/Administrator_ animation - rumah - Windows, Mac, Linux - Unity 6DX11_ 2025-07-27 13-37-39 (online-video-cutter.com)_1754152375569.mp4";
 
 type Period = "day" | "week" | "month" | "year" | "billing";
 
@@ -102,60 +101,59 @@ export default function TrendsPage() {
         </CardContent>
       </Card>
 
-      {/* House Video Card */}
-      <Card className={`relative overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 transition-all duration-700 delay-300 hover:scale-105 hover:shadow-xl ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ height: "200px" }}>
-        <CardContent className="p-0 h-full">
-          <div className="relative h-full rounded-lg overflow-hidden">
-            {/* Video Background - Clean, no overlays */}
-            <video 
-              src={houseVideo}
-              autoPlay 
-              loop 
-              muted 
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Consumption Chart Card */}
-      <Card className={`card-hover transition-all duration-700 delay-400 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        <CardContent className="p-4">
-          <div className="text-center mb-4">
-            <p className="text-sm text-gray-600">{getCurrentDateLabel()}</p>
+      {/* Main Chart Card - Exactly like reference */}
+      <Card className={`bg-white shadow-lg transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        <CardContent className="p-6">
+          {/* Chart Header */}
+          <div className="text-center mb-6">
+            <p className="text-sm text-gray-500 mb-1">{getCurrentDateLabel()}</p>
             <p className="text-3xl font-bold text-gray-800">
               {getCurrentConsumption().toFixed(1)} kWh
             </p>
           </div>
-          <div className="h-48 mb-4 relative">
-            {isLoading ? (
-              <div className="flex items-center justify-center h-full">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-              </div>
-            ) : (
-              <div className="flex items-end justify-center space-x-3 h-full px-4">
-                {chartData.data.map((value, index) => {
-                  const isHighlighted = index === 3; // Thursday
-                  const height = (value / Math.max(...chartData.data)) * 80; // Max height 80%
-                  
-                  return (
-                    <div key={index} className="flex flex-col items-center space-y-2">
-                      <div 
-                        className={`w-8 rounded-t-lg transition-all duration-500 ${
-                          isHighlighted 
-                            ? 'bg-gradient-to-t from-teal-700 to-teal-600 shadow-lg' 
-                            : 'bg-gradient-to-t from-sky-400 to-sky-300'
-                        }`}
-                        style={{ height: `${height}%` }}
-                      />
-                      <span className="text-xs text-gray-600 font-medium">
-                        {chartData.labels[index]}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+          
+          {/* Y-axis labels and chart */}
+          <div className="relative">
+            {/* Y-axis labels */}
+            <div className="absolute left-0 top-0 h-64 flex flex-col justify-between text-xs text-gray-400 -ml-8">
+              <span>25 kWh</span>
+              <span>20 kWh</span>
+              <span>15 kWh</span>
+              <span>10 kWh</span>
+              <span>5 kWh</span>
+            </div>
+            
+            {/* Chart area */}
+            <div className="ml-4 h-64 relative">
+              {isLoading ? (
+                <div className="flex items-center justify-center h-full">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                </div>
+              ) : (
+                <div className="flex items-end justify-center space-x-4 h-full px-4">
+                  {chartData.data.map((value, index) => {
+                    const isHighlighted = index === 3; // Thursday
+                    const height = (value / 25) * 100; // Scale to 25 kWh max
+                    
+                    return (
+                      <div key={index} className="flex flex-col items-center space-y-3">
+                        <div 
+                          className={`w-10 rounded-t-xl transition-all duration-500 ${
+                            isHighlighted 
+                              ? 'bg-gradient-to-t from-teal-800 to-teal-700 shadow-lg' 
+                              : 'bg-gradient-to-t from-sky-400 to-sky-300'
+                          }`}
+                          style={{ height: `${Math.max(height, 10)}%` }}
+                        />
+                        <span className="text-sm font-medium text-gray-600">
+                          {chartData.labels[index]}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           </div>
         </CardContent>
       </Card>
