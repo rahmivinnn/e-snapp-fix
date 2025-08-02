@@ -1,21 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, Loader2 } from "lucide-react";
 
 export default function LoginPage() {
   const [, setLocation] = useLocation();
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     rememberMe: false
   });
 
-  const handleLogin = () => {
-    // Simple demo login - in real app would validate credentials
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
+  const handleLogin = async () => {
+    setIsLoading(true);
+    
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
     localStorage.setItem('isLoggedIn', 'true');
     localStorage.setItem('userEmail', formData.email);
     setLocation("/onboarding");
@@ -40,13 +50,13 @@ export default function LoginPage() {
       {/* Header */}
       <div className="bg-primary text-white p-4">
         <div className="flex items-center space-x-3">
-          <ArrowLeft className="h-6 w-6" />
+          <ArrowLeft className="h-6 w-6 cursor-pointer hover:scale-110 transition-transform" />
           <h1 className="text-xl font-semibold">Sign In</h1>
         </div>
       </div>
 
       {/* Content */}
-      <div className="bg-white rounded-t-3xl mt-8 px-6 pt-8 pb-6 min-h-[calc(100vh-120px)]">
+      <div className={`bg-white rounded-t-3xl mt-8 px-6 pt-8 pb-6 min-h-[calc(100vh-120px)] transform transition-all duration-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
         <div className="space-y-6">
           <div className="space-y-2">
             <h2 className="text-2xl font-bold text-gray-900">Welcome Back!</h2>
@@ -100,9 +110,17 @@ export default function LoginPage() {
 
           <Button
             onClick={handleLogin}
-            className="w-full h-14 bg-primary hover:bg-primary/90 text-white rounded-xl text-lg font-semibold"
+            disabled={isLoading}
+            className="w-full h-14 bg-primary hover:bg-primary/90 text-white rounded-xl text-lg font-semibold hover:scale-105 active:scale-95 transition-all disabled:scale-100"
           >
-            Sign In
+            {isLoading ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                Signing In...
+              </>
+            ) : (
+              "Sign In"
+            )}
           </Button>
 
           <div className="flex items-center space-x-4">
@@ -115,16 +133,16 @@ export default function LoginPage() {
             <Button
               onClick={handleGoogleLogin}
               variant="outline"
-              className="w-full h-14 rounded-xl border-gray-200 text-gray-700 font-medium"
+              className="w-full h-14 rounded-xl border-gray-200 text-gray-700 font-medium hover:scale-105 active:scale-95 transition-all hover:border-primary hover:text-primary"
             >
-              <span className="mr-3">G</span>
+              <span className="mr-3 text-lg">G</span>
               Sign in with Google
             </Button>
             
             <Button
               onClick={handleAppleLogin}
               variant="outline"
-              className="w-full h-14 rounded-xl border-gray-200 text-gray-700 font-medium"
+              className="w-full h-14 rounded-xl border-gray-200 text-gray-700 font-medium hover:scale-105 active:scale-95 transition-all hover:border-primary hover:text-primary"
             >
               <span className="mr-3">🍎</span>
               Sign in with Apple

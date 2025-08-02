@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowLeft, ArrowRight, Camera, Upload } from "lucide-react";
+import { ArrowLeft, ArrowRight, Camera, Upload, Loader2, Wifi, Check, X } from "lucide-react";
 import { useLocation } from "wouter";
 import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
 import houseImage from "@assets/Rectangle 102_1754150724561.png";
@@ -15,6 +15,8 @@ type SetupStep = "device" | "qr-scan" | "wifi-list" | "wifi-password" | "wifi-co
 export default function SetupWizard() {
   const [, setLocation] = useLocation();
   const [currentStep, setCurrentStep] = useState<SetupStep>("device");
+  const [isVisible, setIsVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     // Home setup
     locationName: "",
@@ -38,16 +40,28 @@ export default function SetupWizard() {
     powerCommitment: "",
   });
 
-  const handleNext = () => {
+  useEffect(() => {
+    setIsVisible(false);
+    const timer = setTimeout(() => setIsVisible(true), 100);
+    return () => clearTimeout(timer);
+  }, [currentStep]);
+
+  const handleNext = async () => {
+    setIsLoading(true);
+    
+    // Simulate processing time for better UX
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
     const steps: SetupStep[] = ["device", "qr-scan", "wifi-list", "wifi-password", "wifi-connect", "device-naming", "home", "appliances", "tariff-type", "tariff-details", "bill-upload"];
     const currentIndex = steps.indexOf(currentStep);
     if (currentIndex < steps.length - 1) {
       setCurrentStep(steps[currentIndex + 1]);
     } else {
-      // Complete setup and go to home
       localStorage.setItem('setupCompleted', 'true');
       setLocation("/home");
     }
+    
+    setIsLoading(false);
   };
 
   const handleBack = () => {
@@ -103,9 +117,20 @@ export default function SetupWizard() {
         <div className="w-full space-y-3">
           <Button 
             onClick={handleNext}
-            className="w-full bg-primary hover:bg-primary/90 text-white h-12 rounded-lg"
+            disabled={isLoading}
+            className="w-full bg-primary hover:bg-primary/90 text-white h-12 rounded-lg hover:scale-105 active:scale-95 transition-all disabled:scale-100"
           >
-            Scan QR Code
+            {isLoading ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                Scanning...
+              </>
+            ) : (
+              <>
+                <Camera className="h-4 w-4 mr-2" />
+                Scan QR Code
+              </>
+            )}
           </Button>
           
           <button 
@@ -322,9 +347,20 @@ export default function SetupWizard() {
         <div className="w-full space-y-4">
           <Button 
             onClick={handleNext}
-            className="w-full bg-primary hover:bg-primary/90 text-white h-12 rounded-lg"
+            disabled={isLoading}
+            className="w-full bg-primary hover:bg-primary/90 text-white h-12 rounded-lg hover:scale-105 active:scale-95 transition-all disabled:scale-100"
           >
-            Add Device
+            {isLoading ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                Setting up...
+              </>
+            ) : (
+              <>
+                <Wifi className="h-4 w-4 mr-2" />
+                Add Device
+              </>
+            )}
           </Button>
           
           <div className="flex items-center space-x-4">
@@ -715,18 +751,20 @@ export default function SetupWizard() {
   );
 
   return (
-    <div className="min-h-screen bg-white max-w-md mx-auto">
-      {currentStep === "device" && renderDeviceSetup()}
-      {currentStep === "qr-scan" && renderQRScan()}
-      {currentStep === "wifi-list" && renderWiFiList()}
-      {currentStep === "wifi-password" && renderWiFiPassword()}
-      {currentStep === "wifi-connect" && renderWiFiConnect()}
-      {currentStep === "device-naming" && renderDeviceNaming()}
-      {currentStep === "home" && renderHomeSetup()}
-      {currentStep === "appliances" && renderAppliances()}
-      {currentStep === "tariff-type" && renderTariffType()}
-      {currentStep === "tariff-details" && renderTariffDetails()}
-      {currentStep === "bill-upload" && renderBillUpload()}
+    <div className="min-h-screen bg-gradient-to-br from-white to-primary/5 max-w-md mx-auto">
+      <div className={`transition-all duration-500 ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-4'}`}>
+        {currentStep === "device" && renderDeviceSetup()}
+        {currentStep === "qr-scan" && renderQRScan()}
+        {currentStep === "wifi-list" && renderWiFiList()}
+        {currentStep === "wifi-password" && renderWiFiPassword()}
+        {currentStep === "wifi-connect" && renderWiFiConnect()}
+        {currentStep === "device-naming" && renderDeviceNaming()}
+        {currentStep === "home" && renderHomeSetup()}
+        {currentStep === "appliances" && renderAppliances()}
+        {currentStep === "tariff-type" && renderTariffType()}
+        {currentStep === "tariff-details" && renderTariffDetails()}
+        {currentStep === "bill-upload" && renderBillUpload()}
+      </div>
     </div>
   );
 }

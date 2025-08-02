@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ArrowLeft, Eye, EyeOff } from "lucide-react";
+import { ArrowLeft, Eye, EyeOff, Loader2, Check } from "lucide-react";
 
 export default function SignUpPage() {
   const [, setLocation] = useLocation();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -19,8 +21,16 @@ export default function SignUpPage() {
     acceptMarketing: false
   });
 
-  const handleSignUp = () => {
-    // Simple demo signup - in real app would validate and create account
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
+  const handleSignUp = async () => {
+    setIsLoading(true);
+    
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
     localStorage.setItem('isLoggedIn', 'true');
     localStorage.setItem('userEmail', formData.email);
     localStorage.setItem('userName', formData.fullName);
@@ -154,9 +164,20 @@ export default function SignUpPage() {
 
           <Button
             onClick={handleSignUp}
-            className="w-full h-14 bg-primary hover:bg-primary/90 text-white rounded-xl text-lg font-semibold"
+            disabled={isLoading || !formData.acceptTerms || !formData.acceptPrivacy}
+            className="w-full h-14 bg-primary hover:bg-primary/90 text-white rounded-xl text-lg font-semibold hover:scale-105 active:scale-95 transition-all disabled:scale-100 disabled:opacity-50"
           >
-            Sign Up
+            {isLoading ? (
+              <>
+                <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                Creating Account...
+              </>
+            ) : (
+              <>
+                <Check className="h-5 w-5 mr-2" />
+                Sign Up
+              </>
+            )}
           </Button>
 
           <div className="flex items-center space-x-4">

@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -5,45 +6,60 @@ import { Progress } from "@/components/ui/progress";
 import UsageChart from "@/components/charts/usage-chart";
 import { useEnergyData } from "@/hooks/use-energy-data";
 import { mockUsageData } from "@/lib/mock-data";
-import { Zap, Home, Lightbulb, Leaf, TrendingUp, RotateCcw } from "lucide-react";
+import { Zap, Home, Lightbulb, Leaf, TrendingUp, RotateCcw, Activity, ChevronRight } from "lucide-react";
 import type { BillingData } from "@shared/schema";
 import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
 
 export default function HomePage() {
   const { billingData } = useEnergyData();
+  const [isVisible, setIsVisible] = useState(false);
+  const [pulseKey, setPulseKey] = useState(0);
   
   const progressPercentage = billingData && billingData.energyUsed ? 
     (parseFloat(billingData.energyUsed) / 383) * 100 : 28;
 
+  useEffect(() => {
+    setIsVisible(true);
+    // Pulse effect for energy data updates
+    const interval = setInterval(() => {
+      setPulseKey(prev => prev + 1);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="max-w-md mx-auto px-4 space-y-4 pb-20">
       {/* Logo Section */}
-      <div className="flex justify-center mb-4">
+      <div className={`flex justify-center mb-4 transition-all duration-1000 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
         <img 
           src={logoImage} 
           alt="e-snapp" 
-          className="h-12 w-auto"
+          className="h-12 w-auto filter drop-shadow-md hover:scale-110 transition-transform"
         />
       </div>
 
       {/* Greeting Section */}
-      <div className="mb-4">
+      <div className={`mb-4 transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         <h1 className="text-xl font-bold text-gray-800">Hello, Inayat</h1>
         <p className="text-gray-600 text-sm">Today is Tuesday, 22 July</p>
         <div className="mt-2 flex items-center space-x-2">
-          <Badge className="bg-primary text-white text-xs">1 kWh</Badge>
+          <Badge className={`bg-primary text-white text-xs animate-pulse`} key={pulseKey}>
+            <Activity className="h-3 w-3 mr-1" />
+            1 kWh
+          </Badge>
           <span className="text-xs text-gray-600">EUR</span>
         </div>
       </div>
 
       {/* Current Billing Cycle Card */}
-      <Card className="card-hover bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-100">
+      <Card className={`card-hover bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-100 transition-all duration-700 delay-300 hover:scale-105 hover:shadow-xl ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         <CardContent className="p-3">
           <div className="flex items-center justify-between mb-2">
             <h3 className="font-semibold text-gray-800 flex items-center gap-2 text-sm">
-              <RotateCcw className="h-4 w-4 text-primary" />
+              <RotateCcw className="h-4 w-4 text-primary animate-spin-slow" />
               Current Billing Cycle
             </h3>
+            <ChevronRight className="h-4 w-4 text-gray-400 hover:text-primary transition-colors" />
           </div>
           <div className="text-xs text-gray-600 mb-3 space-y-1">
             <p>{billingData?.period || "01 Jul - 31 Aug 2025"}</p>
@@ -64,16 +80,19 @@ export default function HomePage() {
       </Card>
 
       {/* Home Performance Card */}
-      <Card className="card-hover">
+      <Card className={`card-hover transition-all duration-700 delay-400 hover:scale-105 hover:shadow-xl ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         <CardContent className="p-4">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-gray-800 flex items-center gap-2">
               <Home className="h-5 w-5 text-primary" />
               Home Performance
             </h3>
-            <Badge variant="secondary" className="bg-green-100 text-green-800">
-              + 15%
-            </Badge>
+            <div className="flex items-center space-x-2">
+              <Badge variant="secondary" className="bg-green-100 text-green-800 animate-bounce">
+                + 15%
+              </Badge>
+              <ChevronRight className="h-4 w-4 text-gray-400 hover:text-primary transition-colors" />
+            </div>
           </div>
           <p className="text-sm text-gray-600 mb-4">
             64% Better than homes of similar area.

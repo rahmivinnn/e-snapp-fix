@@ -1,1 +1,1 @@
-localStorage.clear()
+localStorage.clear(); window.location.reload();

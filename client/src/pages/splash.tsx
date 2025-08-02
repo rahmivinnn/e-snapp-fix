@@ -1,13 +1,34 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
 
 export default function SplashPage() {
   const [, setLocation] = useLocation();
+  const [logoVisible, setLogoVisible] = useState(false);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      // Check if user is already logged in or setup completed
+    // Clear localStorage for fresh testing
+    localStorage.clear();
+    
+    // Animate logo entrance
+    const logoTimer = setTimeout(() => {
+      setLogoVisible(true);
+    }, 300);
+
+    // Animate progress bar
+    const progressTimer = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(progressTimer);
+          return 100;
+        }
+        return prev + 2;
+      });
+    }, 40);
+
+    // Navigate after splash
+    const navTimer = setTimeout(() => {
       const isLoggedIn = localStorage.getItem('isLoggedIn');
       const setupCompleted = localStorage.getItem('setupCompleted');
       
@@ -18,19 +39,38 @@ export default function SplashPage() {
       } else {
         setLocation("/login");
       }
-    }, 2000); // Show splash for 2 seconds
+    }, 2500);
 
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(logoTimer);
+      clearTimeout(navTimer);
+      clearInterval(progressTimer);
+    };
   }, [setLocation]);
 
   return (
-    <div className="min-h-screen bg-white max-w-md mx-auto flex items-center justify-center">
-      <div className="flex flex-col items-center">
-        <img 
-          src={logoImage} 
-          alt="e-snapp" 
-          className="h-20 w-auto"
-        />
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-primary/10 max-w-md mx-auto flex items-center justify-center">
+      <div className="flex flex-col items-center space-y-8">
+        <div className={`transform transition-all duration-1000 ${logoVisible ? 'scale-100 opacity-100 translate-y-0' : 'scale-75 opacity-0 translate-y-4'}`}>
+          <img 
+            src={logoImage} 
+            alt="e-snapp" 
+            className="h-24 w-auto filter drop-shadow-lg"
+          />
+        </div>
+        
+        {/* Loading Progress */}
+        <div className="w-48 space-y-2">
+          <div className="w-full bg-gray-200 rounded-full h-1 overflow-hidden">
+            <div 
+              className="h-full bg-primary rounded-full transition-all duration-100 ease-out"
+              style={{ width: `${progress}%` }}
+            />
+          </div>
+          <p className="text-center text-sm text-gray-600 animate-pulse">
+            Loading your energy dashboard...
+          </p>
+        </div>
       </div>
     </div>
   );
