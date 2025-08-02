@@ -17,7 +17,8 @@ import ContactSupportModal from "@/components/modals/contact-support-modal";
 import ProfileModal from "@/components/modals/profile-modal";
 import TariffModal from "@/components/modals/tariff-modal";
 import NotFound from "@/pages/not-found";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "wouter";
 
 
 
@@ -37,6 +38,8 @@ function Router() {
 }
 
 function App() {
+  const [location, setLocation] = useLocation();
+  const [hasCompletedSetup, setHasCompletedSetup] = useState(false);
   const [activeModals, setActiveModals] = useState({
     notifications: false,
     notificationSettings: false,
@@ -44,6 +47,21 @@ function App() {
     profile: false,
     tariffs: false,
   });
+
+  // Check if user has completed setup
+  useEffect(() => {
+    // Clear setup completion for testing
+    localStorage.removeItem('setupCompleted');
+    
+    const setupCompleted = localStorage.getItem('setupCompleted');
+    console.log('Setup completed:', setupCompleted, 'Current location:', location);
+    
+    if (!setupCompleted && location !== '/setup' && location !== '/') {
+      console.log('Redirecting to setup wizard');
+      setLocation('/');
+    }
+    setHasCompletedSetup(!!setupCompleted);
+  }, [location, setLocation]);
 
   const openModal = (modalName: keyof typeof activeModals) => {
     setActiveModals(prev => ({ ...prev, [modalName]: true }));
@@ -56,11 +74,8 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <div className="min-h-screen bg-background pb-20">
-          <div className="pt-4">
-            <Router />
-          </div>
-          <BottomNavigation />
+        <div className="min-h-screen bg-background">
+          <Router />
           
           {/* Modals */}
           <NotificationModal 

@@ -44,6 +44,7 @@ export default function SetupWizard() {
       setCurrentStep(steps[currentIndex + 1]);
     } else {
       // Complete setup and go to home
+      localStorage.setItem('setupCompleted', 'true');
       setLocation("/home");
     }
   };
@@ -57,6 +58,7 @@ export default function SetupWizard() {
   };
 
   const handleSkip = () => {
+    localStorage.setItem('setupCompleted', 'true');
     setLocation("/home");
   };
 
