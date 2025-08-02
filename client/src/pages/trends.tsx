@@ -74,9 +74,9 @@ export default function TrendsPage() {
       </div>
 
       {/* Time Period Selector */}
-      <Card className="bg-gradient-to-r from-blue-50 to-cyan-50">
+      <Card className="bg-white shadow-sm">
         <CardContent className="p-2">
-          <div className="flex space-x-1 overflow-x-auto">
+          <div className="flex space-x-1 overflow-x-auto bg-gray-100 rounded-full p-1">
             {[
               { id: "day", label: "Day" },
               { id: "week", label: "Week" },
@@ -88,8 +88,10 @@ export default function TrendsPage() {
                 key={id}
                 variant="ghost"
                 size="sm"
-                className={`period-btn whitespace-nowrap ${
-                  selectedPeriod === id ? "active" : ""
+                className={`whitespace-nowrap rounded-full transition-all duration-200 ${
+                  selectedPeriod === id 
+                    ? "bg-white text-gray-800 shadow-sm font-medium" 
+                    : "text-gray-600 hover:text-gray-800"
                 }`}
                 onClick={() => setSelectedPeriod(id as Period)}
               >
@@ -141,8 +143,8 @@ export default function TrendsPage() {
                       <div 
                         className={`w-8 rounded-t-lg transition-all duration-500 ${
                           isHighlighted 
-                            ? 'bg-gradient-to-t from-teal-600 to-teal-500 shadow-lg' 
-                            : 'bg-gradient-to-t from-cyan-400 to-cyan-300'
+                            ? 'bg-gradient-to-t from-teal-700 to-teal-600 shadow-lg' 
+                            : 'bg-gradient-to-t from-sky-400 to-sky-300'
                         }`}
                         style={{ height: `${height}%` }}
                       />
@@ -245,8 +247,8 @@ export default function TrendsPage() {
                     <div 
                       className={`w-4 rounded-t transition-all duration-300 ${
                         isHighlighted 
-                          ? 'bg-gradient-to-t from-teal-600 to-teal-500' 
-                          : 'bg-gradient-to-t from-cyan-400 to-cyan-300'
+                          ? 'bg-gradient-to-t from-teal-700 to-teal-600' 
+                          : 'bg-gradient-to-t from-sky-400 to-sky-300'
                       }`}
                       style={{ height: `${height}%` }}
                     />
