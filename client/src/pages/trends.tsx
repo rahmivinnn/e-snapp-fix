@@ -112,10 +112,10 @@ export default function TrendsPage() {
             </p>
           </div>
           
-          {/* Y-axis labels and chart */}
-          <div className="relative">
+          {/* Chart with Y-axis labels */}
+          <div className="flex">
             {/* Y-axis labels */}
-            <div className="absolute left-0 top-0 h-64 flex flex-col justify-between text-xs text-gray-400 -ml-8">
+            <div className="flex flex-col justify-between h-64 text-xs text-gray-400 pr-3 py-2">
               <span>25 kWh</span>
               <span>20 kWh</span>
               <span>15 kWh</span>
@@ -124,28 +124,28 @@ export default function TrendsPage() {
             </div>
             
             {/* Chart area */}
-            <div className="ml-4 h-64 relative">
+            <div className="flex-1 h-64 relative border-l border-gray-200">
               {isLoading ? (
                 <div className="flex items-center justify-center h-full">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                 </div>
               ) : (
-                <div className="flex items-end justify-center space-x-4 h-full px-4">
+                <div className="flex items-end justify-center space-x-3 h-full px-6 pb-8">
                   {chartData.data.map((value, index) => {
                     const isHighlighted = index === 3; // Thursday
-                    const height = (value / 25) * 100; // Scale to 25 kWh max
+                    const height = (value / 25) * 85; // Scale to 85% of container
                     
                     return (
-                      <div key={index} className="flex flex-col items-center space-y-3">
+                      <div key={index} className="flex flex-col items-center space-y-2">
                         <div 
-                          className={`w-10 rounded-t-xl transition-all duration-500 ${
+                          className={`w-8 rounded-t-lg transition-all duration-500 ${
                             isHighlighted 
-                              ? 'bg-gradient-to-t from-teal-800 to-teal-700 shadow-lg' 
-                              : 'bg-gradient-to-t from-sky-400 to-sky-300'
+                              ? 'bg-teal-600 shadow-lg transform scale-105' 
+                              : 'bg-sky-400'
                           }`}
-                          style={{ height: `${Math.max(height, 10)}%` }}
+                          style={{ height: `${Math.max(height, 8)}%` }}
                         />
-                        <span className="text-sm font-medium text-gray-600">
+                        <span className="text-xs font-medium text-gray-600 mt-2">
                           {chartData.labels[index]}
                         </span>
                       </div>
