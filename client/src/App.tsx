@@ -72,7 +72,10 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <div className="min-h-screen bg-background">
-          <Router />
+          <div className="pb-20">
+            <Router />
+          </div>
+          <BottomNavigation />
           
           {/* Modals */}
           <NotificationModal 

@@ -50,13 +50,13 @@ export default function TrendsPage() {
   const chartData = getChartData();
 
   return (
-    <div className="px-4 space-y-6">
+    <div className="max-w-md mx-auto px-4 space-y-4 pb-20">
       {/* Logo Section */}
-      <div className="flex justify-center mb-6">
+      <div className="flex justify-center mb-4">
         <img 
           src={logoImage} 
           alt="e-snapp" 
-          className="h-16 w-auto"
+          className="h-12 w-auto"
         />
       </div>
 

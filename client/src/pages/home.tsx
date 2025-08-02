@@ -16,41 +16,41 @@ export default function HomePage() {
     (parseFloat(billingData.energyUsed) / 383) * 100 : 28;
 
   return (
-    <div className="px-4 space-y-6">
+    <div className="max-w-md mx-auto px-4 space-y-4 pb-20">
       {/* Logo Section */}
-      <div className="flex justify-center mb-6">
+      <div className="flex justify-center mb-4">
         <img 
           src={logoImage} 
           alt="e-snapp" 
-          className="h-16 w-auto"
+          className="h-12 w-auto"
         />
       </div>
 
       {/* Greeting Section */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Hello, Inayat</h1>
-        <p className="text-gray-600">Today is Tuesday, 22 July</p>
+      <div className="mb-4">
+        <h1 className="text-xl font-bold text-gray-800">Hello, Inayat</h1>
+        <p className="text-gray-600 text-sm">Today is Tuesday, 22 July</p>
         <div className="mt-2 flex items-center space-x-2">
-          <Badge className="bg-primary text-white">1 kWh</Badge>
-          <span className="text-sm text-gray-600">EUR</span>
+          <Badge className="bg-primary text-white text-xs">1 kWh</Badge>
+          <span className="text-xs text-gray-600">EUR</span>
         </div>
       </div>
 
       {/* Current Billing Cycle Card */}
       <Card className="card-hover bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-100">
-        <CardContent className="p-4">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="font-semibold text-gray-800 flex items-center gap-2">
-              <RotateCcw className="h-5 w-5 text-primary" />
+        <CardContent className="p-3">
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="font-semibold text-gray-800 flex items-center gap-2 text-sm">
+              <RotateCcw className="h-4 w-4 text-primary" />
               Current Billing Cycle
             </h3>
           </div>
-          <div className="text-sm text-gray-600 mb-4 space-y-1">
+          <div className="text-xs text-gray-600 mb-3 space-y-1">
             <p>{billingData?.period || "01 Jul - 31 Aug 2025"}</p>
             <p>45 Days Remaining</p>
           </div>
           <div className="flex justify-between items-center mb-2">
-            <div className="bg-primary text-white px-3 py-2 rounded-lg text-sm font-medium text-center">
+            <div className="bg-primary text-white px-2 py-1 rounded-lg text-xs font-medium text-center">
               <div>{billingData?.energyUsed || "109"} kWh</div>
               <div className="text-xs opacity-90">Current</div>
             </div>

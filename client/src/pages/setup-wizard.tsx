@@ -76,23 +76,23 @@ export default function SetupWizard() {
   };
 
   const renderQRScan = () => (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-screen">
       <div className="flex items-center justify-between p-4 border-b">
         <ArrowLeft className="h-6 w-6 text-gray-600 cursor-pointer" onClick={handleBack} />
         <h1 className="text-lg font-semibold text-gray-800">Device Setup Wizard</h1>
         <div></div>
       </div>
       
-      <div className="flex-1 flex flex-col justify-center items-center px-6 space-y-8">
+      <div className="flex-1 flex flex-col justify-center items-center px-4 py-4 space-y-4">
         <div className="text-center space-y-2">
-          <h2 className="text-xl font-semibold">Pair your Smart Energy Meter</h2>
-          <p className="text-gray-600">Use your phone camera to scan the QR code on</p>
-          <p className="text-gray-600">the back of your device.</p>
+          <h2 className="text-lg font-semibold">Pair your Smart Energy Meter</h2>
+          <p className="text-gray-600 text-sm">Use your phone camera to scan the QR code on</p>
+          <p className="text-gray-600 text-sm">the back of your device.</p>
         </div>
         
-        <div className="w-64 h-64 bg-gray-200 rounded-lg flex items-center justify-center relative">
-          <div className="w-48 h-48 border-2 border-white bg-white rounded-lg flex items-center justify-center">
-            <div className="w-40 h-40 bg-black grid grid-cols-8 gap-px">
+        <div className="w-48 h-48 bg-gray-200 rounded-lg flex items-center justify-center relative">
+          <div className="w-40 h-40 border-2 border-white bg-white rounded-lg flex items-center justify-center">
+            <div className="w-32 h-32 bg-black grid grid-cols-8 gap-px">
               {Array.from({length: 64}).map((_, i) => (
                 <div key={i} className={`${Math.random() > 0.5 ? 'bg-black' : 'bg-white'}`}></div>
               ))}
@@ -100,7 +100,7 @@ export default function SetupWizard() {
           </div>
         </div>
         
-        <div className="w-full space-y-4">
+        <div className="w-full space-y-3">
           <Button 
             onClick={handleNext}
             className="w-full bg-primary hover:bg-primary/90 text-white h-12 rounded-lg"
@@ -110,17 +110,17 @@ export default function SetupWizard() {
           
           <button 
             onClick={handleNext}
-            className="w-full text-gray-500 text-center py-4"
+            className="w-full text-gray-500 text-center py-3"
           >
             Enter Code Manually
           </button>
         </div>
       </div>
       
-      <div className="p-6">
+      <div className="p-4">
         <button 
           onClick={handleSkip}
-          className="w-full text-gray-500 text-center py-4"
+          className="w-full text-gray-500 text-center py-3"
         >
           Skip for now
         </button>
@@ -304,19 +304,19 @@ export default function SetupWizard() {
   );
 
   const renderDeviceSetup = () => (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-screen">
       <div className="flex items-center justify-between p-4 border-b">
         <ArrowLeft className="h-6 w-6 text-gray-600 cursor-pointer" onClick={handleBack} />
         <h1 className="text-lg font-semibold text-gray-800">Device Setup Wizard</h1>
         <div></div>
       </div>
       
-      <div className="flex-1 flex flex-col justify-center items-center px-6 space-y-8">
-        <img src={logoImage} alt="e-snapp" className="h-20 w-auto" />
+      <div className="flex-1 flex flex-col justify-center items-center px-4 py-4 space-y-6">
+        <img src={logoImage} alt="e-snapp" className="h-16 w-auto" />
         
         <div className="text-center space-y-2">
-          <p className="text-gray-600">Connect to a device or buy device if you don't</p>
-          <p className="text-gray-600">have the device.</p>
+          <p className="text-gray-600 text-sm">Connect to a device or buy device if you don't</p>
+          <p className="text-gray-600 text-sm">have the device.</p>
         </div>
         
         <div className="w-full space-y-4">
@@ -333,8 +333,8 @@ export default function SetupWizard() {
             <div className="flex-1 h-px bg-gray-300"></div>
           </div>
           
-          <div className="text-center space-y-4">
-            <p className="text-gray-600">If you don't have the device yet</p>
+          <div className="text-center space-y-3">
+            <p className="text-gray-600 text-sm">If you don't have the device yet</p>
             <Button 
               onClick={handleNext}
               variant="outline" 
@@ -346,10 +346,10 @@ export default function SetupWizard() {
         </div>
       </div>
       
-      <div className="p-6">
+      <div className="p-4">
         <button 
           onClick={handleSkip}
-          className="w-full text-gray-500 text-center py-4"
+          className="w-full text-gray-500 text-center py-3"
         >
           Skip for now
         </button>
@@ -358,19 +358,19 @@ export default function SetupWizard() {
   );
 
   const renderHomeSetup = () => (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-screen">
       <div className="flex items-center justify-between p-4 border-b">
         <ArrowLeft className="h-6 w-6 text-gray-600 cursor-pointer" onClick={handleBack} />
         <div></div>
         <div></div>
       </div>
       
-      <div className="flex-1 px-6 pt-4">
-        <div className="mb-6 rounded-lg h-48 overflow-hidden">
+      <div className="flex-1 px-4 pt-4 overflow-y-auto">
+        <div className="mb-4 rounded-lg h-32 overflow-hidden">
           <img src={houseImage} alt="Modern House" className="w-full h-full object-cover rounded-lg" />
         </div>
         
-        <h2 className="text-xl font-bold text-gray-800 mb-6">Let's set up your Home</h2>
+        <h2 className="text-lg font-bold text-gray-800 mb-4">Let's set up your Home</h2>
         
         <div className="space-y-4">
           <div>
@@ -715,7 +715,7 @@ export default function SetupWizard() {
   );
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white max-w-md mx-auto">
       {currentStep === "device" && renderDeviceSetup()}
       {currentStep === "qr-scan" && renderQRScan()}
       {currentStep === "wifi-list" && renderWiFiList()}
@@ -726,7 +726,6 @@ export default function SetupWizard() {
       {currentStep === "appliances" && renderAppliances()}
       {currentStep === "tariff-type" && renderTariffType()}
       {currentStep === "tariff-details" && renderTariffDetails()}
-
       {currentStep === "bill-upload" && renderBillUpload()}
     </div>
   );
