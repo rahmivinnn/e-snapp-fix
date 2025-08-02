@@ -41,29 +41,29 @@ export default function TrendsPage() {
   const chartData = getChartData();
 
   return (
-    <div className="max-w-md mx-auto px-3 space-y-3 pb-20 min-h-screen">
+    <div className="max-w-md mx-auto px-2 space-y-2 pb-16 min-h-screen">
       {/* Logo Section */}
-      <div className="flex justify-center mb-2 pt-2">
+      <div className="flex justify-center mb-1 pt-1">
         <img 
           src={logoImage} 
           alt="e-snapp" 
-          className="h-10 w-auto"
+          className="h-8 w-auto"
         />
       </div>
 
       {/* Header */}
-      <div className="flex items-center justify-between mb-2">
-        <h1 className="text-xl font-bold text-gray-800">Energy Consumption</h1>
+      <div className="flex items-center justify-between mb-1">
+        <h1 className="text-lg font-bold text-gray-800">Energy Consumption</h1>
         <div className="flex items-center space-x-1">
-          <span className="bg-primary text-white px-2 py-1 rounded-full text-xs font-medium">1 kWh</span>
+          <span className="bg-primary text-white px-1.5 py-0.5 rounded-full text-xs font-medium">1 kWh</span>
           <span className="text-xs text-gray-600">EUR</span>
         </div>
       </div>
 
       {/* Time Period Selector */}
       <Card className="bg-white shadow-sm">
-        <CardContent className="p-2">
-          <div className="flex space-x-1 overflow-x-auto bg-gray-100 rounded-full p-1">
+        <CardContent className="p-1.5">
+          <div className="flex space-x-0.5 overflow-x-auto bg-gray-100 rounded-full p-0.5">
             {[
               { id: "day", label: "Day" },
               { id: "week", label: "Week" },
@@ -89,13 +89,13 @@ export default function TrendsPage() {
         </CardContent>
       </Card>
 
-      {/* Main Chart Card - Mobile Optimized */}
+      {/* Main Chart Card - Ultra Mobile Optimized */}
       <Card className={`bg-white shadow-lg transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        <CardContent className="p-4">
+        <CardContent className="p-2">
           {/* Chart Header */}
-          <div className="text-center mb-4">
-            <p className="text-sm text-gray-500 mb-1">{getCurrentDateLabel()}</p>
-            <p className="text-2xl font-bold text-gray-800">
+          <div className="text-center mb-2">
+            <p className="text-xs text-gray-500 mb-0.5">{getCurrentDateLabel()}</p>
+            <p className="text-lg font-bold text-gray-800">
               {getCurrentConsumption().toFixed(1)} kWh
             </p>
           </div>
@@ -103,7 +103,7 @@ export default function TrendsPage() {
           {/* Chart with Y-axis labels */}
           <div className="flex">
             {/* Y-axis labels */}
-            <div className="flex flex-col justify-between h-48 text-xs text-gray-400 pr-2 py-1">
+            <div className="flex flex-col justify-between h-32 text-xs text-gray-400 pr-1.5 py-0.5">
               <span>25</span>
               <span>20</span>
               <span>15</span>
@@ -112,16 +112,16 @@ export default function TrendsPage() {
             </div>
             
             {/* Chart area */}
-            <div className="flex-1 h-48 relative border-l border-gray-200">
+            <div className="flex-1 h-32 relative border-l border-gray-200">
               {isLoading ? (
                 <div className="flex items-center justify-center h-full">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                 </div>
               ) : (
-                <div className="flex items-end justify-center space-x-2 h-full px-3">
+                <div className="flex items-end justify-center space-x-1.5 h-full px-2">
                   {chartData.data.map((value, index) => {
                     const isHighlighted = index === 3; // Thursday
-                    const heightPx = Math.max((value / 25) * 160, 16); // Scale to smaller pixels for mobile
+                    const heightPx = Math.max((value / 25) * 100, 12); // Scale to ultra small for mobile
                     
                     return (
                       <div 
@@ -133,14 +133,14 @@ export default function TrendsPage() {
                         }}
                       >
                         <div 
-                          className={`w-6 rounded-t-lg transition-all duration-500 transform group-hover:scale-110 group-hover:shadow-xl ${
+                          className={`w-5 rounded-t-lg transition-all duration-500 transform group-hover:scale-110 group-hover:shadow-xl ${
                             isHighlighted 
                               ? 'bg-gradient-to-t from-teal-700 to-teal-500 shadow-lg animate-pulse' 
                               : 'bg-gradient-to-t from-sky-500 to-sky-300 group-hover:from-sky-600 group-hover:to-sky-400'
                           }`}
                           style={{ 
                             height: `${heightPx}px`,
-                            minHeight: '16px',
+                            minHeight: '12px',
                             animationDelay: `${index * 150}ms`,
                             animation: `growUp 1s ease-out ${index * 150}ms forwards`,
                             transform: `scaleY(0)`,
