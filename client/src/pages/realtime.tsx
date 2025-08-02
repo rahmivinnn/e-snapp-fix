@@ -14,13 +14,13 @@ export default function RealtimePage() {
   }, []);
 
   return (
-    <div className="max-w-md mx-auto px-4 space-y-4 pb-20">
+    <div className="max-w-md mx-auto px-3 space-y-3 pb-20 min-h-screen">
       {/* Header with Logo and Actions */}
-      <div className={`flex items-center justify-between mb-4 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+      <div className={`flex items-center justify-between mb-2 pt-2 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         <img 
           src={logoImage} 
           alt="e-snapp" 
-          className="h-10 w-auto"
+          className="h-8 w-auto"
         />
         <div className="flex items-center space-x-3">
           <Bell className="h-6 w-6 text-gray-600 hover:text-primary transition-colors cursor-pointer" />
@@ -31,12 +31,12 @@ export default function RealtimePage() {
       </div>
 
       {/* Live Power Usage Title */}
-      <h1 className={`text-xl font-bold text-gray-800 mb-4 transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+      <h1 className={`text-lg font-bold text-gray-800 mb-2 transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         Live Power Usage
       </h1>
 
       {/* House Video Card */}
-      <Card className={`relative overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 transition-all duration-700 delay-300 hover:scale-105 hover:shadow-xl ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ height: "320px" }}>
+      <Card className={`relative overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 transition-all duration-700 delay-300 hover:scale-105 hover:shadow-xl ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ height: "240px" }}>
         <CardContent className="p-0 h-full">
           <div className="relative h-full rounded-lg overflow-hidden">
             {/* Video Background - Clean, no overlays */}
@@ -53,7 +53,7 @@ export default function RealtimePage() {
 
       {/* Live Usage Card */}
       <Card className={`bg-gradient-to-br from-green-50 to-emerald-50 border-green-100 transition-all duration-700 delay-400 hover:scale-105 hover:shadow-xl ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        <CardContent className="p-4">
+        <CardContent className="p-3">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-semibold text-gray-800 flex items-center gap-2">
               <Zap className="h-5 w-5 text-primary animate-pulse" />
@@ -61,15 +61,15 @@ export default function RealtimePage() {
             </h3>
           </div>
           
-          <div className="text-center mb-4">
-            <div className="text-3xl font-bold text-gray-800 animate-pulse" key={currentPower}>
+          <div className="text-center mb-3">
+            <div className="text-2xl font-bold text-gray-800 animate-pulse" key={currentPower}>
               {currentPower || "245"} W
             </div>
             <p className="text-xs text-gray-600">Updated just now</p>
           </div>
           
           {/* Animated Wave Chart */}
-          <div className="h-20 bg-white/50 rounded-lg flex items-end justify-center overflow-hidden relative">
+          <div className="h-16 bg-white/50 rounded-lg flex items-end justify-center overflow-hidden relative">
             <svg viewBox="0 0 400 80" className="w-full h-full">
               <path
                 d="M0,40 Q50,20 100,40 T200,40 T300,40 T400,40"

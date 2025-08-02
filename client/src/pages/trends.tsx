@@ -41,22 +41,22 @@ export default function TrendsPage() {
   const chartData = getChartData();
 
   return (
-    <div className="max-w-md mx-auto px-4 space-y-4 pb-20">
+    <div className="max-w-md mx-auto px-3 space-y-3 pb-20 min-h-screen">
       {/* Logo Section */}
-      <div className="flex justify-center mb-4">
+      <div className="flex justify-center mb-2 pt-2">
         <img 
           src={logoImage} 
           alt="e-snapp" 
-          className="h-12 w-auto"
+          className="h-10 w-auto"
         />
       </div>
 
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-gray-800">Energy Consumption</h1>
-        <div className="flex items-center space-x-2">
+      <div className="flex items-center justify-between mb-2">
+        <h1 className="text-xl font-bold text-gray-800">Energy Consumption</h1>
+        <div className="flex items-center space-x-1">
           <span className="bg-primary text-white px-2 py-1 rounded-full text-xs font-medium">1 kWh</span>
-          <span className="text-sm text-gray-600">EUR</span>
+          <span className="text-xs text-gray-600">EUR</span>
         </div>
       </div>
 
@@ -89,13 +89,13 @@ export default function TrendsPage() {
         </CardContent>
       </Card>
 
-      {/* Main Chart Card - Exactly like reference */}
+      {/* Main Chart Card - Mobile Optimized */}
       <Card className={`bg-white shadow-lg transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        <CardContent className="p-6">
+        <CardContent className="p-4">
           {/* Chart Header */}
-          <div className="text-center mb-6">
+          <div className="text-center mb-4">
             <p className="text-sm text-gray-500 mb-1">{getCurrentDateLabel()}</p>
-            <p className="text-3xl font-bold text-gray-800">
+            <p className="text-2xl font-bold text-gray-800">
               {getCurrentConsumption().toFixed(1)} kWh
             </p>
           </div>
@@ -103,25 +103,25 @@ export default function TrendsPage() {
           {/* Chart with Y-axis labels */}
           <div className="flex">
             {/* Y-axis labels */}
-            <div className="flex flex-col justify-between h-64 text-xs text-gray-400 pr-3 py-2">
-              <span>25 kWh</span>
-              <span>20 kWh</span>
-              <span>15 kWh</span>
-              <span>10 kWh</span>
-              <span>5 kWh</span>
+            <div className="flex flex-col justify-between h-48 text-xs text-gray-400 pr-2 py-1">
+              <span>25</span>
+              <span>20</span>
+              <span>15</span>
+              <span>10</span>
+              <span>5</span>
             </div>
             
             {/* Chart area */}
-            <div className="flex-1 h-64 relative border-l border-gray-200">
+            <div className="flex-1 h-48 relative border-l border-gray-200">
               {isLoading ? (
                 <div className="flex items-center justify-center h-full">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                 </div>
               ) : (
-                <div className="flex items-end justify-center space-x-3 h-full px-6">
+                <div className="flex items-end justify-center space-x-2 h-full px-3">
                   {chartData.data.map((value, index) => {
                     const isHighlighted = index === 3; // Thursday
-                    const heightPx = Math.max((value / 25) * 200, 20); // Scale to pixels, min 20px
+                    const heightPx = Math.max((value / 25) * 160, 16); // Scale to smaller pixels for mobile
                     
                     return (
                       <div 
@@ -133,14 +133,14 @@ export default function TrendsPage() {
                         }}
                       >
                         <div 
-                          className={`w-8 rounded-t-lg transition-all duration-500 transform group-hover:scale-110 group-hover:shadow-xl ${
+                          className={`w-6 rounded-t-lg transition-all duration-500 transform group-hover:scale-110 group-hover:shadow-xl ${
                             isHighlighted 
                               ? 'bg-gradient-to-t from-teal-700 to-teal-500 shadow-lg animate-pulse' 
                               : 'bg-gradient-to-t from-sky-500 to-sky-300 group-hover:from-sky-600 group-hover:to-sky-400'
                           }`}
                           style={{ 
                             height: `${heightPx}px`,
-                            minHeight: '20px',
+                            minHeight: '16px',
                             animationDelay: `${index * 150}ms`,
                             animation: `growUp 1s ease-out ${index * 150}ms forwards`,
                             transform: `scaleY(0)`,
@@ -154,8 +154,8 @@ export default function TrendsPage() {
                         </span>
                         
                         {/* Hover tooltip */}
-                        <div className="absolute -top-8 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
-                          {value.toFixed(1)} kWh
+                        <div className="absolute -top-6 bg-gray-800 text-white text-xs px-1 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
+                          {value.toFixed(1)}
                         </div>
                       </div>
                     );

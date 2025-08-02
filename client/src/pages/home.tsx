@@ -28,19 +28,19 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="max-w-md mx-auto px-4 space-y-4 pb-20">
+    <div className="max-w-md mx-auto px-3 space-y-3 pb-20 min-h-screen">
       {/* Logo Section */}
-      <div className={`flex justify-center mb-4 transition-all duration-1000 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+      <div className={`flex justify-center mb-2 pt-2 transition-all duration-1000 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
         <img 
           src={logoImage} 
           alt="e-snapp" 
-          className="h-12 w-auto filter drop-shadow-md hover:scale-110 transition-transform"
+          className="h-10 w-auto filter drop-shadow-md hover:scale-110 transition-transform"
         />
       </div>
 
       {/* Greeting Section */}
-      <div className={`mb-4 transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        <h1 className="text-xl font-bold text-gray-800">Hello, Inayat</h1>
+      <div className={`mb-3 transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        <h1 className="text-lg font-bold text-gray-800">Hello, Inayat</h1>
         <p className="text-gray-600 text-sm">Today is Tuesday, 22 July</p>
         <div className="mt-2 flex items-center space-x-2">
           <Badge className={`bg-primary text-white text-xs animate-pulse`} key={pulseKey}>
