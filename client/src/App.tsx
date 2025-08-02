@@ -49,7 +49,6 @@ function Router() {
 }
 
 function App() {
-  const [location, setLocation] = useLocation();
   const [hasCompletedSetup, setHasCompletedSetup] = useState(false);
   const [activeModals, setActiveModals] = useState({
     notifications: false,
@@ -59,43 +58,11 @@ function App() {
     tariffs: false,
   });
 
-  // Check authentication and setup flow
+  // Simple setup check for bottom navigation
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-    const onboardingCompleted = localStorage.getItem('onboardingCompleted');
     const setupCompleted = localStorage.getItem('setupCompleted');
-    
-    console.log('Auth state:', { isLoggedIn, onboardingCompleted, setupCompleted, location });
-    
-    // Skip redirects for specific paths
-    const skipPaths = ['/splash', '/login', '/signup', '/onboarding', '/setup-wizard'];
-    if (skipPaths.includes(location)) {
-      return;
-    }
-    
-    // Always show splash first, then check login state
-    if (location === '/') {
-      setLocation('/splash');
-      return;
-    }
-    
-    // Don't redirect if already on splash or auth pages
-    if (['/splash', '/login', '/signup'].includes(location)) {
-      return;
-    }
-    
-    if (!isLoggedIn) {
-      setLocation('/login');
-    } else if (!onboardingCompleted) {
-      setLocation('/onboarding');
-    } else if (!setupCompleted) {
-      setLocation('/setup-wizard');
-    } else {
-      setLocation('/home');
-    }
-    
     setHasCompletedSetup(!!setupCompleted);
-  }, [location, setLocation]);
+  }, []);
 
   const openModal = (modalName: keyof typeof activeModals) => {
     setActiveModals(prev => ({ ...prev, [modalName]: true }));
