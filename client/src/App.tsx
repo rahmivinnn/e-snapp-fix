@@ -18,19 +18,7 @@ import TariffModal from "@/components/modals/tariff-modal";
 import NotFound from "@/pages/not-found";
 import { useState } from "react";
 
-// Status bar component
-function StatusBar() {
-  return (
-    <div className="fixed top-0 left-0 right-0 bg-white z-50 px-4 py-2 flex justify-between items-center text-sm font-medium">
-      <span>8:45</span>
-      <div className="flex items-center space-x-1">
-        <i className="fas fa-signal text-xs"></i>
-        <i className="fas fa-wifi text-xs"></i>
-        <div className="bg-black text-white px-1 rounded-sm text-xs">100</div>
-      </div>
-    </div>
-  );
-}
+
 
 function Router() {
   return (
@@ -66,7 +54,6 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <div className="min-h-screen bg-background pb-20">
-          <StatusBar />
           <div className="pt-4">
             <Router />
           </div>

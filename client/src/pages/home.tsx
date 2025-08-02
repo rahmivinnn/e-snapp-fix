@@ -19,7 +19,7 @@ export default function HomePage() {
       {/* Logo Section */}
       <div className="flex justify-center mb-6">
         <img 
-          src="@assets/e snapp logo 1 (1)_1754147457582.png" 
+          src="@assets/e snapp logo 1 (1)_1754149374420.png" 
           alt="e-snapp" 
           className="h-16 w-auto"
         />
