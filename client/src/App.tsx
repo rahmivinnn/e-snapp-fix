@@ -21,7 +21,7 @@ import NotificationSettingsModal from "@/components/modals/notification-settings
 import ContactSupportModal from "@/components/modals/contact-support-modal";
 import ProfileModal from "@/components/modals/profile-modal";
 import TariffModal from "@/components/modals/tariff-modal";
-import PWAInstallButton from "@/components/pwa-install-button";
+
 import NotFound from "@/pages/not-found";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
@@ -102,9 +102,6 @@ function App() {
             <Router />
           </div>
           {hasCompletedSetup && <BottomNavigation />}
-          
-          {/* PWA Install Button */}
-          <PWAInstallButton />
           
           {/* Modals */}
           <NotificationModal 
