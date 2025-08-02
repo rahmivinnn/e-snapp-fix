@@ -54,6 +54,9 @@ export default function SetupWizard() {
     const currentIndex = steps.indexOf(currentStep);
     if (currentIndex > 0) {
       setCurrentStep(steps[currentIndex - 1]);
+    } else {
+      // If on first step, do nothing or could close setup
+      console.log("Already on first step");
     }
   };
 
@@ -74,7 +77,7 @@ export default function SetupWizard() {
   const renderDeviceSetup = () => (
     <div className="flex flex-col h-full">
       <div className="flex items-center justify-between p-4 border-b">
-        <ArrowLeft className="h-6 w-6 text-gray-600" onClick={handleBack} />
+        <ArrowLeft className="h-6 w-6 text-gray-600 cursor-pointer" onClick={handleBack} />
         <h1 className="text-lg font-semibold text-gray-800">Device Setup Wizard</h1>
         <div></div>
       </div>
@@ -88,7 +91,10 @@ export default function SetupWizard() {
         </div>
         
         <div className="w-full space-y-4">
-          <Button className="w-full bg-primary hover:bg-primary/90 text-white h-12 rounded-lg">
+          <Button 
+            onClick={handleNext}
+            className="w-full bg-primary hover:bg-primary/90 text-white h-12 rounded-lg"
+          >
             Add Device
           </Button>
           
@@ -100,7 +106,11 @@ export default function SetupWizard() {
           
           <div className="text-center space-y-4">
             <p className="text-gray-600">If you don't have the device yet</p>
-            <Button variant="outline" className="w-full h-12 rounded-lg border-gray-300">
+            <Button 
+              onClick={handleNext}
+              variant="outline" 
+              className="w-full h-12 rounded-lg border-gray-300"
+            >
               Buy it now
             </Button>
           </div>
