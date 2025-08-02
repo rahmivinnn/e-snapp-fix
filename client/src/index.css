@@ -1,0 +1,153 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(199, 100%, 99%);
+  --foreground: hsl(199, 14%, 15%);
+  --muted: hsl(199, 30%, 96%);
+  --muted-foreground: hsl(199, 5%, 45%);
+  --popover: hsl(199, 100%, 99%);
+  --popover-foreground: hsl(199, 14%, 15%);
+  --card: hsl(199, 100%, 99%);
+  --card-foreground: hsl(199, 14%, 15%);
+  --border: hsl(199, 20%, 90%);
+  --input: hsl(199, 20%, 90%);
+  --primary: hsl(180, 51%, 37%);
+  --primary-foreground: hsl(199, 100%, 99%);
+  --primary-light: hsl(185, 84%, 90%);
+  --secondary: hsl(199, 30%, 96%);
+  --secondary-foreground: hsl(199, 9%, 15%);
+  --accent: hsl(14, 100%, 64%);
+  --accent-foreground: hsl(199, 100%, 99%);
+  --destructive: hsl(0, 84%, 60%);
+  --destructive-foreground: hsl(60, 9%, 98%);
+  --ring: hsl(180, 51%, 37%);
+  --radius: 0.75rem;
+  --chart-1: hsl(14, 100%, 64%);
+  --chart-2: hsl(214, 100%, 59%);
+  --chart-3: hsl(142, 76%, 36%);
+  --chart-4: hsl(220, 14%, 56%);
+  --chart-5: hsl(52, 98%, 60%);
+}
+
+.dark {
+  --background: hsl(199, 30%, 4%);
+  --foreground: hsl(199, 5%, 90%);
+  --muted: hsl(199, 30%, 8%);
+  --muted-foreground: hsl(199, 5%, 60%);
+  --popover: hsl(199, 30%, 4%);
+  --popover-foreground: hsl(199, 5%, 90%);
+  --card: hsl(199, 30%, 4%);
+  --card-foreground: hsl(199, 5%, 90%);
+  --border: hsl(199, 30%, 18%);
+  --input: hsl(199, 30%, 18%);
+  --primary: hsl(180, 51%, 37%);
+  --primary-foreground: hsl(199, 100%, 99%);
+  --primary-light: hsl(185, 84%, 15%);
+  --secondary: hsl(199, 30%, 8%);
+  --secondary-foreground: hsl(199, 5%, 90%);
+  --accent: hsl(14, 100%, 64%);
+  --accent-foreground: hsl(199, 100%, 99%);
+  --destructive: hsl(0, 62%, 30%);
+  --destructive-foreground: hsl(0, 85%, 97%);
+  --ring: hsl(180, 51%, 37%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+@layer utilities {
+  .card-hover {
+    @apply transition-all duration-200 ease-in-out hover:scale-[1.02] hover:shadow-lg;
+  }
+
+  .primary-gradient {
+    background: linear-gradient(135deg, hsl(var(--primary-light)) 0%, hsl(var(--primary)) 100%);
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-float:nth-child(odd) {
+    animation-delay: -1.5s;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+}
+
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px); 
+  }
+  50% { 
+    transform: translateY(-10px); 
+  }
+}
+
+.house-diagram {
+  background: linear-gradient(135deg, hsl(var(--primary-light)) 0%, hsl(185, 84%, 80%) 100%);
+}
+
+.power-bubble {
+  @apply animate-float;
+}
+
+.tab-button {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+.tab-button.active {
+  @apply text-primary -translate-y-0.5;
+}
+
+.period-btn {
+  @apply transition-all duration-200 ease-in-out;
+}
+
+.period-btn.active {
+  @apply bg-white text-primary shadow-sm;
+}
+
+.period-btn:not(.active) {
+  @apply text-gray-600 hover:text-gray-800;
+}
+
+.progress-bar {
+  @apply transition-all duration-700 ease-in-out;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary));
+}
+
+/* Modal backdrop blur */
+.modal-backdrop {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
