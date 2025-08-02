@@ -23,6 +23,7 @@ import ProfileModal from "@/components/modals/profile-modal";
 import TariffModal from "@/components/modals/tariff-modal";
 
 import NotFound from "@/pages/not-found";
+import { AppResetter } from "@/components/AppResetter";
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 
@@ -73,8 +74,8 @@ function App() {
       return;
     }
     
-    // Always start with splash screen for new sessions
-    if (location === '/' && !sessionStorage.getItem('splashShown')) {
+    // Force splash screen on root path
+    if (location === '/') {
       setLocation('/splash');
       return;
     }
@@ -103,6 +104,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <AppResetter />
         <div className="min-h-screen bg-background">
           <div className={hasCompletedSetup ? "pb-20" : ""}>
             <Router />
