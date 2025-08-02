@@ -7,8 +7,11 @@ import { insertEnergyDataSchema, insertNotificationSchema } from "@shared/schema
 export async function registerRoutes(app: Express): Promise<Server> {
   const httpServer = createServer(app);
   
-  // WebSocket server for real-time data
-  const wss = new WebSocketServer({ server: httpServer });
+  // WebSocket server for real-time data on a different path to avoid conflicts
+  const wss = new WebSocketServer({ 
+    server: httpServer,
+    path: '/energy-ws' // Use a specific path to avoid conflicts with Vite HMR
+  });
   
   // Simulate real-time energy data updates
   setInterval(() => {

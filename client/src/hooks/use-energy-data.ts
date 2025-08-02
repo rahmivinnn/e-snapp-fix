@@ -34,9 +34,9 @@ export function useRealtimeData() {
     const initialData = Array(20).fill(0).map(() => Math.random() * 100 + 200);
     setRealtimeData(initialData);
 
-    // Try to connect to WebSocket
+    // Try to connect to WebSocket on the specific energy data path
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const wsUrl = `${protocol}//${window.location.host}`;
+    const wsUrl = `${protocol}//${window.location.host}/energy-ws`;
     
     try {
       const ws = new WebSocket(wsUrl);

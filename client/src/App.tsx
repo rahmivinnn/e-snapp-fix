@@ -76,7 +76,6 @@ function App() {
           <NotificationModal 
             isOpen={activeModals.notifications}
             onClose={() => closeModal('notifications')}
-            onOpen={() => openModal('notifications')}
           />
           <NotificationSettingsModal
             isOpen={activeModals.notificationSettings}

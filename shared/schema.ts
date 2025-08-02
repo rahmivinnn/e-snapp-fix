@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import { pgTable, text, varchar, integer, decimal, timestamp, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, varchar, integer, timestamp, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -16,23 +16,23 @@ export const energyData = pgTable("energy_data", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   userId: varchar("user_id").notNull().references(() => users.id),
   timestamp: timestamp("timestamp").defaultNow(),
-  activePower: decimal("active_power", { precision: 10, scale: 2 }),
-  reactivePower: decimal("reactive_power", { precision: 10, scale: 2 }),
-  voltage: decimal("voltage", { precision: 10, scale: 2 }),
-  powerFactor: decimal("power_factor", { precision: 5, scale: 2 }),
-  consumption: decimal("consumption", { precision: 10, scale: 2 }),
+  activePower: text("active_power"),
+  reactivePower: text("reactive_power"),
+  voltage: text("voltage"),
+  powerFactor: text("power_factor"),
+  consumption: text("consumption"),
 });
 
 export const billingData = pgTable("billing_data", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   userId: varchar("user_id").notNull().references(() => users.id),
   period: text("period").notNull(),
-  currentBill: decimal("current_bill", { precision: 10, scale: 2 }),
-  energyUsed: decimal("energy_used", { precision: 10, scale: 2 }),
+  currentBill: text("current_bill"),
+  energyUsed: text("energy_used"),
   contract: text("contract"),
-  estimatedFinalBill: decimal("estimated_final_bill", { precision: 10, scale: 2 }),
-  co2Emitted: decimal("co2_emitted", { precision: 10, scale: 2 }),
-  co2Avoided: decimal("co2_avoided", { precision: 10, scale: 2 }),
+  estimatedFinalBill: text("estimated_final_bill"),
+  co2Emitted: text("co2_emitted"),
+  co2Avoided: text("co2_avoided"),
 });
 
 export const notifications = pgTable("notifications", {

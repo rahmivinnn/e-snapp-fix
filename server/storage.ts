@@ -176,12 +176,12 @@ export class MemStorage implements IStorage {
     const billing: BillingData = { 
       ...data, 
       id,
-      currentBill: data.currentBill || null,
-      energyUsed: data.energyUsed || null,
-      contract: data.contract || null,
-      estimatedFinalBill: data.estimatedFinalBill || null,
-      co2Emitted: data.co2Emitted || null,
-      co2Avoided: data.co2Avoided || null,
+      currentBill: data.currentBill || "0.00",
+      energyUsed: data.energyUsed || "0.00",
+      contract: data.contract || "Standard",
+      estimatedFinalBill: data.estimatedFinalBill || "0.00",
+      co2Emitted: data.co2Emitted || "0.00",
+      co2Avoided: data.co2Avoided || "0.00",
     };
     this.billingData.set(data.userId, billing);
     return billing;
