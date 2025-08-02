@@ -37,62 +37,16 @@ export default function RealtimePage() {
 
       {/* House Video Card */}
       <Card className={`relative overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 transition-all duration-700 delay-300 hover:scale-105 hover:shadow-xl ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ height: "320px" }}>
-        <CardContent className="p-4 h-full">
-          <div className="relative h-full bg-blue-100 rounded-lg overflow-hidden">
-            {/* Video Background */}
+        <CardContent className="p-0 h-full">
+          <div className="relative h-full rounded-lg overflow-hidden">
+            {/* Video Background - Clean, no overlays */}
             <video 
               src={houseVideo}
               autoPlay 
               loop 
               muted 
-              className="absolute inset-0 w-full h-full object-cover opacity-70"
+              className="w-full h-full object-cover"
             />
-            
-            {/* Energy Data Overlays */}
-            <div className="absolute inset-0">
-              {/* Sun Icon and Solar Production */}
-              <div className="absolute top-4 left-4 flex items-center animate-pulse">
-                <Sun className="h-6 w-6 text-yellow-500 mr-2 animate-spin-slow" />
-                <div className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-lg text-xs font-semibold shadow-lg">
-                  <div className="text-gray-600">Produzione solare:</div>
-                  <div className="text-primary font-bold">10 W</div>
-                </div>
-              </div>
-              
-              {/* House Consumption */}
-              <div className="absolute top-4 right-4">
-                <div className="bg-red-100/90 backdrop-blur-sm border border-red-300 px-3 py-1 rounded-lg text-xs shadow-lg">
-                  <div className="text-red-600">Consumo casa:</div>
-                  <div className="text-red-700 font-bold text-lg">1,75 kW</div>
-                </div>
-              </div>
-              
-              {/* EV Charging */}
-              <div className="absolute bottom-20 left-4 flex items-center">
-                <Car className="h-6 w-6 text-blue-600 mr-2 animate-bounce" />
-                <div className="bg-white/90 backdrop-blur-sm px-3 py-1 rounded-lg text-xs font-semibold shadow-lg">
-                  <div className="text-orange-600">Ricarica EV:</div>
-                  <div className="text-orange-700 font-bold">8,0 kW</div>
-                </div>
-              </div>
-              
-              {/* Battery */}
-              <div className="absolute bottom-4 right-4 flex items-center">
-                <div className="bg-green-100/90 backdrop-blur-sm border border-green-300 px-3 py-1 rounded-lg text-xs shadow-lg">
-                  <div className="text-green-600">Batteria:</div>
-                  <div className="text-green-700 font-bold">1,71 kW (80%)</div>
-                </div>
-                <Battery className="h-6 w-6 text-green-600 ml-2 animate-pulse" />
-              </div>
-              
-              {/* Grid Power */}
-              <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-                <div className="bg-gray-100/90 backdrop-blur-sm border px-3 py-1 rounded-lg text-xs shadow-lg">
-                  <div className="text-gray-600">Prelievo da rete:</div>
-                  <div className="font-bold">20 W</div>
-                </div>
-              </div>
-            </div>
           </div>
         </CardContent>
       </Card>
