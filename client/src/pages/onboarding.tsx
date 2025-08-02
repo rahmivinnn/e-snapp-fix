@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import onboarding1Image from "@assets/On boarding (1)_1754151567435.png";
-import onboarding2Image from "@assets/On boarding 2_1754151567434.png";
-import onboarding3Image from "@assets/On boarding 3_1754151567434.png";
+import onboarding1Image from "@assets/On boarding (1)_1754153067275.png";
+import onboarding2Image from "@assets/On boarding 2_1754153067274.png";
+import onboarding3Image from "@assets/On boarding 3_1754153067273.png";
 
 export default function OnboardingPage() {
   const [, setLocation] = useLocation();
@@ -21,17 +21,17 @@ export default function OnboardingPage() {
     {
       image: onboarding1Image,
       title: "Track Live Consumption",
-      description: "Monitor your energy usage in real-time and get insights into your consumption patterns.",
+      description: "Lorem Ipsum Dolor Sit Amet Consectetur. Quis Tortor Risus Lacus.",
     },
     {
       image: onboarding2Image,
-      title: "Smart Energy Management",
-      description: "Get intelligent recommendations to optimize your energy usage and reduce costs.",
+      title: "Track Live Consumption",
+      description: "Lorem Ipsum Dolor Sit Amet Consectetur. Quis Tortor Risus Lacus.",
     },
     {
       image: onboarding3Image,
-      title: "Sustainable Living",
-      description: "Make eco-friendly choices and track your environmental impact with detailed analytics.",
+      title: "Track Live Consumption",
+      description: "Lorem Ipsum Dolor Sit Amet Consectetur. Quis Tortor Risus Lacus.",
     }
   ];
 
