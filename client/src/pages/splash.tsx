@@ -8,9 +8,6 @@ export default function SplashPage() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    // Clear localStorage for fresh testing
-    localStorage.clear();
-    
     // Animate logo entrance
     const logoTimer = setTimeout(() => {
       setLogoVisible(true);

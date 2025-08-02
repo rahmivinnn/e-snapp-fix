@@ -5,6 +5,7 @@ This is an energy monitoring web application called "e-snapp" built with a moder
 # User Preferences
 
 Preferred communication style: Simple, everyday language.
+UI Requirements: Highly interactive screens with smooth animations, transitions, and visual feedback on all elements.
 
 # System Architecture
 
@@ -42,6 +43,16 @@ Preferred communication style: Simple, everyday language.
 - **Demo Mode**: Pre-configured demo user for immediate application testing
 - **Settings Management**: User preferences for notifications and energy alerts
 - **Profile Management**: User profile with contact information and preferences
+- **Interactive Onboarding**: Complete flow with splash → login/signup → onboarding → device setup → home
+- **Social Login**: Google and Apple login with authentic SVG logos and hover animations
+
+## Interactive Features & Animations
+- **Splash Screen**: Animated logo entrance, progress bar loading, gradient backgrounds
+- **Login/Signup**: Button hover/scale effects, loading states with spinners, form slide animations
+- **Onboarding**: Smooth slide transitions between steps, image blur/focus effects, floating background animations
+- **Setup Wizard**: Loading states on all buttons, hover effects, gradient backgrounds, smooth transitions
+- **Home Dashboard**: Card hover effects, animated icons (spinning, bouncing), staggered load animations, pulse effects on real-time data
+- **Universal Interactions**: All buttons and cards have hover effects, loading states, and smooth transitions
 
 # External Dependencies
 
