@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { RedesignedEnergyUsageChart, RedesignedHomePerformanceChart, RedesignedBillingCycleChart } from "@/components/charts/redesigned-energy-charts";
+import { SimpleEnergyUsageChart, SimpleHomePerformanceChart, SimpleBillingCycleChart } from "@/components/charts/simple-charts";
 import { useEnergyData } from "@/hooks/use-energy-data";
 import { Zap, Home, Lightbulb, Leaf, TrendingUp, RotateCcw, Activity, ChevronRight, Clock, Euro, Menu, BarChart3 } from "lucide-react";
 import type { BillingData } from "@shared/schema";
@@ -55,13 +55,13 @@ export default function HomePage() {
       {/* Interactive Charts Section */}
       <div className={`space-y-3 transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         {/* Billing Cycle Chart */}
-        <RedesignedBillingCycleChart />
+        <SimpleBillingCycleChart />
         
         {/* Energy Usage Chart */}
-        <RedesignedEnergyUsageChart />
+        <SimpleEnergyUsageChart />
         
         {/* Home Performance Chart */}
-        <RedesignedHomePerformanceChart />
+        <SimpleHomePerformanceChart />
       </div>
 
       {/* CO2 Emissions Card */}
@@ -89,41 +89,7 @@ export default function HomePage() {
         </CardContent>
       </Card>
 
-      {/* Energy Usage by Category */}
-      <Card className="card-hover">
-        <CardContent className="p-2">
-          <h3 className="font-semibold text-gray-800 mb-2 flex items-center gap-1 text-xs">
-            <Zap className="h-3 w-3 text-primary" />
-            Energy Usage by Category
-          </h3>
-          <div className="flex items-center justify-center mb-2">
-            <div className="relative w-24 h-24">
-  
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <p className="text-sm font-bold text-gray-800">109kWh</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="space-y-1">
-            {[
-              { label: "Kitchen", value: "46.8 kWh", color: "bg-chart-1" },
-              { label: "Heating", value: "31.2 kWh", color: "bg-chart-2" },
-              { label: "Lighting", value: "20.5 kWh", color: "bg-chart-3" },
-              { label: "Other", value: "10.8 kWh", color: "bg-chart-4" },
-            ].map(({ label, value, color }) => (
-              <div key={label} className="flex items-center justify-between">
-                <div className="flex items-center gap-1">
-                  <div className={`w-2 h-2 rounded-full ${color}`}></div>
-                  <span className="text-xs">{label}</span>
-                </div>
-                <span className="text-xs font-semibold">{value}</span>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+
 
       {/* Smart Suggestions Card */}
       <Card className="card-hover bg-green-100 border-green-200">
