@@ -16,6 +16,11 @@ app.get('/reset', (req, res) => {
   res.sendFile(path.join(process.cwd(), 'reset_app.html'));
 });
 
+// Debug page
+app.get('/debug', (req, res) => {
+  res.sendFile(path.join(process.cwd(), 'debug.html'));
+});
+
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
