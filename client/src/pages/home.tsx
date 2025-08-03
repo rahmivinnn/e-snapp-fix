@@ -9,6 +9,7 @@ import { Zap, Home, Lightbulb, Leaf, TrendingUp, RotateCcw, Activity, ChevronRig
 import type { BillingData } from "@shared/schema";
 import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
 import trendIcon from "@assets/Frame 427319515_1754191563621.png";
+import { Link } from "wouter";
 
 export default function HomePage() {
   const { billingData } = useEnergyData();
@@ -40,8 +41,8 @@ export default function HomePage() {
 
       {/* Greeting Section */}
       <div className={`mb-2 transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        <h1 className="text-base font-bold text-gray-800">Hello, Inayat</h1>
-        <p className="text-gray-600 text-sm">Today is Tuesday, 22 July</p>
+        <h1 className="text-base font-bold text-gray-800">Hello, User</h1>
+        <p className="text-gray-600 text-sm">Today is {new Date().toLocaleDateString('en-US', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
         <div className="mt-1.5 flex items-center space-x-2">
           <Badge className={`bg-primary text-white text-xs animate-pulse`} key={pulseKey}>
             <Activity className="h-3 w-3 mr-1" />
@@ -136,9 +137,11 @@ export default function HomePage() {
           <p className="text-xs text-gray-700 mb-2">
             Tip: "Try reducing dryer use during peak hours."
           </p>
-          <Button variant="ghost" className="text-green-700 hover:text-green-800 p-0 h-auto text-xs">
-            See All Tips
-          </Button>
+          <Link href="/tips">
+            <Button variant="ghost" className="text-green-700 hover:text-green-800 p-0 h-auto text-xs">
+              See All Tips
+            </Button>
+          </Link>
         </CardContent>
       </Card>
 

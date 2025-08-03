@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { RotateCcw } from "lucide-react";
@@ -6,6 +6,48 @@ import { RotateCcw } from "lucide-react";
 // Redesigned Energy Usage Chart - crisp and identical to mockup
 export function RedesignedEnergyUsageChart() {
   const [isHovered, setIsHovered] = useState(false);
+  const [animatedValues, setAnimatedValues] = useState({
+    kitchen: 0,
+    heating: 0,
+    lighting: 0,
+    other: 0,
+    total: 0
+  });
+
+  const finalValues = {
+    kitchen: 46.8,
+    heating: 31.2,
+    lighting: 20.5,
+    other: 10.8,
+    total: 109
+  };
+
+  useEffect(() => {
+    const duration = 2000;
+    const steps = 60;
+    const stepDuration = duration / steps;
+    
+    let currentStep = 0;
+    const interval = setInterval(() => {
+      currentStep++;
+      const progress = currentStep / steps;
+      
+      setAnimatedValues({
+        kitchen: finalValues.kitchen * progress,
+        heating: finalValues.heating * progress,
+        lighting: finalValues.lighting * progress,
+        other: finalValues.other * progress,
+        total: finalValues.total * progress
+      });
+      
+      if (currentStep >= steps) {
+        clearInterval(interval);
+        setAnimatedValues(finalValues);
+      }
+    }, stepDuration);
+    
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <Card 
@@ -74,7 +116,7 @@ export function RedesignedEnergyUsageChart() {
             {/* Center Text */}
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center">
-                <div className="text-lg font-bold text-gray-800">109kWh</div>
+                <div className="text-lg font-bold text-gray-800">{Math.round(animatedValues.total)}kWh</div>
               </div>
             </div>
           </div>
@@ -86,7 +128,7 @@ export function RedesignedEnergyUsageChart() {
                 <div className="w-3 h-3 rounded-sm bg-[#FF6B35]"></div>
                 <span className="text-sm text-gray-700">Kitchen</span>
               </div>
-              <span className="text-sm font-semibold text-gray-800">46.8 kWh</span>
+              <span className="text-sm font-semibold text-gray-800">{animatedValues.kitchen.toFixed(1)} kWh</span>
             </div>
             
             <div className="flex items-center justify-between">
@@ -94,7 +136,7 @@ export function RedesignedEnergyUsageChart() {
                 <div className="w-3 h-3 rounded-sm bg-[#4A90E2]"></div>
                 <span className="text-sm text-gray-700">Heating</span>
               </div>
-              <span className="text-sm font-semibold text-gray-800">31.2 kWh</span>
+              <span className="text-sm font-semibold text-gray-800">{animatedValues.heating.toFixed(1)} kWh</span>
             </div>
             
             <div className="flex items-center justify-between">
@@ -102,7 +144,7 @@ export function RedesignedEnergyUsageChart() {
                 <div className="w-3 h-3 rounded-sm bg-[#7ED321]"></div>
                 <span className="text-sm text-gray-700">Lighting</span>
               </div>
-              <span className="text-sm font-semibold text-gray-800">20.5 kWh</span>
+              <span className="text-sm font-semibold text-gray-800">{animatedValues.lighting.toFixed(1)} kWh</span>
             </div>
             
             <div className="flex items-center justify-between">
@@ -110,7 +152,7 @@ export function RedesignedEnergyUsageChart() {
                 <div className="w-3 h-3 rounded-sm bg-[#D0D0D0]"></div>
                 <span className="text-sm text-gray-700">Other</span>
               </div>
-              <span className="text-sm font-semibold text-gray-800">10.8 kWh</span>
+              <span className="text-sm font-semibold text-gray-800">{animatedValues.other.toFixed(1)} kWh</span>
             </div>
           </div>
         </div>
@@ -122,6 +164,27 @@ export function RedesignedEnergyUsageChart() {
 // Redesigned Home Performance Chart
 export function RedesignedHomePerformanceChart() {
   const [hoveredBar, setHoveredBar] = useState<string | null>(null);
+  const [animatedPercentage, setAnimatedPercentage] = useState(0);
+
+  useEffect(() => {
+    const duration = 1500;
+    const steps = 60;
+    const stepDuration = duration / steps;
+    
+    let currentStep = 0;
+    const interval = setInterval(() => {
+      currentStep++;
+      const progress = currentStep / steps;
+      setAnimatedPercentage(64 * progress);
+      
+      if (currentStep >= steps) {
+        clearInterval(interval);
+        setAnimatedPercentage(64);
+      }
+    }, stepDuration);
+    
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <Card className="bg-gradient-to-br from-gray-800 to-gray-900 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]">
@@ -139,7 +202,7 @@ export function RedesignedHomePerformanceChart() {
         </div>
 
         <div className="mb-4">
-          <div className="text-2xl font-bold">64%</div>
+          <div className="text-2xl font-bold">{Math.round(animatedPercentage)}%</div>
           <div className="text-sm text-gray-300">Better than of homes of similar area.</div>
         </div>
 
@@ -200,9 +263,30 @@ export function RedesignedHomePerformanceChart() {
 // Redesigned Billing Cycle Chart
 export function RedesignedBillingCycleChart() {
   const [isHovered, setIsHovered] = useState(false);
+  const [animatedUsage, setAnimatedUsage] = useState(0);
   const currentUsage = 109;
   const forecast = 383;
-  const progressPercentage = (currentUsage / forecast) * 100;
+  const progressPercentage = (animatedUsage / forecast) * 100;
+
+  useEffect(() => {
+    const duration = 2500;
+    const steps = 60;
+    const stepDuration = duration / steps;
+    
+    let currentStep = 0;
+    const interval = setInterval(() => {
+      currentStep++;
+      const progress = currentStep / steps;
+      setAnimatedUsage(currentUsage * progress);
+      
+      if (currentStep >= steps) {
+        clearInterval(interval);
+        setAnimatedUsage(currentUsage);
+      }
+    }, stepDuration);
+    
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <Card 
@@ -226,7 +310,7 @@ export function RedesignedBillingCycleChart() {
 
           <div className="flex items-center justify-between gap-4">
             <div className="bg-teal-600 text-white px-3 py-2 rounded-lg text-center min-w-[80px] transform hover:scale-105 transition-transform">
-              <div className="text-lg font-bold">{currentUsage} kWh</div>
+              <div className="text-lg font-bold">{Math.round(animatedUsage)} kWh</div>
               <div className="text-xs opacity-90">Current</div>
             </div>
             

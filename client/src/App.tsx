@@ -15,6 +15,7 @@ import Economics from "@/pages/economics";
 import Menu from "@/pages/menu";
 import Settings from "@/pages/settings";
 import SetupWizard from "@/pages/setup-wizard";
+import Tips from "@/pages/tips";
 
 import BottomNavigation from "@/components/layout/bottom-navigation";
 import NotificationModal from "@/components/modals/notification-modal";
@@ -38,6 +39,7 @@ function Router() {
       <Route path="/forgot-password" component={ForgotPassword} />
       <Route path="/onboarding" component={Onboarding} />
       <Route path="/setup-wizard" component={SetupWizard} />
+      <Route path="/tips" component={Tips} />
       <Route path="/home" component={Home} />
       <Route path="/trends" component={Trends} />
       <Route path="/realtime" component={Realtime} />
