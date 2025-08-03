@@ -4,28 +4,16 @@ import { useLocation } from "wouter";
 export default function SplashPage() {
   const [, setLocation] = useLocation();
   const [logoVisible, setLogoVisible] = useState(false);
-  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    console.log('🎬 Splash screen loaded');
+    console.log('🎬 Splash screen loaded - exact design from mockup');
     
     // Animate logo entrance
-    const logoTimer = setTimeout(() => {
+    setTimeout(() => {
       setLogoVisible(true);
     }, 300);
 
-    // Animate progress bar
-    const progressTimer = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(progressTimer);
-          return 100;
-        }
-        return prev + 2;
-      });
-    }, 40);
-
-    // Navigate after splash
+    // Navigate after splash (sesuai mockup)
     const navTimer = setTimeout(() => {
       sessionStorage.setItem('splashShown', 'true');
       const isLoggedIn = localStorage.getItem('isLoggedIn');
@@ -44,33 +32,44 @@ export default function SplashPage() {
     }, 2500);
 
     return () => {
-      clearTimeout(logoTimer);
       clearTimeout(navTimer);
-      clearInterval(progressTimer);
     };
   }, [setLocation]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-500/20 to-green-500/20 max-w-md mx-auto flex items-center justify-center px-4">
-      <div className="flex flex-col items-center space-y-6">
-        <div className={`transform transition-all duration-1000 ${logoVisible ? 'scale-100 opacity-100 translate-y-0' : 'scale-75 opacity-0 translate-y-4'}`}>
-          <div className="bg-white rounded-2xl p-4 shadow-xl">
-            <h1 className="text-4xl font-bold text-blue-600">e-snapp</h1>
+    <div className="min-h-screen bg-white max-w-md mx-auto flex items-center justify-center px-4">
+      {/* Status bar mockup */}
+      <div className="absolute top-0 left-0 right-0 h-11 bg-white border-b border-gray-100 flex items-center justify-between px-4 text-xs font-medium">
+        <span>8:45</span>
+        <div className="flex items-center space-x-1">
+          <div className="flex space-x-0.5">
+            <div className="w-1 h-1 bg-black rounded-full"></div>
+            <div className="w-1 h-1 bg-black rounded-full"></div>
+            <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
+            <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
           </div>
+          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M2 17h20v2H2zm1.15-4.05L4 11.47l.85 1.48L3 12.95z"/>
+          </svg>
+          <span className="bg-green-500 text-white px-1 rounded text-[10px]">100</span>
         </div>
-        
-        {/* Loading Progress */}
-        <div className="w-32 space-y-2">
-          <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-            <div 
-              className="h-full bg-gradient-to-r from-blue-500 to-green-500 rounded-full transition-all duration-100 ease-out"
-              style={{ width: `${progress}%` }}
-            />
+      </div>
+
+      {/* Logo centered - exact dari mockup */}
+      <div className={`transform transition-all duration-1000 ${logoVisible ? 'scale-100 opacity-100' : 'scale-90 opacity-0'}`}>
+        <div className="flex items-center space-x-2">
+          {/* Logo icon - teal circle dengan C */}
+          <div className="w-12 h-12 bg-teal-600 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 border-4 border-white rounded-full border-r-transparent transform rotate-45"></div>
           </div>
-          <p className="text-center text-sm text-gray-700 animate-pulse font-medium">
-            Loading...
-          </p>
+          {/* Text logo */}
+          <h1 className="text-4xl font-bold text-teal-600">e-snapp</h1>
         </div>
+      </div>
+
+      {/* Bottom indicator */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+        <div className="w-32 h-1 bg-black rounded-full"></div>
       </div>
     </div>
   );
