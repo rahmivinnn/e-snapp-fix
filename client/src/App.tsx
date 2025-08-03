@@ -49,7 +49,9 @@ function Router() {
 }
 
 function App() {
+  const [location, setLocation] = useLocation();
   const [hasCompletedSetup, setHasCompletedSetup] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
   const [activeModals, setActiveModals] = useState({
     notifications: false,
     notificationSettings: false,
@@ -58,11 +60,19 @@ function App() {
     tariffs: false,
   });
 
-  // Simple setup check for bottom navigation
+  // Force splash screen on first load
   useEffect(() => {
+    console.log('🚀 App loaded, current location:', location);
+    
+    // Always show splash first
+    if (location === '/' && showSplash) {
+      console.log('🎬 Redirecting to splash screen');
+      setLocation('/splash');
+    }
+    
     const setupCompleted = localStorage.getItem('setupCompleted');
     setHasCompletedSetup(!!setupCompleted);
-  }, []);
+  }, [location, setLocation, showSplash]);
 
   const openModal = (modalName: keyof typeof activeModals) => {
     setActiveModals(prev => ({ ...prev, [modalName]: true }));
