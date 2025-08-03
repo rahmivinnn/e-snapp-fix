@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
-import onboarding1Image from "@assets/On boarding (1)_1754180560406.png";
+import onboarding1Image from "@assets/Rectangle 95 (1)_1754180967613.png";
 import onboarding2Image from "@assets/On boarding 2_1754180560406.png";
 import onboarding3Image from "@assets/On boarding 3_1754180560405.png";
 
@@ -17,8 +17,8 @@ export default function OnboardingPage() {
   const onboardingSteps = [
     {
       image: onboarding1Image,
-      title: "Track Live Consumption",
-      description: "Lorem Ipsum Dolor Sit Amet Consectetur. Quis Tortor Risus Lacus.",
+      title: "Smart Energy Monitoring",
+      description: "Monitor your home's energy consumption in real-time with advanced smart technology.",
       bgColor: "bg-gradient-to-br from-blue-400 to-blue-600"
     },
     {
