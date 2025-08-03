@@ -30,7 +30,7 @@ export default function LoginPage() {
     
     localStorage.setItem('isLoggedIn', 'true');
     localStorage.setItem('userEmail', formData.email);
-    setLocation("/onboarding");
+    setLocation("/setup-wizard");
   };
 
   const handleGoogleLogin = async () => {

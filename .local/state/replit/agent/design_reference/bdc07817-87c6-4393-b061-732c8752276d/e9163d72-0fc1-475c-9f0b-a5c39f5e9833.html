@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>e-snapp - Energy Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': '#2D8E8E',
+                        'primary-light': '#B3F5FF',
+                        'accent': '#FF6B47',
+                        'background': '#F8FDFF',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FDFF;
+        }
+        
+        .screen {
+            display: none;
+            min-height: 100vh;
+            padding-bottom: 80px;
+        }
+        
+        .screen.active {
+            display: block;
+        }
+        
+        .card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(45, 142, 142, 0.15);
+        }
+        
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        
+        .tab-button.active {
+            color: #2D8E8E;
+            transform: translateY(-2px);
+        }
+        
+        .progress-bar {
+            transition: width 0.8s ease-in-out;
+        }
+        
+        .animate-pulse-slow {
+            animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        .house-diagram {
+            position: relative;
+            background: linear-gradient(135deg, #E0F7FA 0%, #B2EBF2 100%);
+        }
+        
+        .power-bubble {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .power-bubble:nth-child(odd) {
+            animation-delay: -1.5s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 50px;
+            height: 24px;
+            background: #CBD5E1;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+        
+        .toggle-switch.active {
+            background: #2D8E8E;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+        }
+        
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(26px);
+        }
+    </style>
+</head>
+<body class="bg-background font-inter">
+
+    <!-- @COMPONENT: StatusBar -->
+    <div class="fixed top-0 left-0 right-0 bg-white z-50 px-4 py-2 flex justify-between items-center text-sm font-medium">
+        <span>8:45</span>
+        <div class="flex items-center space-x-1">
+            <i class="fas fa-signal text-xs"></i>
+            <i class="fas fa-wifi text-xs"></i>
+            <div class="bg-black text-white px-1 rounded-sm text-xs">100</div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: StatusBar -->
+
+    <!-- @COMPONENT: AppHeader -->
+    <header class="fixed top-8 left-0 right-0 bg-white z-40 px-4 py-4 flex justify-between items-center shadow-sm">
+        <div class="flex items-center space-x-2">
+            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                <span class="text-white font-bold text-sm">e</span>
+            </div>
+            <span class="text-primary font-bold text-lg">e-snapp</span>
+        </div>
+        <div class="flex items-center space-x-3">
+            <button class="relative p-2 hover:bg-gray-100 rounded-full transition-colors" onclick="showNotifications()">
+                <i class="fas fa-bell text-gray-600"></i>
+                <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></span>
+            </button>
+            <button class="p-2 hover:bg-gray-100 rounded-full transition-colors" onclick="showProfile()">
+                <i class="fas fa-user-circle text-gray-600"></i>
+            </button>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: AppHeader -->
+
+    <!-- @COMPONENT: HomeScreen -->
+    <div id="home-screen" class="screen active pt-20 px-4">
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800" data-bind="user.greeting">Hello, Inayat</h1>
+            <p class="text-gray-600" data-bind="current.date">Today is Tuesday, 22 July</p>
+            <div class="mt-2 flex items-center space-x-2">
+                <span class="bg-primary text-white px-2 py-1 rounded-full text-xs font-medium">1 kWh</span>
+                <span class="text-sm text-gray-600">EUR</span>
+            </div>
+        </div>
+
+        <!-- Current Billing Cycle Card -->
+        <div class="card bg-primary-light rounded-xl p-4 mb-6">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-sync-alt mr-2 text-primary"></i>
+                    Current Billing Cycle
+                </h3>
+            </div>
+            <div class="text-sm text-gray-600 mb-4">
+                <p data-bind="billing.period">01 Jul - 31 Aug 2025</p>
+                <p data-bind="billing.remaining">45 Days Remaining</p>
+            </div>
+            <div class="flex justify-between items-center mb-2">
+                <div class="bg-primary text-white px-3 py-1 rounded-lg text-sm font-medium">
+                    <span data-bind="billing.current">109 kWh</span>
+                    <div class="text-xs opacity-90">Current</div>
+                </div>
+                <div class="bg-gray-400 text-white px-3 py-1 rounded-lg text-sm font-medium">
+                    <span data-bind="billing.limit">383 kWh</span>
+                    <div class="text-xs opacity-90">Limit</div>
+                </div>
+            </div>
+            <div class="w-full bg-gray-300 rounded-full h-3 overflow-hidden">
+                <div class="progress-bar bg-primary h-full rounded-full" style="width: 28%"></div>
+            </div>
+        </div>
+
+        <!-- Home Performance Card -->
+        <div class="card bg-white rounded-xl p-4 mb-6 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-home mr-2 text-primary"></i>
+                    Home Performance
+                </h3>
+                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
+                    + 15%
+                </span>
+            </div>
+            <p class="text-sm text-gray-600 mb-4" data-bind="performance.comparison">64% Better than of homes of similar area.</p>
+            <div class="flex justify-between items-end">
+                <div class="text-center">
+                    <div class="w-16 h-24 bg-gray-400 rounded-t-lg mb-2 relative overflow-hidden">
+                        <div class="absolute bottom-0 w-full bg-gray-500 rounded-t-lg" style="height: 60%"></div>
+                    </div>
+                    <p class="text-xs text-gray-600">Average</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-32 bg-accent rounded-t-lg mb-2 relative overflow-hidden flex items-center justify-center">
+                        <i class="fas fa-home text-white text-lg"></i>
+                    </div>
+                    <p class="text-xs font-semibold text-accent">Yours</p>
+                    <p class="text-sm font-bold text-gray-800" data-bind="performance.cost">€57.00</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-16 h-20 bg-gray-400 rounded-t-lg mb-2 relative overflow-hidden">
+                        <div class="absolute bottom-0 w-full bg-gray-500 rounded-t-lg" style="height: 40%"></div>
+                    </div>
+                    <p class="text-xs text-gray-600">Most Efficient</p>
+                    <p class="text-sm text-gray-800" data-bind="performance.efficient">€47.00</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CO2 Emissions Card -->
+        <div class="card bg-primary text-white rounded-xl p-4 mb-6">
+            <h3 class="font-semibold mb-4 flex items-center">
+                <i class="fas fa-leaf mr-2"></i>
+                CO₂ Emissions & Savings
+            </h3>
+            <div class="flex justify-between">
+                <div class="text-center">
+                    <p class="text-2xl font-bold" data-bind="emissions.emitted">42.7 kg</p>
+                    <p class="text-sm opacity-90">CO₂ Emitted</p>
+                </div>
+                <div class="w-px bg-white opacity-30"></div>
+                <div class="text-center">
+                    <p class="text-2xl font-bold" data-bind="emissions.avoided">12.1 kg</p>
+                    <p class="text-sm opacity-90">CO₂ Avoided</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Energy Usage by Category -->
+        <div class="card bg-white rounded-xl p-4 mb-6 shadow-sm">
+            <h3 class="font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-bolt mr-2 text-primary"></i>
+                Energy Usage by Category
+            </h3>
+            <div class="flex items-center justify-center mb-4">
+                <div class="relative w-32 h-32">
+                    <canvas id="usageChart" width="128" height="128"></canvas>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div class="text-center">
+                            <p class="text-xl font-bold text-gray-800" data-bind="usage.total">109kWh</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 bg-accent rounded-full mr-2"></div>
+                        <span class="text-sm">Kitchen</span>
+                    </div>
+                    <span class="text-sm font-semibold" data-bind="usage.kitchen">46.8 kWh</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+                        <span class="text-sm">Heating</span>
+                    </div>
+                    <span class="text-sm font-semibold" data-bind="usage.heating">31.2 kWh</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                        <span class="text-sm">Lighting</span>
+                    </div>
+                    <span class="text-sm font-semibold" data-bind="usage.lighting">20.5 kWh</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 bg-gray-400 rounded-full mr-2"></div>
+                        <span class="text-sm">Other</span>
+                    </div>
+                    <span class="text-sm font-semibold" data-bind="usage.other">10.8 kWh</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Smart Suggestions Card -->
+        <div class="card bg-green-100 rounded-xl p-4 mb-6 border border-green-200">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-lightbulb mr-2 text-green-600"></i>
+                    Smart Suggestions
+                </h3>
+            </div>
+            <p class="text-sm text-gray-700 mb-3" data-bind="suggestion.tip">Tip: "Try reducing dryer use during peak hours."</p>
+            <button class="text-green-700 text-sm font-medium hover:text-green-800 transition-colors" onclick="showAllTips()">
+                See All Tips
+            </button>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: HomeScreen -->
+
+    <!-- @COMPONENT: TrendScreen -->
+    <div id="trend-screen" class="screen pt-20 px-4">
+        <div class="mb-6">
+            <div class="flex items-center justify-between">
+                <h1 class="text-2xl font-bold text-gray-800">Energy Consumption</h1>
+                <div class="flex items-center space-x-2">
+                    <span class="bg-primary text-white px-2 py-1 rounded-full text-xs font-medium">1 kWh</span>
+                    <span class="text-sm text-gray-600">EUR</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Time Period Selector -->
+        <div class="bg-primary-light rounded-xl p-2 mb-6">
+            <div class="flex space-x-1">
+                <button class="period-btn active px-4 py-2 rounded-lg text-sm font-medium transition-all" data-period="day">Day</button>
+                <button class="period-btn px-4 py-2 rounded-lg text-sm font-medium transition-all" data-period="week">Week</button>
+                <button class="period-btn px-4 py-2 rounded-lg text-sm font-medium transition-all" data-period="month">Month</button>
+                <button class="period-btn px-4 py-2 rounded-lg text-sm font-medium transition-all" data-period="year">Year</button>
+                <button class="period-btn px-3 py-2 rounded-lg text-xs font-medium transition-all" data-period="billing">Billing Cycle</button>
+            </div>
+        </div>
+
+        <!-- Consumption Chart Card -->
+        <div class="card bg-white rounded-xl p-4 mb-6 shadow-sm">
+            <div class="text-center mb-4">
+                <p class="text-sm text-gray-600" data-bind="chart.date">Thu, 23 Jul</p>
+                <p class="text-3xl font-bold text-gray-800" data-bind="chart.consumption">14.7 kWh</p>
+            </div>
+            <div class="h-48 mb-4">
+                <canvas id="consumptionChart"></canvas>
+            </div>
+        </div>
+
+        <!-- CO2 Emissions & Savings -->
+        <div class="card bg-primary text-white rounded-xl p-4 mb-6">
+            <h3 class="font-semibold mb-4 flex items-center">
+                <i class="fas fa-leaf mr-2"></i>
+                CO₂ Emissions & Savings
+            </h3>
+            <div class="flex justify-between">
+                <div class="text-center">
+                    <p class="text-2xl font-bold" data-bind="co2.emitted">42.7 kg</p>
+                    <p class="text-sm opacity-90">CO₂ Emitted</p>
+                </div>
+                <div class="w-px bg-white opacity-30"></div>
+                <div class="text-center">
+                    <p class="text-2xl font-bold" data-bind="co2.avoided">12.1 kg</p>
+                    <p class="text-sm opacity-90">CO₂ Avoided</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Compared to Previous -->
+        <div class="mb-6">
+            <h3 class="font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-chart-line mr-2 text-primary"></i>
+                Compared to Previous
+            </h3>
+            <div class="grid grid-cols-3 gap-3">
+                <div class="card bg-primary-light rounded-xl p-3 text-center">
+                    <p class="text-sm text-gray-600 mb-1">Energy Used</p>
+                    <p class="text-lg font-bold text-gray-800" data-bind="comparison.energy">42.7 kWh</p>
+                    <p class="text-xs text-green-600 font-medium">↑ +6%</p>
+                </div>
+                <div class="card bg-primary-light rounded-xl p-3 text-center">
+                    <p class="text-sm text-gray-600 mb-1">Cost</p>
+                    <p class="text-lg font-bold text-gray-800" data-bind="comparison.cost">42.7 kg</p>
+                    <p class="text-xs text-red-600 font-medium">↑ -3.4%</p>
+                </div>
+                <div class="card bg-primary-light rounded-xl p-3 text-center">
+                    <p class="text-sm text-gray-600 mb-1">CO₂</p>
+                    <p class="text-lg font-bold text-gray-800" data-bind="comparison.co2">42.7 kg</p>
+                    <p class="text-xs text-green-600 font-medium">↑ +4%</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weekly Comparison -->
+        <div class="card bg-white rounded-xl p-4 mb-6 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-semibold text-gray-800">This Month vs Previous</h3>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm font-medium">This Month</span>
+                        <span class="text-sm font-bold" data-bind="monthly.current">42.7 kWh ↑ +6%</span>
+                    </div>
+                    <div class="w-full bg-accent rounded-full h-2"></div>
+                </div>
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm font-medium text-gray-600">Previous Month</span>
+                        <span class="text-sm" data-bind="monthly.previous">38.7 kWh</span>
+                    </div>
+                    <div class="w-4/5 bg-gray-400 rounded-full h-2"></div>
+                </div>
+            </div>
+            <div class="mt-4">
+                <p class="text-sm text-gray-600 mb-2">Energy used</p>
+                <p class="text-lg font-bold text-gray-800" data-bind="monthly.weekly">18.7 kWh</p>
+                <div class="h-24 mt-2">
+                    <canvas id="weeklyChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: TrendScreen -->
+
+    <!-- @COMPONENT: RealtimeScreen -->
+    <div id="realtime-screen" class="screen pt-20 px-4">
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Live Power Usage</h1>
+        </div>
+
+        <!-- House Diagram Card -->
+        <div class="card house-diagram rounded-xl mb-6 relative overflow-hidden" style="height: 300px;">
+            <!-- Modern house illustration with solar panels, EV charging, and battery -->
+            <div class="absolute inset-0 flex items-center justify-center">
+                <!-- A stylized modern house with various energy indicators -->
+                <div class="relative">
+                    <!-- Solar panels on roof -->
+                    <div class="absolute -top-8 left-4 flex items-center">
+                        <i class="fas fa-sun text-yellow-500 text-xl mr-2"></i>
+                        <div class="bg-white px-2 py-1 rounded-lg text-xs">
+                            <span class="font-bold">Produzione solare: 10 W</span>
+                        </div>
+                    </div>
+                    
+                    <!-- House consumption -->
+                    <div class="absolute -top-4 right-0 flex items-center">
+                        <div class="bg-red-100 border border-red-300 px-2 py-1 rounded-lg text-xs">
+                            <span class="font-bold text-red-700">Consumo casa: 1,75 kW</span>
+                        </div>
+                    </div>
+                    
+                    <!-- EV Charging -->
+                    <div class="absolute bottom-8 -left-8 flex items-center">
+                        <i class="fas fa-car text-blue-600 text-xl mr-2"></i>
+                        <div class="bg-white px-2 py-1 rounded-lg text-xs">
+                            <span class="font-bold text-yellow-600">Ricarica EV: 8,0 kW</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Battery -->
+                    <div class="absolute bottom-2 right-4 flex items-center">
+                        <div class="bg-green-100 border border-green-300 px-2 py-1 rounded-lg text-xs">
+                            <span class="font-bold text-green-700">Batteria: 1,71 kW (80%)</span>
+                        </div>
+                        <i class="fas fa-battery-three-quarters text-green-600 text-lg ml-2"></i>
+                    </div>
+                    
+                    <!-- Grid connection -->
+                    <div class="absolute -bottom-8 left-1/2 transform -translate-x-1/2 flex items-center">
+                        <div class="bg-gray-100 border px-2 py-1 rounded-lg text-xs">
+                            <span class="font-bold">Prelievo da rete: 20 W</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Central house icon -->
+                    <div class="w-24 h-24 bg-primary rounded-lg flex items-center justify-center">
+                        <i class="fas fa-home text-white text-3xl"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Power usage bubbles (alternative view) -->
+            <div class="absolute top-4 left-4 power-bubble">
+                <div class="bg-primary text-white px-3 py-2 rounded-full text-sm font-bold">145W</div>
+            </div>
+            <div class="absolute top-8 right-8 power-bubble">
+                <div class="bg-primary text-white px-3 py-2 rounded-full text-sm font-bold">44W</div>
+            </div>
+            <div class="absolute bottom-20 left-8 power-bubble">
+                <div class="bg-primary text-white px-3 py-2 rounded-full text-sm font-bold">123W</div>
+            </div>
+            <div class="absolute bottom-16 right-12 power-bubble">
+                <div class="bg-primary text-white px-3 py-2 rounded-full text-sm font-bold">87W</div>
+            </div>
+            <div class="absolute top-1/2 left-2 power-bubble">
+                <div class="bg-primary text-white px-3 py-2 rounded-full text-sm font-bold">1.71 kW</div>
+            </div>
+        </div>
+
+        <!-- Live Usage Card -->
+        <div class="card bg-primary-light rounded-xl p-4 mb-6">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-bolt mr-2 text-primary"></i>
+                    Live Usage
+                </h3>
+                <div class="animate-pulse-slow">
+                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                </div>
+            </div>
+            <p class="text-3xl font-bold text-gray-800 mb-2" data-bind="live.usage">245 W</p>
+            <p class="text-sm text-gray-600" data-bind="live.updated">Updated just now</p>
+            <div class="mt-4 h-16">
+                <canvas id="liveChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Realtime Data Cards -->
+        <div class="mb-6">
+            <h3 class="font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-tachometer-alt mr-2 text-primary"></i>
+                Realtime Data
+            </h3>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="card bg-white rounded-xl p-4 shadow-sm">
+                    <p class="text-sm text-gray-600 mb-1">Active Power</p>
+                    <p class="text-2xl font-bold text-gray-800" data-bind="realtime.active">245 W</p>
+                </div>
+                <div class="card bg-white rounded-xl p-4 shadow-sm">
+                    <p class="text-sm text-gray-600 mb-1">Reactive Power</p>
+                    <p class="text-2xl font-bold text-gray-800" data-bind="realtime.reactive">246 VAR</p>
+                </div>
+                <div class="card bg-white rounded-xl p-4 shadow-sm">
+                    <p class="text-sm text-gray-600 mb-1">Voltage</p>
+                    <p class="text-2xl font-bold text-gray-800" data-bind="realtime.voltage">220 V</p>
+                </div>
+                <div class="card bg-white rounded-xl p-4 shadow-sm">
+                    <p class="text-sm text-gray-600 mb-1">Power Factor</p>
+                    <p class="text-2xl font-bold text-gray-800" data-bind="realtime.factor">0.5</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: RealtimeScreen -->
+
+    <!-- @COMPONENT: EconomicsScreen -->
+    <div id="economics-screen" class="screen pt-20 px-4">
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">Billing Summary</h1>
+        </div>
+
+        <!-- Current Bill Card -->
+        <div class="card bg-primary-light rounded-xl p-4 mb-6">
+            <div class="grid grid-cols-2 gap-4 mb-4">
+                <div class="text-center">
+                    <div class="flex items-center justify-center mb-2">
+                        <i class="fas fa-file-invoice-dollar text-primary mr-2"></i>
+                        <span class="text-sm font-medium text-gray-700">Current Bill</span>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-800" data-bind="bill.current">€57.00</p>
+                </div>
+                <div class="text-center">
+                    <div class="flex items-center justify-center mb-2">
+                        <i class="fas fa-bolt text-primary mr-2"></i>
+                        <span class="text-sm font-medium text-gray-700">Energy Used</span>
+                    </div>
+                    <p class="text-2xl font-bold text-gray-800" data-bind="bill.energy">129.5 kWh</p>
+                </div>
+            </div>
+            <div class="border-t border-primary/20 pt-3 space-y-1">
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">Contract:</span>
+                    <span class="font-medium" data-bind="bill.contract">Bioraria (F1/F23)</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">Period:</span>
+                    <span class="font-medium" data-bind="bill.period">01 Jul - 31 Aug 2025</span>
+                </div>
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-600">Est. Final Bill:</span>
+                    <span class="font-bold" data-bind="bill.estimated">€83.40</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Better Tariffs Available -->
+        <div class="mb-6">
+            <h3 class="font-semibold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-star mr-2 text-accent"></i>
+                Scopri le Offerte Migliori
+            </h3>
+            
+            <!-- Savings Card -->
+            <div class="card bg-primary text-white rounded-xl p-4 mb-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="text-center">
+                        <p class="text-sm opacity-90 mb-1">Costo Annuale</p>
+                        <p class="text-2xl font-bold" data-bind="savings.annual">€920.47</p>
+                        <p class="text-xs opacity-80">Basato sulla tue bollette</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-sm opacity-90 mb-1">Risparmio Stimato</p>
+                        <p class="text-2xl font-bold" data-bind="savings.estimated">€120.00 <span class="text-sm">/ anno</span></p>
+                        <p class="text-xs opacity-80">Stima migliore offerta</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Better Offers Button -->
+            <button class="w-full bg-primary hover:bg-primary/90 text-white font-semibold py-3 rounded-xl transition-colors" onclick="showBetterOffers()">
+                Scegli le offerte migliori
+            </button>
+        </div>
+
+        <!-- Available Plans -->
+        <div class="space-y-4 mb-6">
+            <div class="card bg-white rounded-xl p-4 shadow-sm">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-leaf text-green-600 text-sm"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">Green Energy Plan</h4>
+                            <p class="text-xs text-gray-500">12 months</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Type</span>
+                        <span class="font-medium">Monoraria (Fixed)</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">If You Used This</span>
+                        <span class="font-medium">€48.20</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Savings</span>
+                        <span class="font-bold text-green-600">€8.80</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card bg-white rounded-xl p-4 shadow-sm">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                            <i class="fas fa-bolt text-blue-600 text-sm"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-gray-800">Enel Flex Control</h4>
+                            <p class="text-xs text-gray-500">12 months</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Type</span>
+                        <span class="font-medium">Monoraria (Fixed)</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">If You Used This</span>
+                        <span class="font-medium">€48.20</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-gray-600">Savings</span>
+                        <span class="font-bold text-green-600">€8.80</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Show More Button -->
+        <button class="w-full text-primary font-semibold py-3 border border-primary rounded-xl hover:bg-primary hover:text-white transition-colors mb-6" onclick="showMoreOffers()">
+            Show more
+        </button>
+
+        <!-- Billing History -->
+        <div class="card bg-white rounded-xl p-4 mb-6 shadow-sm">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-history mr-2 text-primary"></i>
+                    Billing History
+                </h3>
+                <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-xs font-medium">
+                    ↑ +3%
+                </span>
+            </div>
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <p class="text-2xl font-bold text-gray-800" data-bind="history.current">62€</p>
+                    <p class="text-sm text-gray-600">estimated final bill 80€</p>
+                </div>
+            </div>
+            <div class="h-32">
+                <canvas id="billingChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: EconomicsScreen -->
+
+    <!-- @COMPONENT: MenuScreen -->
+    <div id="menu-screen" class="screen pt-20 px-4">
+        <div class="mb-6">
+            <h1 class="text-2xl font-bold text-gray-800">My Profile</h1>
+        </div>
+
+        <!-- Profile Card -->
+        <div class="card bg-primary-light rounded-xl p-4 mb-6">
+            <div class="flex items-center">
+                <!-- Profile picture placeholder from existing design -->
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=80&h=80" alt="Profile picture" class="w-12 h-12 rounded-full mr-4" data-mock="true">
+                <div class="flex-1">
+                    <h3 class="font-semibold text-gray-800" data-bind="user.name">Inayat Ali</h3>
+                    <p class="text-sm text-gray-600" data-bind="user.email">inayatalikatif@Gmail.com</p>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+            </div>
+        </div>
+
+        <!-- Menu Options -->
+        <div class="space-y-4 mb-6">
+            <button class="card w-full bg-white rounded-xl p-4 shadow-sm flex items-center justify-between hover:bg-gray-50 transition-colors" onclick="showNotificationSettings()">
+                <div class="flex items-center">
+                    <i class="fas fa-bell text-primary mr-3"></i>
+                    <span class="font-medium text-gray-800">Notification Settings</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+            </button>
+            
+            <button class="card w-full bg-white rounded-xl p-4 shadow-sm flex items-center justify-between hover:bg-gray-50 transition-colors" onclick="showContactSupport()">
+                <div class="flex items-center">
+                    <i class="fas fa-headset text-primary mr-3"></i>
+                    <span class="font-medium text-gray-800">Contact Support</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+            </button>
+            
+            <button class="card w-full bg-white rounded-xl p-4 shadow-sm flex items-center justify-between hover:bg-gray-50 transition-colors" onclick="showSettings()">
+                <div class="flex items-center">
+                    <i class="fas fa-cog text-primary mr-3"></i>
+                    <span class="font-medium text-gray-800">Settings</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+            </button>
+            
+            <button class="card w-full bg-white rounded-xl p-4 shadow-sm flex items-center justify-between hover:bg-gray-50 transition-colors" onclick="showAbout()">
+                <div class="flex items-center">
+                    <i class="fas fa-info-circle text-primary mr-3"></i>
+                    <span class="font-medium text-gray-800">About</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+            </button>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="space-y-3">
+            <button class="w-full bg-gray-100 text-gray-700 font-semibold py-3 rounded-xl hover:bg-gray-200 transition-colors" onclick="confirmDeleteAccount()">
+                Delete Account
+            </button>
+            
+            <button class="w-full bg-red-500 hover:bg-red-600 text-white font-semibold py-3 rounded-xl transition-colors" onclick="confirmLogout()">
+                Logout
+            </button>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: MenuScreen -->
+
+    <!-- @COMPONENT: BottomNavigation -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-2 z-40">
+        <div class="flex justify-around items-center">
+            <button class="tab-button active flex flex-col items-center py-2 px-3" data-screen="home">
+                <i class="fas fa-home text-lg mb-1"></i>
+                <span class="text-xs">Home</span>
+            </button>
+            <button class="tab-button flex flex-col items-center py-2 px-3" data-screen="trend">
+                <i class="fas fa-chart-line text-lg mb-1"></i>
+                <span class="text-xs">Trend</span>
+            </button>
+            <button class="tab-button flex flex-col items-center py-2 px-3" data-screen="realtime">
+                <i class="fas fa-clock text-lg mb-1"></i>
+                <span class="text-xs">Realtime</span>
+            </button>
+            <button class="tab-button flex flex-col items-center py-2 px-3" data-screen="economics">
+                <i class="fas fa-euro-sign text-lg mb-1"></i>
+                <span class="text-xs">Economics</span>
+            </button>
+            <button class="tab-button flex flex-col items-center py-2 px-3" data-screen="menu">
+                <i class="fas fa-bars text-lg mb-1"></i>
+                <span class="text-xs">Menu</span>
+            </button>
+        </div>
+        <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-16 h-1 bg-gray-800 rounded-full"></div>
+    </nav>
+    <!-- @END_COMPONENT: BottomNavigation -->
+
+    <!-- @COMPONENT: NotificationModal -->
+    <div id="notification-modal" class="modal">
+        <div class="bg-white rounded-xl p-6 m-4 max-w-sm w-full">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-gray-800">Notifications</h3>
+                <button onclick="closeModal('notification-modal')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="space-y-3">
+                <div class="flex items-start space-x-3 p-3 bg-blue-50 rounded-lg">
+                    <i class="fas fa-info-circle text-blue-500 mt-1"></i>
+                    <div>
+                        <p class="text-sm font-medium text-gray-800">Energy Usage Alert</p>
+                        <p class="text-xs text-gray-600">Your consumption is 15% higher than usual today.</p>
+                        <p class="text-xs text-gray-400 mt-1">2 hours ago</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-3 p-3 bg-green-50 rounded-lg">
+                    <i class="fas fa-leaf text-green-500 mt-1"></i>
+                    <div>
+                        <p class="text-sm font-medium text-gray-800">Savings Opportunity</p>
+                        <p class="text-xs text-gray-600">Switch to Green Energy Plan and save €8.80 monthly.</p>
+                        <p class="text-xs text-gray-400 mt-1">1 day ago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: NotificationModal -->
+
+    <!-- @COMPONENT: NotificationSettingsModal -->
+    <div id="notification-settings-modal" class="modal">
+        <div class="bg-white rounded-xl p-6 m-4 max-w-sm w-full">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-gray-800">Notification Settings</h3>
+                <button onclick="closeModal('notification-settings-modal')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="font-medium text-gray-800">Energy Alerts</p>
+                        <p class="text-sm text-gray-600">Get notified about high usage</p>
+                    </div>
+                    <div class="toggle-switch active" onclick="toggleSwitch(this)">
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="font-medium text-gray-800">Billing Reminders</p>
+                        <p class="text-sm text-gray-600">Monthly billing notifications</p>
+                    </div>
+                    <div class="toggle-switch active" onclick="toggleSwitch(this)">
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="font-medium text-gray-800">Savings Tips</p>
+                        <p class="text-sm text-gray-600">Weekly energy saving tips</p>
+                    </div>
+                    <div class="toggle-switch" onclick="toggleSwitch(this)">
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="font-medium text-gray-800">System Updates</p>
+                        <p class="text-sm text-gray-600">App updates and maintenance</p>
+                    </div>
+                    <div class="toggle-switch active" onclick="toggleSwitch(this)">
+                        <div class="toggle-slider"></div>
+                    </div>
+                </div>
+            </div>
+            <button class="w-full mt-6 bg-primary text-white font-semibold py-3 rounded-xl hover:bg-primary/90 transition-colors">
+                Save Changes
+            </button>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: NotificationSettingsModal -->
+
+    <!-- @COMPONENT: ContactSupportModal -->
+    <div id="contact-support-modal" class="modal">
+        <div class="bg-white rounded-xl p-6 m-4 max-w-sm w-full">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-lg font-semibold text-gray-800">Contact Support</h3>
+                <button onclick="closeModal('contact-support-modal')" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form class="space-y-4" data-event="submit:handleSupportForm">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Subject</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary">
+                        <option>Billing Issue</option>
+                        <option>Technical Problem</option>
+                        <option>Account Question</option>
+                        <option>Feature Request</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                    <textarea rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-primary focus:border-primary" placeholder="Describe your issue or question..."></textarea>
+                </div>
+                <div class="flex space-x-3">
+                    <button type="button" onclick="closeModal('contact-support-modal')" class="flex-1 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit" class="flex-1 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                        Send Message
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: ContactSupportModal -->
+
+    <script>
+        (function() {
+            // Tab navigation functionality
+            function initTabNavigation() {
+                const tabButtons = document.querySelectorAll('.tab-button');
+                const screens = document.querySelectorAll('.screen');
+
+                tabButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const targetScreen = button.dataset.screen;
+                        
+                        // Remove active class from all tabs and screens
+                        tabButtons.forEach(tab => tab.classList.remove('active'));
+                        screens.forEach(screen => screen.classList.remove('active'));
+                        
+                        // Add active class to clicked tab and corresponding screen
+                        button.classList.add('active');
+                        document.getElementById(targetScreen + '-screen').classList.add('active');
+                    });
+                });
+            }
+
+            // Period selector for trends
+            function initPeriodSelector() {
+                const periodButtons = document.querySelectorAll('.period-btn');
+                
+                periodButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        periodButtons.forEach(btn => {
+                            btn.classList.remove('active');
+                            btn.classList.remove('bg-white', 'text-primary', 'shadow-sm');
+                            btn.classList.add('text-gray-600');
+                        });
+                        
+                        button.classList.add('active', 'bg-white', 'text-primary', 'shadow-sm');
+                        button.classList.remove('text-gray-600');
+                        
+                        // TODO: Update chart data based on selected period
+                        updateChartData(button.dataset.period);
+                    });
+                });
+            }
+
+            // Chart initialization
+            function initCharts() {
+                // Usage Pie Chart
+                const usageCtx = document.getElementById('usageChart');
+                if (usageCtx) {
+                    new Chart(usageCtx, {
+                        type: 'doughnut',
+                        data: {
+                            datasets: [{
+                                data: [46.8, 31.2, 20.5, 10.8],
+                                backgroundColor: ['#FF6B47', '#3B82F6', '#10B981', '#6B7280'],
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            cutout: '70%',
+                            plugins: { legend: { display: false } },
+                            maintainAspectRatio: false
+                        }
+                    });
+                }
+
+                // Consumption Trend Chart
+                const consumptionCtx = document.getElementById('consumptionChart');
+                if (consumptionCtx) {
+                    new Chart(consumptionCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                            datasets: [{
+                                data: [15, 22, 18, 24, 20, 12, 16],
+                                backgroundColor: ['#B3F5FF', '#B3F5FF', '#B3F5FF', '#2D8E8E', '#B3F5FF', '#B3F5FF', '#B3F5FF'],
+                                borderRadius: 8,
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: { display: false },
+                                x: { display: true, grid: { display: false } }
+                            },
+                            plugins: { legend: { display: false } }
+                        }
+                    });
+                }
+
+                // Live Usage Chart
+                const liveCtx = document.getElementById('liveChart');
+                if (liveCtx) {
+                    const liveChart = new Chart(liveCtx, {
+                        type: 'line',
+                        data: {
+                            labels: Array(20).fill('').map((_, i) => i),
+                            datasets: [{
+                                data: Array(20).fill(0).map(() => Math.random() * 100 + 200),
+                                borderColor: '#2D8E8E',
+                                backgroundColor: 'rgba(45, 142, 142, 0.1)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4,
+                                pointRadius: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: { display: false },
+                                x: { display: false }
+                            },
+                            plugins: { legend: { display: false } }
+                        }
+                    });
+
+                    // Simulate real-time updates
+                    setInterval(() => {
+                        liveChart.data.datasets[0].data.shift();
+                        liveChart.data.datasets[0].data.push(Math.random() * 100 + 200);
+                        liveChart.update('none');
+                    }, 2000);
+                }
+
+                // Billing History Chart
+                const billingCtx = document.getElementById('billingChart');
+                if (billingCtx) {
+                    new Chart(billingCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Jun/Jul', 'Aug/Sep', 'Oct/Nov', 'Dec/Jan', 'Feb/Mar', 'Apr/May'],
+                            datasets: [{
+                                data: [65, 75, 45, 35, 80, 70],
+                                backgroundColor: '#2D8E8E',
+                                borderRadius: 4,
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: { display: true, max: 100 },
+                                x: { display: true, grid: { display: false } }
+                            },
+                            plugins: { legend: { display: false } }
+                        }
+                    });
+                }
+
+                // Weekly Comparison Chart
+                const weeklyCtx = document.getElementById('weeklyChart');
+                if (weeklyCtx) {
+                    new Chart(weeklyCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                            datasets: [{
+                                data: [12, 8, 15, 10, 18, 14, 11],
+                                backgroundColor: '#E5E7EB',
+                                borderRadius: 2,
+                                borderWidth: 0
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: { display: false },
+                                x: { display: false }
+                            },
+                            plugins: { legend: { display: false } }
+                        }
+                    });
+                }
+            }
+
+            // Modal functions
+            window.showNotifications = function() {
+                document.getElementById('notification-modal').classList.add('active');
+            };
+
+            window.showNotificationSettings = function() {
+                document.getElementById('notification-settings-modal').classList.add('active');
+            };
+
+            window.showContactSupport = function() {
+                document.getElementById('contact-support-modal').classList.add('active');
+            };
+
+            window.closeModal = function(modalId) {
+                document.getElementById(modalId).classList.remove('active');
+            };
+
+            window.toggleSwitch = function(element) {
+                element.classList.toggle('active');
+            };
+
+            window.showProfile = function() {
+                // Switch to menu tab
+                document.querySelectorAll('.tab-button').forEach(tab => tab.classList.remove('active'));
+                document.querySelectorAll('.screen').forEach(screen => screen.classList.remove('active'));
+                
+                document.querySelector('[data-screen="menu"]').classList.add('active');
+                document.getElementById('menu-screen').classList.add('active');
+            };
+
+            window.confirmLogout = function() {
+                if (confirm('Are you sure you want to logout?')) {
+                    // TODO: Implement logout functionality
+                    alert('Logout functionality would be implemented here');
+                }
+            };
+
+            window.confirmDeleteAccount = function() {
+                if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                    // TODO: Implement account deletion functionality
+                    alert('Account deletion functionality would be implemented here');
+                }
+            };
+
+            window.showBetterOffers = function() {
+                // TODO: Navigate to better offers screen
+                alert('Better offers functionality would be implemented here');
+            };
+
+            window.showMoreOffers = function() {
+                // TODO: Load more offers
+                alert('Show more offers functionality would be implemented here');
+            };
+
+            window.showAllTips = function() {
+                // TODO: Show all energy saving tips
+                alert('All tips functionality would be implemented here');
+            };
+
+            window.showSettings = function() {
+                // TODO: Show settings screen
+                alert('Settings functionality would be implemented here');
+            };
+
+            window.showAbout = function() {
+                // TODO: Show about screen
+                alert('About functionality would be implemented here');
+            };
+
+            window.updateChartData = function(period) {
+                // TODO: Update chart data based on selected period
+                console.log('Updating chart data for period:', period);
+            };
+
+            // Close modals when clicking outside
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('modal')) {
+                    e.target.classList.remove('active');
+                }
+            });
+
+            // Initialize everything when DOM is loaded
+            document.addEventListener('DOMContentLoaded', function() {
+                initTabNavigation();
+                initPeriodSelector();
+                initCharts();
+            });
+        })();
+    </script>
+</body>
+</html>

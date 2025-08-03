@@ -34,21 +34,21 @@ export default function SignUpPage() {
     localStorage.setItem('isLoggedIn', 'true');
     localStorage.setItem('userEmail', formData.email);
     localStorage.setItem('userName', formData.fullName);
-    setLocation("/onboarding");
+    setLocation("/setup-wizard");
   };
 
   const handleGoogleSignUp = () => {
     // Demo Google signup
     localStorage.setItem('isLoggedIn', 'true');
     localStorage.setItem('loginMethod', 'google');
-    setLocation("/onboarding");
+    setLocation("/setup-wizard");
   };
 
   const handleAppleSignUp = () => {
     // Demo Apple signup
     localStorage.setItem('isLoggedIn', 'true');
     localStorage.setItem('loginMethod', 'apple');
-    setLocation("/onboarding");
+    setLocation("/setup-wizard");
   };
 
   return (

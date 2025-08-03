@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">e-snapp InsightFlow</string>
+    <string name="title_activity_main">e-snapp InsightFlow</string>
+    <string name="package_name">com.esnapp.insightflow</string>
+    <string name="custom_url_scheme">com.esnapp.insightflow</string>
+</resources>
