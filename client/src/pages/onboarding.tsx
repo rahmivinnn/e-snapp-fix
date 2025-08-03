@@ -56,25 +56,8 @@ export default function OnboardingPage() {
 
   return (
     <div className="min-h-screen bg-white max-w-md mx-auto flex flex-col relative overflow-hidden">
-      {/* Status bar mockup */}
-      <div className="absolute top-0 left-0 right-0 h-11 bg-white border-b border-gray-100 flex items-center justify-between px-4 text-xs font-medium z-20">
-        <span>8:45</span>
-        <div className="flex items-center space-x-1">
-          <div className="flex space-x-0.5">
-            <div className="w-1 h-1 bg-black rounded-full"></div>
-            <div className="w-1 h-1 bg-black rounded-full"></div>
-            <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
-            <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
-          </div>
-          <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M2 17h20v2H2zm1.15-4.05L4 11.47l.85 1.48L3 12.95z"/>
-          </svg>
-          <span className="bg-green-500 text-white px-1 rounded text-[10px]">100</span>
-        </div>
-      </div>
-
       {/* Main Content */}
-      <div className="flex-1 pt-11">
+      <div className="flex-1">
         {/* Image Section */}
         <div className="h-96 flex items-center justify-center transition-all duration-500 bg-white">
           <div className={`transform transition-all duration-700 ${isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
@@ -128,10 +111,7 @@ export default function OnboardingPage() {
         </div>
       </div>
 
-      {/* Bottom indicator */}
-      <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2">
-        <div className="w-32 h-1 bg-black rounded-full"></div>
-      </div>
+
     </div>
   );
 }
