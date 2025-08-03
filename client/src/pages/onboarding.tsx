@@ -55,31 +55,31 @@ export default function OnboardingPage() {
   const currentStepData = onboardingSteps[currentStep];
 
   return (
-    <div className="h-screen bg-white max-w-sm mx-auto flex flex-col overflow-hidden">
-      {/* Image Section - mengoptimalkan untuk layar HP */}
-      <div className="flex-1 flex items-center justify-center p-4 bg-white">
+    <div className="h-screen bg-white w-full max-w-sm mx-auto flex flex-col overflow-hidden">
+      {/* Image Section - optimal untuk mobile */}
+      <div className="flex-1 flex items-center justify-center px-4 py-8 bg-white">
         <div className={`transform transition-all duration-700 ${isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
           <img 
             src={currentStepData.image}
             alt={currentStepData.title}
-            className="w-full h-auto max-w-xs object-contain rounded-2xl"
+            className="w-full h-auto max-w-80 max-h-64 object-contain rounded-2xl"
           />
         </div>
       </div>
 
-      {/* Content Section - compact untuk HP */}
-      <div className="bg-white px-6 pb-8 pt-4 space-y-6">
-        <div className={`transform transition-all duration-500 delay-200 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'}`}>
+      {/* Content Section - compact untuk mobile */}
+      <div className="bg-white px-6 pb-6 pt-2 flex flex-col justify-end">
+        <div className={`transform transition-all duration-500 delay-200 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'} mb-6`}>
           <h2 className="text-xl font-bold text-gray-900 mb-3 text-center">
             Track Live Consumption
           </h2>
-          <p className="text-gray-600 text-center leading-relaxed text-sm px-2">
+          <p className="text-gray-600 text-center leading-relaxed text-sm">
             Lorem Ipsum Dolor Sit Amet Consectetur. Quis Tortor Risus Lacus.
           </p>
         </div>
 
         {/* Navigation Buttons */}
-        <div className="space-y-3">
+        <div className="space-y-3 mb-4">
           <Button 
             onClick={handleNext}
             className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 text-base font-medium transition-all duration-200 hover:scale-[1.02] rounded-xl"
@@ -96,7 +96,7 @@ export default function OnboardingPage() {
         </div>
 
         {/* Progress Dots */}
-        <div className="flex justify-center space-x-2">
+        <div className="flex justify-center space-x-2 pb-2">
           {onboardingSteps.map((_, index) => (
             <div
               key={index}
