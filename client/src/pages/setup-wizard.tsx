@@ -103,10 +103,10 @@ export default function SetupWizard() {
         <div></div>
       </div>
       
-      <div className="flex-1 flex flex-col justify-center items-center px-4 py-4 space-y-6">
+      <div className="flex-1 flex flex-col justify-center items-center px-4 py-2 space-y-4">
         <img src={logoImage} alt="e-snapp" className="h-16 w-auto" />
         
-        <div className="w-full max-w-xs">
+        <div className="w-full max-w-[200px]">
           <img src={houseImage} alt="Smart Home" className="w-full h-auto rounded-lg" />
         </div>
         
@@ -116,7 +116,7 @@ export default function SetupWizard() {
           <p className="text-gray-600 text-sm">have the device.</p>
         </div>
         
-        <div className="w-full space-y-4">
+        <div className="w-full space-y-3">
           <Button 
             onClick={() => setCurrentStep("qr-scan")}
             disabled={isLoading}
@@ -173,16 +173,16 @@ export default function SetupWizard() {
         <div></div>
       </div>
       
-      <div className="flex-1 flex flex-col justify-center items-center px-4 py-4 space-y-6">
+      <div className="flex-1 flex flex-col justify-center items-center px-4 py-2 space-y-4">
         <div className="text-center space-y-2">
-          <h2 className="text-xl font-semibold">Pair your Smart Energy Meter</h2>
+          <h2 className="text-lg sm:text-xl font-semibold">Pair your Smart Energy Meter</h2>
           <p className="text-gray-600 text-sm">Use your phone camera to scan the QR code on</p>
           <p className="text-gray-600 text-sm">the back of your device.</p>
         </div>
         
-        <div className="w-64 h-64 bg-gray-100 rounded-xl flex items-center justify-center relative shadow-lg">
-          <div className="w-56 h-56 border-2 border-gray-300 bg-white rounded-lg flex items-center justify-center">
-            <svg className="w-32 h-32" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <div className="w-48 h-48 sm:w-64 sm:h-64 bg-gray-100 rounded-xl flex items-center justify-center relative shadow-lg">
+          <div className="w-40 h-40 sm:w-56 sm:h-56 border-2 border-gray-300 bg-white rounded-lg flex items-center justify-center">
+            <svg className="w-24 h-24 sm:w-32 sm:h-32" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect width="29" height="29" fill="white"/>
               <rect x="0" y="0" width="7" height="7" fill="black"/>
               <rect x="1" y="1" width="5" height="5" fill="white"/>
@@ -533,14 +533,14 @@ export default function SetupWizard() {
         <div></div>
       </div>
       
-      <div className="flex-1 px-6 pt-6">
-        <div className="text-center space-y-2 mb-6">
-          <h2 className="text-xl font-semibold">Connect to Wi-Fi</h2>
+      <div className="flex-1 px-4 pt-4">
+        <div className="text-center space-y-2 mb-4">
+          <h2 className="text-lg sm:text-xl font-semibold">Connect to Wi-Fi</h2>
           <p className="text-gray-600">Choose a Wi-Fi network to connect your device</p>
           <p className="text-gray-600">to the internet.</p>
         </div>
         
-        <div className="space-y-4">
+        <div className="space-y-3">
           <div className="flex items-center justify-between">
             <span className="text-gray-700">Networks Nearby</span>
             <div className="w-5 h-5 border-2 border-gray-400 rounded-full animate-spin border-t-transparent"></div>
@@ -550,7 +550,7 @@ export default function SetupWizard() {
             <div 
               key={i}
               onClick={handleNext}
-              className="flex items-center justify-between p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"
+              className="flex items-center justify-between p-3 sm:p-4 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50"
             >
               <div className="flex items-center space-x-3">
                 <div className="w-5 h-5">
@@ -580,11 +580,11 @@ export default function SetupWizard() {
         <div></div>
       </div>
       
-      <div className="flex-1 px-6 pt-6">
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-4">WIFI Router 1</h2>
+      <div className="flex-1 px-4 pt-4">
+        <div className="mb-4">
+          <h2 className="text-lg font-semibold mb-3">WIFI Router 1</h2>
           
-          <div className="space-y-4">
+          <div className="space-y-3">
             <div>
               <label className="block text-gray-700 mb-2">Password</label>
               <input 
@@ -601,7 +601,7 @@ export default function SetupWizard() {
           </div>
         </div>
         
-        <div className="space-y-4">
+        <div className="space-y-3">
           <Button 
             onClick={handleNext}
             className="w-full bg-primary hover:bg-primary/90 text-white h-12 rounded-lg"
@@ -628,12 +628,12 @@ export default function SetupWizard() {
         <div></div>
       </div>
       
-      <div className="flex-1 flex flex-col justify-center items-center px-6 space-y-8">
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-4">WIFI Router 1</h2>
+      <div className="flex-1 flex flex-col justify-center items-center px-4 space-y-6">
+        <div className="mb-4">
+          <h2 className="text-lg font-semibold mb-3">WIFI Router 1</h2>
         </div>
         
-        <div className="w-24 h-24 bg-primary rounded-full flex items-center justify-center">
+        <div className="w-20 h-20 sm:w-24 sm:h-24 bg-primary rounded-full flex items-center justify-center">
           <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
             <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
           </svg>
@@ -661,8 +661,8 @@ export default function SetupWizard() {
         <div></div>
       </div>
       
-      <div className="flex-1 flex flex-col justify-center items-center px-6 space-y-8">
-        <div className="w-32 h-24 bg-gray-200 rounded-lg flex items-center justify-center">
+      <div className="flex-1 flex flex-col justify-center items-center px-4 space-y-6">
+        <div className="w-28 h-20 sm:w-32 sm:h-24 bg-gray-200 rounded-lg flex items-center justify-center">
           <div className="relative">
             <div className="w-16 h-12 bg-white rounded border border-gray-300 flex items-center justify-center">
               <div className="w-8 h-1 bg-gray-400 rounded"></div>
@@ -708,13 +708,13 @@ export default function SetupWizard() {
         <div></div>
       </div>
       
-      <div className="flex-1 flex flex-col justify-center items-center px-6 py-8 space-y-8">
-        <div className="w-full max-w-sm">
+      <div className="flex-1 flex flex-col justify-center items-center px-4 py-6 space-y-6">
+        <div className="w-full max-w-xs sm:max-w-sm">
           <img src={houseImage} alt="Smart Home" className="w-full h-auto rounded-lg shadow-lg" />
         </div>
         
-        <div className="text-center space-y-3">
-          <h2 className="text-xl font-semibold text-gray-800">Smart Home Setup</h2>
+        <div className="text-center space-y-2">
+          <h2 className="text-lg sm:text-xl font-semibold text-gray-800">Smart Home Setup</h2>
           <p className="text-gray-600 text-sm leading-relaxed">Connect to your smart device or purchase one if you don't have it yet.</p>
         </div>
         
