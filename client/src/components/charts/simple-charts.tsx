@@ -87,48 +87,44 @@ export function SimpleEnergyUsageChart() {
               <circle 
                 cx="50" cy="50" r="36" 
                 fill="none" 
-                stroke="#FF6B35" 
-                strokeWidth="8"
+                stroke="#f97316" 
+                strokeWidth="6"
                 strokeDasharray={`${animatedProgress.kitchen * 2.26} 226`}
                 strokeDashoffset="0"
                 className="transition-all duration-1000 ease-out"
-                strokeLinecap="round"
               />
               
               {/* Heating - Blue */}
               <circle 
                 cx="50" cy="50" r="36" 
                 fill="none" 
-                stroke="#3B82F6" 
-                strokeWidth="8"
+                stroke="#3b82f6" 
+                strokeWidth="6"
                 strokeDasharray={`${animatedProgress.heating * 2.26} 226`}
                 strokeDashoffset={`-${animatedProgress.kitchen * 2.26}`}
                 className="transition-all duration-1000 ease-out"
-                strokeLinecap="round"
               />
               
               {/* Lighting - Green */}
               <circle 
                 cx="50" cy="50" r="36" 
                 fill="none" 
-                stroke="#10B981" 
-                strokeWidth="8"
+                stroke="#22c55e" 
+                strokeWidth="6"
                 strokeDasharray={`${animatedProgress.lighting * 2.26} 226`}
                 strokeDashoffset={`-${(animatedProgress.kitchen + animatedProgress.heating) * 2.26}`}
                 className="transition-all duration-1000 ease-out"
-                strokeLinecap="round"
               />
               
               {/* Other - Gray */}
               <circle 
                 cx="50" cy="50" r="36" 
                 fill="none" 
-                stroke="#94A3B8" 
-                strokeWidth="8"
+                stroke="#6b7280" 
+                strokeWidth="6"
                 strokeDasharray={`${animatedProgress.other * 2.26} 226`}
                 strokeDashoffset={`-${(animatedProgress.kitchen + animatedProgress.heating + animatedProgress.lighting) * 2.26}`}
                 className="transition-all duration-1000 ease-out"
-                strokeLinecap="round"
               />
             </svg>
             
@@ -141,37 +137,37 @@ export function SimpleEnergyUsageChart() {
           </div>
 
           {/* Enhanced Legend */}
-          <div className="flex-1 space-y-2.5">
-            <div className="flex items-center justify-between group hover:bg-slate-50 rounded-lg p-1.5 transition-colors">
-              <div className="flex items-center gap-2.5">
-                <div className="w-3 h-3 rounded-full bg-[#FF6B35] shadow-sm"></div>
-                <span className="text-sm font-medium text-slate-700">Kitchen</span>
+          <div className="flex-1 space-y-1.5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-2.5 h-2.5 rounded-sm bg-orange-500"></div>
+                <span className="text-xs text-gray-700">Kitchen</span>
               </div>
-              <span className="text-sm font-bold text-slate-800">{animatedValues.kitchen.toFixed(1)} kWh</span>
+              <span className="text-xs font-semibold text-gray-800">{animatedValues.kitchen.toFixed(1)} kWh</span>
             </div>
             
-            <div className="flex items-center justify-between group hover:bg-slate-50 rounded-lg p-1.5 transition-colors">
-              <div className="flex items-center gap-2.5">
-                <div className="w-3 h-3 rounded-full bg-[#3B82F6] shadow-sm"></div>
-                <span className="text-sm font-medium text-slate-700">Heating</span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-2.5 h-2.5 rounded-sm bg-blue-500"></div>
+                <span className="text-xs text-gray-700">Heating</span>
               </div>
-              <span className="text-sm font-bold text-slate-800">{animatedValues.heating.toFixed(1)} kWh</span>
+              <span className="text-xs font-semibold text-gray-800">{animatedValues.heating.toFixed(1)} kWh</span>
             </div>
             
-            <div className="flex items-center justify-between group hover:bg-slate-50 rounded-lg p-1.5 transition-colors">
-              <div className="flex items-center gap-2.5">
-                <div className="w-3 h-3 rounded-full bg-[#10B981] shadow-sm"></div>
-                <span className="text-sm font-medium text-slate-700">Lighting</span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-2.5 h-2.5 rounded-sm bg-green-500"></div>
+                <span className="text-xs text-gray-700">Lighting</span>
               </div>
-              <span className="text-sm font-bold text-slate-800">{animatedValues.lighting.toFixed(1)} kWh</span>
+              <span className="text-xs font-semibold text-gray-800">{animatedValues.lighting.toFixed(1)} kWh</span>
             </div>
             
-            <div className="flex items-center justify-between group hover:bg-slate-50 rounded-lg p-1.5 transition-colors">
-              <div className="flex items-center gap-2.5">
-                <div className="w-3 h-3 rounded-full bg-[#94A3B8] shadow-sm"></div>
-                <span className="text-sm font-medium text-slate-700">Other</span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-2.5 h-2.5 rounded-sm bg-gray-400"></div>
+                <span className="text-xs text-gray-700">Other</span>
               </div>
-              <span className="text-sm font-bold text-slate-800">{animatedValues.other.toFixed(1)} kWh</span>
+              <span className="text-xs font-semibold text-gray-800">{animatedValues.other.toFixed(1)} kWh</span>
             </div>
           </div>
         </div>
@@ -221,58 +217,51 @@ export function SimpleHomePerformanceChart() {
   }, []);
 
   return (
-    <Card className="bg-gradient-to-br from-slate-800 via-slate-900 to-slate-800 text-white shadow-lg border-0 overflow-hidden">
+    <Card className="bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 text-white shadow-lg border-0 rounded-xl overflow-hidden">
       <CardContent className="p-4">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 bg-teal-400 rounded-lg flex items-center justify-center">
-              <Home className="h-4 w-4 text-slate-900" />
+            <div className="w-5 h-5 bg-teal-400 rounded-md flex items-center justify-center">
+              <Home className="h-3 w-3 text-gray-800" />
             </div>
-            <h3 className="text-base font-semibold text-white">Home Performance</h3>
+            <h3 className="text-sm font-semibold text-white">Home Performance</h3>
           </div>
-          <div className="bg-teal-400 text-slate-900 px-2.5 py-1 rounded-full text-xs font-bold">
+          <div className="bg-teal-400 text-gray-800 px-2 py-0.5 rounded-full text-xs font-bold">
             +15%
           </div>
         </div>
 
         <div className="mb-4">
-          <div className="text-3xl font-bold text-white mb-1">64%</div>
-          <div className="text-sm text-slate-300">Better than of homes of similar area.</div>
+          <div className="text-2xl font-bold text-white">64%</div>
+          <div className="text-xs text-gray-300">Better than of homes of similar area.</div>
         </div>
 
-        <div className="flex items-end justify-between gap-3 h-20">
-          <div className="flex-1 flex flex-col items-center gap-1">
-            <div className="text-xs font-bold text-white mb-1">€{animatedBars.average}.00</div>
+        <div className="flex items-end justify-between gap-2 h-16">
+          <div className="flex-1 text-center">
+            <div className="text-xs font-bold text-white mb-1">€{Math.round(animatedBars.average)}.00</div>
             <div 
-              className="w-full bg-slate-600 rounded-t-lg transition-all duration-1000 ease-out relative overflow-hidden"
-              style={{ height: `${(animatedBars.average / 80) * 100}%`, minHeight: '24px' }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-700 to-slate-500 rounded-t-lg" />
-            </div>
-            <div className="text-xs text-slate-400 text-center mt-1">Average</div>
+              className="w-full bg-gray-600 rounded-t transition-all duration-1000 ease-out"
+              style={{ height: `${(animatedBars.average / 80) * 100}%`, minHeight: '16px' }}
+            />
+            <div className="text-xs text-gray-400 mt-1">Average</div>
           </div>
 
-          <div className="flex-1 flex flex-col items-center gap-1">
-            <div className="text-xs font-bold text-white mb-1">€{animatedBars.yours}.00</div>
+          <div className="flex-1 text-center">
+            <div className="text-xs font-bold text-white mb-1">€{Math.round(animatedBars.yours)}.00</div>
             <div 
-              className="w-full bg-orange-500 rounded-t-lg transition-all duration-1000 ease-out relative overflow-hidden shadow-lg"
-              style={{ height: `${(animatedBars.yours / 80) * 100}%`, minHeight: '28px' }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-orange-600 to-orange-400 rounded-t-lg" />
-              <div className="absolute inset-0 bg-white/10 rounded-t-lg" />
-            </div>
-            <div className="text-xs text-white font-semibold text-center mt-1">Yours</div>
+              className="w-full bg-orange-500 rounded-t transition-all duration-1000 ease-out shadow-md"
+              style={{ height: `${(animatedBars.yours / 80) * 100}%`, minHeight: '20px' }}
+            />
+            <div className="text-xs text-white font-semibold mt-1">Yours</div>
           </div>
 
-          <div className="flex-1 flex flex-col items-center gap-1">
-            <div className="text-xs font-bold text-white mb-1">€{animatedBars.efficient}.00</div>
+          <div className="flex-1 text-center">
+            <div className="text-xs font-bold text-white mb-1">€{Math.round(animatedBars.efficient)}.00</div>
             <div 
-              className="w-full bg-slate-600 rounded-t-lg transition-all duration-1000 ease-out relative overflow-hidden"
-              style={{ height: `${(animatedBars.efficient / 80) * 100}%`, minHeight: '20px' }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-700 to-slate-500 rounded-t-lg" />
-            </div>
-            <div className="text-xs text-slate-400 text-center mt-1">Most Efficient</div>
+              className="w-full bg-gray-600 rounded-t transition-all duration-1000 ease-out"
+              style={{ height: `${(animatedBars.efficient / 80) * 100}%`, minHeight: '14px' }}
+            />
+            <div className="text-xs text-gray-400 mt-1">Most Efficient</div>
           </div>
         </div>
       </CardContent>
@@ -315,52 +304,39 @@ export function SimpleBillingCycleChart() {
   }, []);
 
   return (
-    <Card className="bg-white shadow-lg border-0 overflow-hidden">
+    <Card className="bg-white shadow-lg border border-gray-100 rounded-xl overflow-hidden">
       <CardContent className="p-4">
-        <div className="flex items-center gap-2 mb-4">
-          <div className="w-6 h-6 bg-teal-100 rounded-lg flex items-center justify-center">
-            <RotateCcw className="h-4 w-4 text-teal-600" />
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-5 h-5 bg-teal-500 rounded-md flex items-center justify-center">
+            <RotateCcw className="h-3 w-3 text-white" />
           </div>
-          <h3 className="text-base font-semibold text-slate-800">Current Billing Cycle</h3>
+          <h3 className="text-sm font-semibold text-gray-700">Current Billing Cycle</h3>
         </div>
 
-        <div className="space-y-4">
-          <div className="flex justify-between text-sm text-slate-600">
-            <span className="font-medium">01 Jul - 31 Aug 2025</span>
-            <span className="font-medium">45 Days Remaining</span>
+        <div className="space-y-3">
+          <div className="flex justify-between text-xs text-gray-500">
+            <span>01 Jul - 31 Aug 2025</span>
+            <span>45 Days Remaining</span>
           </div>
 
-          <div className="flex items-center justify-center gap-6">
-            <div className="text-center">
-              <div className="text-xs text-slate-500 mb-1">Current</div>
-              <div className="bg-teal-600 text-white px-4 py-3 rounded-xl shadow-lg">
-                <div className="text-xl font-bold">{Math.round(animatedUsage)}</div>
-                <div className="text-xs opacity-90">kWh</div>
-              </div>
-            </div>
-            
-            <div className="text-center">
-              <div className="text-xs text-slate-500 mb-1">Forecast</div>
-              <div className="bg-slate-400 text-white px-4 py-3 rounded-xl shadow-md">
-                <div className="text-xl font-bold">{forecast}</div>
-                <div className="text-xs opacity-90">kWh</div>
-              </div>
+          <div className="flex items-end justify-end">
+            <div className="bg-gray-500 text-white px-4 py-2 rounded-lg text-right">
+              <div className="text-lg font-bold">{forecast} kWh</div>
+              <div className="text-xs opacity-90">Forecast</div>
             </div>
           </div>
 
-          <div className="space-y-3">
-            <div className="w-full bg-slate-200 rounded-full h-2 overflow-hidden">
+          <div className="space-y-2">
+            <div className="w-full bg-gray-200 rounded-full h-2">
               <div 
-                className="bg-gradient-to-r from-teal-500 to-teal-600 h-full rounded-full transition-all duration-1500 ease-out shadow-sm" 
+                className="bg-teal-500 h-full rounded-full transition-all duration-1500 ease-out" 
                 style={{ width: `${animatedProgress}%` }}
               />
             </div>
-            <div className="flex justify-between items-center text-xs">
-              <span className="text-slate-500 font-medium">0 kWh</span>
-              <span className="font-bold text-teal-600 bg-teal-50 px-2 py-1 rounded-lg">
-                {animatedProgress.toFixed(1)}% used
-              </span>
-              <span className="text-slate-500 font-medium">{forecast} kWh</span>
+            <div className="flex justify-between items-center text-xs text-gray-600">
+              <span>0 kWh</span>
+              <span className="font-semibold text-teal-500">{animatedProgress.toFixed(1)}% used</span>
+              <span>{forecast} kWh</span>
             </div>
           </div>
         </div>
