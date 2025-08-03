@@ -6,7 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import UsageChart from "@/components/charts/usage-chart";
 import { useEnergyData } from "@/hooks/use-energy-data";
 import { mockUsageData } from "@/lib/mock-data";
-import { Zap, Home, Lightbulb, Leaf, TrendingUp, RotateCcw, Activity, ChevronRight } from "lucide-react";
+import { Zap, Home, Lightbulb, Leaf, TrendingUp, RotateCcw, Activity, ChevronRight, Clock, Euro, Menu } from "lucide-react";
 import type { BillingData } from "@shared/schema";
 import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
 
@@ -202,6 +202,36 @@ export default function HomePage() {
           </Button>
         </CardContent>
       </Card>
+
+      {/* Bottom Navigation Bar */}
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 max-w-md mx-auto">
+        <div className="flex items-center justify-around py-2">
+          <button className="flex flex-col items-center p-2 text-gray-600 hover:text-primary transition-colors">
+            <Home className="h-5 w-5" />
+            <span className="text-xs mt-1">Home</span>
+          </button>
+          
+          <button className="flex flex-col items-center p-2 text-gray-400 hover:text-primary transition-colors">
+            <TrendingUp className="h-5 w-5" />
+            <span className="text-xs mt-1">Trend</span>
+          </button>
+          
+          <button className="flex flex-col items-center p-2 text-gray-400 hover:text-primary transition-colors">
+            <Clock className="h-5 w-5" />
+            <span className="text-xs mt-1">Realtime</span>
+          </button>
+          
+          <button className="flex flex-col items-center p-2 text-gray-400 hover:text-primary transition-colors">
+            <Euro className="h-5 w-5" />
+            <span className="text-xs mt-1">Economics</span>
+          </button>
+          
+          <button className="flex flex-col items-center p-2 text-gray-400 hover:text-primary transition-colors">
+            <Menu className="h-5 w-5" />
+            <span className="text-xs mt-1">Menu</span>
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
