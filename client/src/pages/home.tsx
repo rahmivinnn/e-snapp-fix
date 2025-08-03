@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { SimpleEnergyUsageChart, SimpleHomePerformanceChart, SimpleBillingCycleChart } from "@/components/charts/simple-charts";
+import { TestChart, WorkingEnergyChart, WorkingHomeChart, WorkingBillingChart } from "@/components/charts/test-charts";
 import { useEnergyData } from "@/hooks/use-energy-data";
 import { Zap, Home, Lightbulb, Leaf, TrendingUp, RotateCcw, Activity, ChevronRight, Clock, Euro, Menu, BarChart3 } from "lucide-react";
 import type { BillingData } from "@shared/schema";
@@ -52,16 +52,19 @@ export default function HomePage() {
         </div>
       </div>
 
+      {/* DEBUG: Test Chart */}
+      <TestChart />
+
       {/* Interactive Charts Section */}
       <div className={`space-y-3 transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         {/* Billing Cycle Chart */}
-        <SimpleBillingCycleChart />
+        <WorkingBillingChart />
         
         {/* Energy Usage Chart */}
-        <SimpleEnergyUsageChart />
+        <WorkingEnergyChart />
         
         {/* Home Performance Chart */}
-        <SimpleHomePerformanceChart />
+        <WorkingHomeChart />
       </div>
 
       {/* CO2 Emissions Card */}
