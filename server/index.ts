@@ -8,17 +8,22 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Serve static files
-app.use(express.static('public'));
+// Serve static files with proper MIME types for PWA
+app.use(express.static('public', {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.js')) {
+      res.setHeader('Content-Type', 'application/javascript');
+    } else if (path.endsWith('.json')) {
+      res.setHeader('Content-Type', 'application/json');
+    } else if (path.endsWith('.svg')) {
+      res.setHeader('Content-Type', 'image/svg+xml');
+    }
+  }
+}));
 
 // Serve reset page
 app.get('/reset', (req, res) => {
   res.sendFile(path.join(process.cwd(), 'reset_app.html'));
-});
-
-// Debug page
-app.get('/debug', (req, res) => {
-  res.sendFile(path.join(process.cwd(), 'debug.html'));
 });
 
 app.use((req, res, next) => {
