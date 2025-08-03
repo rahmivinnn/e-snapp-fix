@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import onboarding1Image from "@assets/Rectangle 95 (1)_1754180967613.png";
-import onboarding2Image from "@assets/Rectangle 95 (2)_1754181269813.png";
-import onboarding3Image from "@assets/Rectangle 95 (3)_1754181269812.png";
+import onboarding2Image from "@assets/Rectangle 95 (2)_1754185374001.png";
+import onboarding3Image from "@assets/Rectangle 95 (3)_1754185374000.png";
 
 export default function OnboardingPage() {
   const [, setLocation] = useLocation();
@@ -17,20 +17,20 @@ export default function OnboardingPage() {
   const onboardingSteps = [
     {
       image: onboarding1Image,
-      title: "Smart Energy Monitoring",
-      description: "Monitor your home's energy consumption in real-time with advanced smart technology.",
+      title: "Track Live Consumption",
+      description: "Lorem Ipsum Dolor Sit Amet Consectetur. Quis Tortor Risus Lacus.",
       bgColor: "bg-gradient-to-br from-blue-400 to-blue-600"
     },
     {
       image: onboarding2Image, 
-      title: "Smart Home Control",
-      description: "Control and manage your smart home devices with intuitive energy monitoring tools.",
+      title: "Track Live Consumption",
+      description: "Lorem Ipsum Dolor Sit Amet Consectetur. Quis Tortor Risus Lacus.",
       bgColor: "bg-gradient-to-br from-green-400 to-green-600"
     },
     {
       image: onboarding3Image,
-      title: "Sustainable Living", 
-      description: "Make eco-friendly choices with real-time energy insights and renewable energy tracking.",
+      title: "Track Live Consumption", 
+      description: "Lorem Ipsum Dolor Sit Amet Consectetur. Quis Tortor Risus Lacus.",
       bgColor: "bg-gradient-to-br from-gray-400 to-gray-600"
     }
   ];
@@ -71,10 +71,10 @@ export default function OnboardingPage() {
       <div className="bg-white px-6 pb-6 pt-2 flex flex-col justify-end">
         <div className={`transform transition-all duration-500 delay-200 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'} mb-6`}>
           <h2 className="text-xl font-bold text-gray-900 mb-3 text-center">
-            Track Live Consumption
+            {currentStepData.title}
           </h2>
           <p className="text-gray-600 text-center leading-relaxed text-sm">
-            Lorem Ipsum Dolor Sit Amet Consectetur. Quis Tortor Risus Lacus.
+            {currentStepData.description}
           </p>
         </div>
 
@@ -101,7 +101,7 @@ export default function OnboardingPage() {
             <div
               key={index}
               className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === currentStep ? 'bg-teal-600 w-6' : 'bg-gray-300'
+                index === currentStep ? 'bg-green-600 w-6' : 'bg-gray-300'
               }`}
             />
           ))}
