@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import onboarding1Image from "@assets/Rectangle 95 (1)_1754180967613.png";
-import onboarding2Image from "@assets/Rectangle 95 (2)_1754185374001.png";
+import onboarding2Image from "@assets/Rectangle 95 (2)_1754185644374.png";
 import onboarding3Image from "@assets/Rectangle 95 (3)_1754185374000.png";
 
 export default function OnboardingPage() {
