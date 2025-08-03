@@ -10,76 +10,6 @@ import { useLocation } from "wouter";
 import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
 import houseImage from "@assets/Rectangle 102_1754150724561.png";
 
-  const renderDevice = () => (
-    <div className="flex flex-col min-h-screen max-h-screen overflow-hidden">
-      <div className="flex items-center justify-between p-4 border-b">
-        <ArrowLeft className="h-6 w-6 text-gray-600 cursor-pointer" onClick={handleBack} />
-        <h1 className="text-lg font-semibold text-gray-800">Device Setup Wizard</h1>
-        <div></div>
-      </div>
-      
-      <div className="flex-1 flex flex-col justify-center items-center px-4 py-4 space-y-6">
-        <img src={logoImage} alt="e-snapp" className="h-16 w-auto" />
-        
-        <div className="w-full max-w-xs">
-          <img src={houseImage} alt="Smart Home" className="w-full h-auto rounded-lg" />
-        </div>
-        
-        <div className="text-center space-y-2">
-          <h2 className="text-lg font-semibold">Welcome to e-snapp</h2>
-          <p className="text-gray-600 text-sm">Connect to a device or buy device if you don't</p>
-          <p className="text-gray-600 text-sm">have the device.</p>
-        </div>
-        
-        <div className="w-full space-y-4">
-          <Button 
-            onClick={() => setCurrentStep("qr-scan")}
-            disabled={isLoading}
-            className="w-full bg-primary hover:bg-primary/90 text-white h-12 rounded-lg hover:scale-105 active:scale-95 transition-all disabled:scale-100"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                Setting up...
-              </>
-            ) : (
-              <>
-                <Wifi className="h-4 w-4 mr-2" />
-                Add Device
-              </>
-            )}
-          </Button>
-          
-          <div className="flex items-center space-x-4">
-            <div className="flex-1 h-px bg-gray-300"></div>
-            <span className="text-gray-500 text-sm">Or</span>
-            <div className="flex-1 h-px bg-gray-300"></div>
-          </div>
-          
-          <div className="text-center space-y-3">
-            <p className="text-gray-600 text-sm">If you don't have the device yet</p>
-            <Button 
-              onClick={() => setLocation("/buy-device")}
-              variant="outline" 
-              className="w-full h-12 rounded-lg border-gray-300"
-            >
-              Buy it now
-            </Button>
-          </div>
-        </div>
-      </div>
-      
-      <div className="p-4">
-        <button 
-          onClick={handleSkip}
-          className="w-full text-gray-500 text-center py-3 hover:text-gray-700 transition-colors"
-        >
-          Skip for now
-        </button>
-      </div>
-    </div>
-  );
-
 type SetupStep = "device" | "qr-scan" | "wifi-list" | "wifi-password" | "wifi-connect" | "device-naming" | "home" | "appliances" | "tariff-type" | "tariff-details" | "bill-upload";
 
 export default function SetupWizard() {
@@ -164,6 +94,76 @@ export default function SetupWizard() {
         : [...prev.appliances, appliance]
     }));
   };
+
+  const renderDevice = () => (
+    <div className="flex flex-col min-h-screen max-h-screen overflow-hidden">
+      <div className="flex items-center justify-between p-4 border-b">
+        <ArrowLeft className="h-6 w-6 text-gray-600 cursor-pointer" onClick={handleBack} />
+        <h1 className="text-lg font-semibold text-gray-800">Device Setup Wizard</h1>
+        <div></div>
+      </div>
+      
+      <div className="flex-1 flex flex-col justify-center items-center px-4 py-4 space-y-6">
+        <img src={logoImage} alt="e-snapp" className="h-16 w-auto" />
+        
+        <div className="w-full max-w-xs">
+          <img src={houseImage} alt="Smart Home" className="w-full h-auto rounded-lg" />
+        </div>
+        
+        <div className="text-center space-y-2">
+          <h2 className="text-lg font-semibold">Welcome to e-snapp</h2>
+          <p className="text-gray-600 text-sm">Connect to a device or buy device if you don't</p>
+          <p className="text-gray-600 text-sm">have the device.</p>
+        </div>
+        
+        <div className="w-full space-y-4">
+          <Button 
+            onClick={() => setCurrentStep("qr-scan")}
+            disabled={isLoading}
+            className="w-full bg-primary hover:bg-primary/90 text-white h-12 rounded-lg hover:scale-105 active:scale-95 transition-all disabled:scale-100"
+          >
+            {isLoading ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                Setting up...
+              </>
+            ) : (
+              <>
+                <Wifi className="h-4 w-4 mr-2" />
+                Add Device
+              </>
+            )}
+          </Button>
+          
+          <div className="flex items-center space-x-4">
+            <div className="flex-1 h-px bg-gray-300"></div>
+            <span className="text-gray-500 text-sm">Or</span>
+            <div className="flex-1 h-px bg-gray-300"></div>
+          </div>
+          
+          <div className="text-center space-y-3">
+            <p className="text-gray-600 text-sm">If you don't have the device yet</p>
+            <Button 
+              onClick={() => setLocation("/buy-device")}
+              variant="outline" 
+              className="w-full h-12 rounded-lg border-gray-300"
+            >
+              Buy it now
+            </Button>
+          </div>
+        </div>
+      </div>
+      
+      <div className="p-4">
+        <button 
+          onClick={handleSkip}
+          className="w-full text-gray-500 text-center py-3 hover:text-gray-700 transition-colors"
+        >
+          Skip for now
+        </button>
+      </div>
+     </div>
+   );
 
   const renderQRScan = () => (
     <div className="flex flex-col min-h-screen max-h-screen overflow-hidden">
