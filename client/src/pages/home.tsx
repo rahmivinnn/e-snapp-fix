@@ -3,10 +3,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import UsageChart from "@/components/charts/usage-chart";
+import { EnergyUsageChart, HomePerformanceChart, BillingCycleChart } from "@/components/charts/interactive-energy-charts";
 import { useEnergyData } from "@/hooks/use-energy-data";
-import { mockUsageData } from "@/lib/mock-data";
-import { Zap, Home, Lightbulb, Leaf, TrendingUp, RotateCcw, Activity, ChevronRight, Clock, Euro, Menu } from "lucide-react";
+import { Zap, Home, Lightbulb, Leaf, TrendingUp, RotateCcw, Activity, ChevronRight, Clock, Euro, Menu, BarChart3 } from "lucide-react";
 import type { BillingData } from "@shared/schema";
 import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
 
@@ -51,78 +50,17 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Current Billing Cycle Card */}
-      <Card className={`card-hover bg-gradient-to-br from-blue-50 to-cyan-50 border-blue-100 transition-all duration-700 delay-300 hover:scale-105 hover:shadow-xl ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        <CardContent className="p-2">
-          <div className="flex items-center justify-between mb-1">
-            <h3 className="font-semibold text-gray-800 flex items-center gap-1 text-xs">
-              <RotateCcw className="h-3 w-3 text-primary animate-spin-slow" />
-              Current Billing Cycle
-            </h3>
-            <ChevronRight className="h-3 w-3 text-gray-400 hover:text-primary transition-colors" />
-          </div>
-          <div className="text-xs text-gray-600 mb-2 space-y-0.5">
-            <p>{billingData?.period || "01 Jul - 31 Aug 2025"}</p>
-            <p>45 Days Remaining</p>
-          </div>
-          <div className="flex justify-between items-center mb-1">
-            <div className="bg-primary text-white px-1.5 py-0.5 rounded text-xs font-medium text-center">
-              <div>{billingData?.energyUsed || "109"} kWh</div>
-              <div className="text-xs opacity-90">Current</div>
-            </div>
-            <div className="bg-gray-400 text-white px-2 py-1 rounded text-xs font-medium text-center">
-              <div>383 kWh</div>
-              <div className="text-xs opacity-90">Limit</div>
-            </div>
-          </div>
-          <Progress value={progressPercentage} className="h-2" />
-        </CardContent>
-      </Card>
-
-      {/* Home Performance Card */}
-      <Card className={`card-hover transition-all duration-700 delay-400 hover:scale-105 hover:shadow-xl ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        <CardContent className="p-2">
-          <div className="flex items-center justify-between mb-1">
-            <h3 className="font-semibold text-gray-800 flex items-center gap-1 text-xs">
-              <Home className="h-3 w-3 text-primary" />
-              Home Performance
-            </h3>
-            <div className="flex items-center space-x-1">
-              <Badge variant="secondary" className="bg-green-100 text-green-800 animate-bounce text-xs px-1">
-                + 15%
-              </Badge>
-              <ChevronRight className="h-3 w-3 text-gray-400 hover:text-primary transition-colors" />
-            </div>
-          </div>
-          <p className="text-xs text-gray-600 mb-2">
-            64% Better than similar homes.
-          </p>
-          <div className="flex justify-between items-end">
-            <div className="text-center">
-              <div className="w-12 h-16 bg-gray-400 rounded-t-lg mb-1 relative overflow-hidden">
-                <div className="absolute bottom-0 w-full bg-gray-500 rounded-t-lg h-3/5"></div>
-              </div>
-              <p className="text-xs text-gray-600">Average</p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-20 bg-accent rounded-t-lg mb-1 relative overflow-hidden flex items-center justify-center">
-                <Home className="h-4 w-4 text-white" />
-              </div>
-              <p className="text-xs font-semibold text-accent">Yours</p>
-              <p className="text-sm font-bold text-gray-800">
-                €{billingData?.currentBill || "57.00"}
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-12 h-14 bg-gray-400 rounded-t-lg mb-1 relative overflow-hidden">
-                <div className="absolute bottom-0 w-full bg-gray-500 rounded-t-lg h-2/5"></div>
-              </div>
-              <p className="text-xs text-gray-600">Efficient</p>
-              <p className="text-xs text-gray-800">€47.00</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+      {/* Interactive Charts Section */}
+      <div className={`space-y-3 transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        {/* Billing Cycle Chart */}
+        <BillingCycleChart />
+        
+        {/* Energy Usage Chart */}
+        <EnergyUsageChart />
+        
+        {/* Home Performance Chart */}
+        <HomePerformanceChart />
+      </div>
 
       {/* CO2 Emissions Card */}
       <Card className="card-hover bg-primary text-white">
@@ -158,7 +96,7 @@ export default function HomePage() {
           </h3>
           <div className="flex items-center justify-center mb-2">
             <div className="relative w-24 h-24">
-              <UsageChart data={mockUsageData} />
+  
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center">
                   <p className="text-sm font-bold text-gray-800">109kWh</p>
