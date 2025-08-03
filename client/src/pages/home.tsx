@@ -11,6 +11,7 @@ import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
 import trendIcon from "@assets/Frame 427319515_1754191563621.png";
 import { Link } from "wouter";
 import Header from "@/components/layout/header";
+import BottomNavigation from "@/components/layout/bottom-navigation";
 
 export default function HomePage() {
   const { billingData } = useEnergyData();

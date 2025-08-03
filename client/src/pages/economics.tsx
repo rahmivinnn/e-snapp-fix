@@ -7,6 +7,7 @@ import { mockBillingHistory, mockBillingLabels } from "@/lib/mock-data";
 import { FileText, Zap, Star, History, Leaf } from "lucide-react";
 import type { BillingData } from "@shared/schema";
 import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
+import BottomNavigation from "@/components/layout/bottom-navigation";
 
 export default function EconomicsPage() {
   const { billingData } = useEnergyData();
@@ -197,6 +198,9 @@ export default function EconomicsPage() {
           </div>
         </CardContent>
       </Card>
+      
+      {/* Bottom Navigation */}
+      <BottomNavigation />
     </div>
   );
 }

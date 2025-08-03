@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { User, Bell, Headphones, Settings, Info, LogOut, Trash2, ChevronRight } from "lucide-react";
 import type { User as UserType } from "@shared/schema";
 import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
+import BottomNavigation from "@/components/layout/bottom-navigation";
 
 const userId = "demo-user-1"; // In a real app, this would come from auth context
 
@@ -169,6 +170,9 @@ export default function MenuPage() {
           Logout
         </Button>
       </div>
+      
+      {/* Bottom Navigation */}
+      <BottomNavigation />
     </div>
   );
 }

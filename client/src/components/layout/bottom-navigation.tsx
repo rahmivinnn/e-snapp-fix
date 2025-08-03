@@ -4,6 +4,13 @@ import { Home, TrendingUp, Clock, Euro, Menu } from "lucide-react";
 export default function BottomNavigation() {
   const [location, setLocation] = useLocation();
 
+  // Hide bottom navigation on specific pages
+  const hiddenPages = ["/onboarding", "/login", "/setup-wizard", "/settings", "/signup", "/forgot-password", "/splash"];
+  
+  if (hiddenPages.includes(location)) {
+    return null;
+  }
+
   const navItems = [
     { path: "/home", icon: Home, label: "Home" },
     { path: "/trends", icon: TrendingUp, label: "Trend" },
