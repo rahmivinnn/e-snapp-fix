@@ -82,14 +82,14 @@ export default function OnboardingPage() {
         <div className="space-y-3 mb-4">
           <Button 
             onClick={handleNext}
-            className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3 text-base font-medium transition-all duration-200 hover:scale-[1.02] rounded-xl"
+            className="w-full bg-green-600 hover:bg-green-700 text-white py-3 text-base font-medium transition-all duration-200 hover:scale-[1.02] rounded-xl shadow-lg"
           >
             Next
           </Button>
           
           <button
             onClick={handleSkip}
-            className="w-full text-teal-600 py-2 text-base font-medium hover:text-teal-700 transition-colors"
+            className="w-full text-green-600 py-2 text-base font-medium hover:text-green-700 transition-colors"
           >
             Skip
           </button>
