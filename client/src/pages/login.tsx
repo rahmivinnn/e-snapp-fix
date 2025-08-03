@@ -117,7 +117,10 @@ export default function LoginPage() {
               />
               <span className="text-sm text-gray-600">Remember me</span>
             </div>
-            <button className="text-sm text-red-500 font-medium">
+            <button 
+              onClick={() => setLocation("/forgot-password")}
+              className="text-sm text-green-600 font-medium hover:text-green-700 transition-colors"
+            >
               Forgot Password?
             </button>
           </div>

@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import Splash from "@/pages/splash";
 import Login from "@/pages/login";
 import SignUp from "@/pages/signup";
+import ForgotPassword from "@/pages/forgot-password";
 import Onboarding from "@/pages/onboarding";
 import Home from "@/pages/home";
 import Trends from "@/pages/trends";
@@ -34,6 +35,7 @@ function Router() {
       <Route path="/splash" component={Splash} />
       <Route path="/login" component={Login} />
       <Route path="/signup" component={SignUp} />
+      <Route path="/forgot-password" component={ForgotPassword} />
       <Route path="/onboarding" component={Onboarding} />
       <Route path="/setup-wizard" component={SetupWizard} />
       <Route path="/home" component={Home} />
