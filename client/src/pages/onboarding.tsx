@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
+import onboarding1Image from "@assets/On boarding (1)_1754180560406.png";
+import onboarding2Image from "@assets/On boarding 2_1754180560406.png";
+import onboarding3Image from "@assets/On boarding 3_1754180560405.png";
 
 export default function OnboardingPage() {
   const [, setLocation] = useLocation();
@@ -13,19 +16,19 @@ export default function OnboardingPage() {
 
   const onboardingSteps = [
     {
-      image: "/api/placeholder/400/400",
+      image: onboarding1Image,
       title: "Track Live Consumption",
       description: "Lorem Ipsum Dolor Sit Amet Consectetur. Quis Tortor Risus Lacus.",
       bgColor: "bg-gradient-to-br from-blue-400 to-blue-600"
     },
     {
-      image: "/api/placeholder/400/400", 
+      image: onboarding2Image, 
       title: "Track Live Consumption",
       description: "Lorem Ipsum Dolor Sit Amet Consectetur. Quis Tortor Risus Lacus.",
       bgColor: "bg-gradient-to-br from-green-400 to-green-600"
     },
     {
-      image: "/api/placeholder/400/400",
+      image: onboarding3Image,
       title: "Track Live Consumption", 
       description: "Lorem Ipsum Dolor Sit Amet Consectetur. Quis Tortor Risus Lacus.",
       bgColor: "bg-gray-100"
@@ -39,14 +42,14 @@ export default function OnboardingPage() {
         setCurrentStep(currentStep + 1);
       } else {
         localStorage.setItem('onboardingCompleted', 'true');
-        setLocation("/setup-wizard");
+        setLocation("/login");
       }
     }, 300);
   };
 
   const handleSkip = () => {
     localStorage.setItem('onboardingCompleted', 'true');
-    setLocation("/setup-wizard");
+    setLocation("/login");
   };
 
   const currentStepData = onboardingSteps[currentStep];
@@ -73,11 +76,13 @@ export default function OnboardingPage() {
       {/* Main Content */}
       <div className="flex-1 pt-11">
         {/* Image Section */}
-        <div className={`${currentStepData.bgColor} h-96 flex items-center justify-center transition-all duration-500`}>
+        <div className="h-96 flex items-center justify-center transition-all duration-500 bg-white">
           <div className={`transform transition-all duration-700 ${isVisible ? 'scale-100 opacity-100' : 'scale-95 opacity-0'}`}>
-            <div className="w-80 h-80 bg-white rounded-2xl shadow-xl flex items-center justify-center">
-              <span className="text-gray-500 text-lg">Image {currentStep + 1}</span>
-            </div>
+            <img 
+              src={currentStepData.image}
+              alt={currentStepData.title}
+              className="w-80 h-80 object-cover rounded-2xl shadow-xl"
+            />
           </div>
         </div>
 
