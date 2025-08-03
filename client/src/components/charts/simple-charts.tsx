@@ -29,16 +29,46 @@ export function SimpleEnergyUsageChart() {
   };
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimatedValues(finalValues);
-      setAnimatedProgress({
-        kitchen: 43,
-        heating: 29,
-        lighting: 19,
-        other: 9
+    console.log("🎯 Energy Usage Chart mounting with animated numbers...");
+    
+    // Animated count-up effect
+    const duration = 2000;
+    const steps = 100;
+    const stepDuration = duration / steps;
+    
+    let currentStep = 0;
+    const interval = setInterval(() => {
+      currentStep++;
+      const progress = currentStep / steps;
+      
+      setAnimatedValues({
+        kitchen: finalValues.kitchen * progress,
+        heating: finalValues.heating * progress,
+        lighting: finalValues.lighting * progress,
+        other: finalValues.other * progress,
+        total: finalValues.total * progress
       });
-    }, 600);
-    return () => clearTimeout(timer);
+      
+      setAnimatedProgress({
+        kitchen: 43 * progress,
+        heating: 29 * progress,
+        lighting: 19 * progress,
+        other: 9 * progress
+      });
+      
+      if (currentStep >= steps) {
+        clearInterval(interval);
+        setAnimatedValues(finalValues);
+        setAnimatedProgress({
+          kitchen: 43,
+          heating: 29,
+          lighting: 19,
+          other: 9
+        });
+      }
+    }, stepDuration);
+    
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -159,14 +189,35 @@ export function SimpleHomePerformanceChart() {
   });
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    console.log("🏠 Home Performance Chart mounting with animated bars...");
+    
+    // Animated count-up effect for bars
+    const duration = 2500;
+    const steps = 100;
+    const stepDuration = duration / steps;
+    
+    let currentStep = 0;
+    const interval = setInterval(() => {
+      currentStep++;
+      const progress = currentStep / steps;
+      
       setAnimatedBars({
-        average: 71,
-        yours: 57, 
-        efficient: 47
+        average: 71 * progress,
+        yours: 57 * progress,
+        efficient: 47 * progress
       });
-    }, 800);
-    return () => clearTimeout(timer);
+      
+      if (currentStep >= steps) {
+        clearInterval(interval);
+        setAnimatedBars({
+          average: 71,
+          yours: 57,
+          efficient: 47
+        });
+      }
+    }, stepDuration);
+    
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -238,11 +289,29 @@ export function SimpleBillingCycleChart() {
   const progressPercentage = (animatedUsage / forecast) * 100;
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimatedUsage(currentUsage);
-      setAnimatedProgress(28.5);
-    }, 400);
-    return () => clearTimeout(timer);
+    console.log("📊 Billing Cycle Chart mounting with animated progress...");
+    
+    // Animated count-up effect for usage
+    const duration = 2000;
+    const steps = 80;
+    const stepDuration = duration / steps;
+    
+    let currentStep = 0;
+    const interval = setInterval(() => {
+      currentStep++;
+      const progress = currentStep / steps;
+      
+      setAnimatedUsage(currentUsage * progress);
+      setAnimatedProgress(28.5 * progress);
+      
+      if (currentStep >= steps) {
+        clearInterval(interval);
+        setAnimatedUsage(currentUsage);
+        setAnimatedProgress(28.5);
+      }
+    }, stepDuration);
+    
+    return () => clearInterval(interval);
   }, []);
 
   return (
