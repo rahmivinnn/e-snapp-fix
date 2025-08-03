@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import houseImage from "@assets/Rectangle 95 (1)_1754180967613.png";
-import womanGreenImage from "@assets/Rectangle 95 (2)_1754185644374.png";
+import womanGreenImage from "@assets/Rectangle 95 (2)_1754186055312.png";
 import manWindTurbineImage from "@assets/Rectangle 95 (3)_1754185374000.png";
 
 export default function OnboardingPage() {
