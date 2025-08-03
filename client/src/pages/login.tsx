@@ -70,21 +70,21 @@ export default function LoginPage() {
       </div>
 
       {/* Content */}
-      <div className={`bg-white rounded-t-3xl mt-6 px-4 pt-6 pb-4 min-h-[calc(100vh-100px)] transform transition-all duration-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
-        <div className="space-y-4">
+      <div className={`bg-white rounded-t-3xl mt-4 px-3 pt-4 pb-3 min-h-[calc(100vh-80px)] transform transition-all duration-700 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`}>
+        <div className="space-y-3">
           <div className="space-y-1">
-            <h2 className="text-xl font-bold text-gray-900">Welcome Back!</h2>
-            <p className="text-gray-600 text-sm">To keep Connected please login with</p>
-            <p className="text-gray-600 text-sm">your person info</p>
+            <h2 className="text-lg sm:text-xl font-bold text-gray-900">Welcome Back!</h2>
+            <p className="text-gray-600 text-xs sm:text-sm">To keep Connected please login with</p>
+            <p className="text-gray-600 text-xs sm:text-sm">your person info</p>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2">
             <Input
               type="email"
               placeholder="Email Address"
               value={formData.email}
               onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-              className="h-12 rounded-xl border-gray-200"
+              className="h-10 sm:h-12 rounded-xl border-gray-200 text-sm"
             />
             
             <div className="relative">
@@ -93,7 +93,7 @@ export default function LoginPage() {
                 placeholder="Password"
                 value={formData.password}
                 onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                className="h-12 rounded-xl border-gray-200 pr-12"
+                className="h-10 sm:h-12 rounded-xl border-gray-200 pr-10 text-sm"
               />
               <button
                 type="button"
@@ -128,7 +128,7 @@ export default function LoginPage() {
           <Button
             onClick={handleLogin}
             disabled={isLoading}
-            className="w-full h-12 bg-primary hover:bg-primary/90 text-white rounded-xl font-semibold hover:scale-105 active:scale-95 transition-all disabled:scale-100"
+            className="w-full h-10 sm:h-12 bg-primary hover:bg-primary/90 text-white rounded-xl font-semibold hover:scale-105 active:scale-95 transition-all disabled:scale-100 text-sm sm:text-base"
           >
             {isLoading ? (
               <>
@@ -146,12 +146,12 @@ export default function LoginPage() {
             <div className="flex-1 h-px bg-gray-300"></div>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2">
             <Button
               onClick={handleGoogleLogin}
               disabled={googleLoading || appleLoading}
               variant="outline"
-              className="w-full h-12 rounded-xl border-gray-200 text-gray-700 font-medium hover:scale-105 active:scale-95 transition-all hover:border-primary hover:text-primary disabled:opacity-70 disabled:hover:scale-100"
+              className="w-full h-10 sm:h-12 rounded-xl border-gray-200 text-gray-700 font-medium hover:scale-105 active:scale-95 transition-all hover:border-primary hover:text-primary disabled:opacity-70 disabled:hover:scale-100 text-sm sm:text-base"
             >
               {googleLoading ? (
                 <>

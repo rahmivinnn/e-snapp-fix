@@ -65,21 +65,21 @@ export default function SignUpPage() {
       </div>
 
       {/* Content */}
-      <div className="bg-white rounded-t-3xl mt-8 px-6 pt-8 pb-6 min-h-[calc(100vh-120px)] overflow-y-auto">
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <h2 className="text-2xl font-bold text-gray-900">Create an account</h2>
-            <p className="text-gray-600">To keep Connected please signup with</p>
-            <p className="text-gray-600">your personal info</p>
+      <div className="bg-white rounded-t-3xl mt-4 px-3 pt-4 pb-3 min-h-[calc(100vh-80px)] overflow-y-auto">
+        <div className="space-y-3">
+          <div className="space-y-1">
+            <h2 className="text-lg sm:text-2xl font-bold text-gray-900">Create an account</h2>
+            <p className="text-gray-600 text-xs sm:text-sm">To keep Connected please signup with</p>
+            <p className="text-gray-600 text-xs sm:text-sm">your personal info</p>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-2">
             <Input
               type="text"
               placeholder="Full name"
               value={formData.fullName}
               onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
-              className="h-14 rounded-xl border-gray-200"
+              className="h-10 sm:h-14 rounded-xl border-gray-200 text-sm"
             />
 
             <Input
@@ -87,7 +87,7 @@ export default function SignUpPage() {
               placeholder="Email address"
               value={formData.email}
               onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-              className="h-14 rounded-xl border-gray-200"
+              className="h-10 sm:h-14 rounded-xl border-gray-200 text-sm"
             />
             
             <div className="relative">
@@ -96,7 +96,7 @@ export default function SignUpPage() {
                 placeholder="Password"
                 value={formData.password}
                 onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                className="h-14 rounded-xl border-gray-200 pr-12"
+                className="h-10 sm:h-14 rounded-xl border-gray-200 pr-10 text-sm"
               />
               <button
                 type="button"
@@ -117,7 +117,7 @@ export default function SignUpPage() {
                 placeholder="Confirm Password"
                 value={formData.confirmPassword}
                 onChange={(e) => setFormData(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                className="h-14 rounded-xl border-gray-200 pr-12"
+                className="h-10 sm:h-14 rounded-xl border-gray-200 pr-10 text-sm"
               />
               <button
                 type="button"
@@ -133,7 +133,7 @@ export default function SignUpPage() {
             </div>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2">
             <div className="flex items-start space-x-2">
               <Checkbox 
                 checked={formData.acceptTerms}
@@ -165,7 +165,7 @@ export default function SignUpPage() {
           <Button
             onClick={handleSignUp}
             disabled={isLoading || !formData.acceptTerms || !formData.acceptPrivacy}
-            className="w-full h-14 bg-primary hover:bg-primary/90 text-white rounded-xl text-lg font-semibold hover:scale-105 active:scale-95 transition-all disabled:scale-100 disabled:opacity-50"
+            className="w-full h-10 sm:h-14 bg-primary hover:bg-primary/90 text-white rounded-xl text-sm sm:text-lg font-semibold hover:scale-105 active:scale-95 transition-all disabled:scale-100 disabled:opacity-50"
           >
             {isLoading ? (
               <>
@@ -180,17 +180,17 @@ export default function SignUpPage() {
             )}
           </Button>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-3">
             <div className="flex-1 h-px bg-gray-300"></div>
-            <span className="text-gray-500 text-sm">Or continue with</span>
+            <span className="text-gray-500 text-xs sm:text-sm">Or continue with</span>
             <div className="flex-1 h-px bg-gray-300"></div>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2">
             <Button
               onClick={handleGoogleSignUp}
               variant="outline"
-              className="w-full h-14 rounded-xl border-gray-200 text-gray-700 font-medium hover:scale-105 active:scale-95 transition-all hover:border-primary hover:text-primary"
+              className="w-full h-10 sm:h-14 rounded-xl border-gray-200 text-gray-700 font-medium hover:scale-105 active:scale-95 transition-all hover:border-primary hover:text-primary text-sm sm:text-base"
             >
               <svg className="mr-3 h-5 w-5" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -204,7 +204,7 @@ export default function SignUpPage() {
             <Button
               onClick={handleAppleSignUp}
               variant="outline"
-              className="w-full h-14 rounded-xl border-gray-200 text-gray-700 font-medium hover:scale-105 active:scale-95 transition-all hover:border-primary hover:text-primary"
+              className="w-full h-10 sm:h-14 rounded-xl border-gray-200 text-gray-700 font-medium hover:scale-105 active:scale-95 transition-all hover:border-primary hover:text-primary text-sm sm:text-base"
             >
               <svg className="mr-3 h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/>
@@ -213,8 +213,8 @@ export default function SignUpPage() {
             </Button>
           </div>
 
-          <div className="text-center pt-4">
-            <span className="text-gray-600">Already have an account? </span>
+          <div className="text-center pt-2">
+            <span className="text-gray-600 text-sm">Already have an account? </span>
             <button 
               onClick={() => setLocation("/login")}
               className="text-primary font-semibold underline"
