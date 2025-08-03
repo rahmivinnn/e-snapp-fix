@@ -29,6 +29,11 @@ import { useLocation } from "wouter";
 
 
 function Router() {
+  const [location] = useLocation();
+  
+  // Debug: log current location
+  console.log('Current location:', location);
+  
   return (
     <Switch>
       <Route path="/splash" component={Splash} />
@@ -49,6 +54,8 @@ function Router() {
 }
 
 function App() {
+  console.log('🚀 App component rendering');
+  
   const [location, setLocation] = useLocation();
   const [hasCompletedSetup, setHasCompletedSetup] = useState(false);
   const [showSplash, setShowSplash] = useState(true);
@@ -67,7 +74,7 @@ function App() {
     // Always show splash first
     if (location === '/' && showSplash) {
       console.log('🎬 Redirecting to splash screen');
-      setLocation('/splash');
+      setTimeout(() => setLocation('/splash'), 100);
     }
     
     const setupCompleted = localStorage.getItem('setupCompleted');
