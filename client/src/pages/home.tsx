@@ -10,6 +10,7 @@ import type { BillingData } from "@shared/schema";
 import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
 import trendIcon from "@assets/Frame 427319515_1754191563621.png";
 import { Link } from "wouter";
+import Header from "@/components/layout/header";
 
 export default function HomePage() {
   const { billingData } = useEnergyData();
@@ -29,15 +30,10 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="max-w-md mx-auto px-2 space-y-2 pb-16 min-h-screen">
-      {/* Logo Section */}
-      <div className={`flex justify-center mb-1 pt-1 transition-all duration-1000 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
-        <img 
-          src={logoImage} 
-          alt="e-snapp" 
-          className="h-8 w-auto filter drop-shadow-md hover:scale-110 transition-transform"
-        />
-      </div>
+    <div className="max-w-md mx-auto bg-gray-50 min-h-screen">
+      <Header />
+      
+      <div className="px-2 space-y-2 pb-16">
 
       {/* Greeting Section */}
       <div className={`mb-2 transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
@@ -111,40 +107,10 @@ export default function HomePage() {
         </CardContent>
       </Card>
 
-      {/* Bottom Navigation Bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 max-w-md mx-auto">
-        <div className="flex items-center justify-around py-2">
-          <button className="flex flex-col items-center p-2 text-gray-600 hover:text-primary transition-colors">
-            <Home className="h-5 w-5" />
-            <span className="text-xs mt-1">Home</span>
-          </button>
-          
-          <button className="flex flex-col items-center p-2 text-gray-400 hover:text-primary transition-colors">
-            <img 
-              src={trendIcon} 
-              alt="Trend" 
-              className="h-5 w-5"
-              style={{ imageRendering: 'crisp-edges' }}
-            />
-            <span className="text-xs mt-1">Trend</span>
-          </button>
-          
-          <button className="flex flex-col items-center p-2 text-gray-400 hover:text-primary transition-colors">
-            <Clock className="h-5 w-5" />
-            <span className="text-xs mt-1">Realtime</span>
-          </button>
-          
-          <button className="flex flex-col items-center p-2 text-gray-400 hover:text-primary transition-colors">
-            <Euro className="h-5 w-5" />
-            <span className="text-xs mt-1">Economics</span>
-          </button>
-          
-          <button className="flex flex-col items-center p-2 text-gray-400 hover:text-primary transition-colors">
-            <Menu className="h-5 w-5" />
-            <span className="text-xs mt-1">Menu</span>
-          </button>
-        </div>
       </div>
+
+      {/* Bottom Navigation Bar */}
+      <BottomNavigation />
     </div>
   );
 }

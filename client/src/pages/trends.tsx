@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { TrendingUp, Leaf, BarChart3 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
+import BottomNavigation from "@/components/layout/bottom-navigation";
+import Header from "@/components/layout/header";
 
 type Period = "day" | "week" | "month" | "year" | "billing";
 
@@ -41,18 +43,12 @@ export default function TrendsPage() {
   const chartData = getChartData();
 
   return (
-    <div className="max-w-md mx-auto px-2 space-y-2 pb-16 min-h-screen">
-      {/* Logo Section */}
-      <div className="flex justify-center mb-1 pt-1">
-        <img 
-          src={logoImage} 
-          alt="e-snapp" 
-          className="h-8 w-auto"
-        />
-      </div>
-
+    <div className="max-w-md mx-auto bg-gray-50 min-h-screen">
+      <Header />
+      
+      <div className="px-2 space-y-2 pb-16">
       {/* Header */}
-      <div className="flex items-center justify-between mb-1">
+      <div className="flex items-center justify-between mb-1 px-2 pt-2">
         <h1 className="text-lg font-bold text-gray-800">Energy Consumption</h1>
         <div className="flex items-center space-x-1">
           <span className="bg-primary text-white px-1.5 py-0.5 rounded-full text-xs font-medium">1 kWh</span>
@@ -266,6 +262,9 @@ export default function TrendsPage() {
           </div>
         </CardContent>
       </Card>
+      </div>
+      
+      <BottomNavigation />
     </div>
   );
 }

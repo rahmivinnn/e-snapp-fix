@@ -1,133 +1,171 @@
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { useRealtimeData } from "@/hooks/use-energy-data";
-import { Zap, Activity, Sun, Car, Battery, Plug, Bell, Plus } from "lucide-react";
-import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
-import houseVideo from "@assets/Administrator_ animation - rumah - Windows, Mac, Linux - Unity 6DX11_ 2025-07-27 13-37-39 (online-video-cutter.com)_1754152375569.mp4";
+import { Zap } from "lucide-react";
+import Header from "@/components/layout/header";
+import BottomNavigation from "@/components/layout/bottom-navigation";
+import houseImage from "@assets/Group 878_1754192928483.png";
+
+interface PowerUsage {
+  area: string;
+  value: number;
+  unit: string;
+  position: { top: string; left: string };
+}
 
 export default function RealtimePage() {
-  const { realtimeData, currentPower } = useRealtimeData();
-  const [isVisible, setIsVisible] = useState(false);
+  const [currentUsage, setCurrentUsage] = useState(245);
+  const [animatedUsage, setAnimatedUsage] = useState(0);
+  const [powerData, setPowerData] = useState<PowerUsage[]>([
+    { area: "1.71 kW", value: 1.71, unit: "kW", position: { top: "45%", left: "12%" } },
+    { area: "145W", value: 145, unit: "W", position: { top: "25%", left: "25%" } },
+    { area: "44W", value: 44, unit: "W", position: { top: "15%", left: "45%" } },
+    { area: "123W", value: 123, unit: "W", position: { top: "25%", left: "65%" } },
+    { area: "87W", value: 87, unit: "W", position: { top: "45%", left: "80%" } },
+  ]);
 
   useEffect(() => {
-    setIsVisible(true);
+    // Animate main usage number
+    const duration = 2000;
+    const steps = 80;
+    const stepDuration = duration / steps;
+    
+    let currentStep = 0;
+    const interval = setInterval(() => {
+      currentStep++;
+      const progress = currentStep / steps;
+      
+      setAnimatedUsage(currentUsage * progress);
+      
+      if (currentStep >= steps) {
+        clearInterval(interval);
+        setAnimatedUsage(currentUsage);
+      }
+    }, stepDuration);
+
+    return () => clearInterval(interval);
+  }, [currentUsage]);
+
+  // Simulate real-time updates
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentUsage(prev => {
+        const variation = (Math.random() - 0.5) * 20;
+        return Math.max(200, Math.min(300, prev + variation));
+      });
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="max-w-md mx-auto px-2 space-y-1 pb-16 min-h-screen">
-      {/* Header with Logo and Actions */}
-      <div className={`flex items-center justify-between mb-1 pt-1 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        <img 
-          src={logoImage} 
-          alt="e-snapp" 
-          className="h-7 w-auto"
-        />
-        <div className="flex items-center space-x-3">
-          <Bell className="h-6 w-6 text-gray-600 hover:text-primary transition-colors cursor-pointer" />
-          <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors cursor-pointer">
-            <Plus className="h-5 w-5 text-gray-600" />
-          </div>
-        </div>
-      </div>
+    <div className="max-w-md mx-auto bg-gray-50 min-h-screen">
+      <Header />
+      
+      <div className="px-4 py-4 space-y-4">
+        {/* Title */}
+        <h1 className="text-lg font-semibold text-gray-800">Live Power Usage</h1>
 
-      {/* Live Power Usage Title */}
-      <h1 className={`text-base font-bold text-gray-800 mb-1 transition-all duration-700 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        Live Power Usage
-      </h1>
-
-      {/* House Video Card */}
-      <Card className={`relative overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 transition-all duration-700 delay-300 hover:scale-105 hover:shadow-xl ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`} style={{ height: "180px" }}>
-        <CardContent className="p-0 h-full">
-          <div className="relative h-full rounded-lg overflow-hidden">
-            {/* Video Background - Clean, no overlays */}
-            <video 
-              src={houseVideo}
-              autoPlay 
-              loop 
-              muted 
-              className="w-full h-full object-cover"
-            />
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Live Usage Card */}
-      <Card className={`bg-gradient-to-br from-green-50 to-emerald-50 border-green-100 transition-all duration-700 delay-400 hover:scale-105 hover:shadow-xl ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        <CardContent className="p-2">
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="font-semibold text-gray-800 text-sm flex items-center gap-1">
-              <Zap className="h-4 w-4 text-primary animate-pulse" />
-              Live Usage
-            </h3>
-          </div>
-          
-          <div className="text-center mb-2">
-            <div className="text-xl font-bold text-gray-800 animate-pulse" key={currentPower}>
-              {currentPower || "245"} W
+        {/* House Visualization */}
+        <Card className="bg-gradient-to-br from-cyan-50 to-blue-100 border-0 overflow-hidden">
+          <CardContent className="p-4">
+            <div className="relative">
+              <img 
+                src={houseImage} 
+                alt="House Power Usage" 
+                className="w-full h-auto rounded-lg"
+              />
+              
+              {/* Power usage bubbles */}
+              {powerData.map((item, index) => (
+                <div
+                  key={index}
+                  className="absolute transform -translate-x-1/2 -translate-y-1/2"
+                  style={{ top: item.position.top, left: item.position.left }}
+                >
+                  <div className="bg-teal-600 text-white px-2 py-1 rounded-full text-xs font-semibold shadow-lg relative">
+                    {item.area}
+                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-2 border-r-2 border-t-4 border-transparent border-t-teal-600"></div>
+                  </div>
+                  {/* Dotted line to house */}
+                  <div className="absolute top-6 left-1/2 w-0.5 h-8 border-l-2 border-dashed border-teal-600 transform -translate-x-1/2"></div>
+                </div>
+              ))}
             </div>
-            <p className="text-xs text-gray-600">Updated just now</p>
-          </div>
+          </CardContent>
+        </Card>
+
+        {/* Live Usage Card */}
+        <Card className="bg-white shadow-md">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <Zap className="h-5 w-5 text-blue-500" />
+                <h3 className="font-semibold text-gray-800">Live Usage</h3>
+              </div>
+              <div className="text-xs text-gray-500">Updated just now</div>
+            </div>
+            
+            <div className="flex items-end gap-4">
+              <div>
+                <div className="text-2xl font-bold text-gray-800">
+                  {Math.round(animatedUsage)} W
+                </div>
+                <div className="text-sm text-gray-600">Current Power</div>
+              </div>
+              
+              {/* Mini bar chart */}
+              <div className="flex-1 flex items-end justify-end gap-1 h-16">
+                {[40, 30, 60, 45, 80, 35, 90].map((height, index) => (
+                  <div
+                    key={index}
+                    className={`w-3 bg-gradient-to-t from-blue-400 to-blue-500 rounded-t transition-all duration-300 ${
+                      index === 6 ? 'bg-gradient-to-t from-teal-500 to-teal-600' : ''
+                    }`}
+                    style={{ height: `${height}%` }}
+                  />
+                ))}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Compared to Previous */}
+        <div className="space-y-3">
+          <h3 className="font-semibold text-gray-800">Compared to Previous</h3>
           
-          {/* Animated Wave Chart */}
-          <div className="h-12 bg-white/50 rounded-lg flex items-end justify-center overflow-hidden relative">
-            <svg viewBox="0 0 400 80" className="w-full h-full">
-              <path
-                d="M0,40 Q50,20 100,40 T200,40 T300,40 T400,40"
-                stroke="#10b981"
-                strokeWidth="3"
-                fill="none"
-                className="animate-pulse"
-              />
-              <circle
-                cx="350"
-                cy="30"
-                r="4"
-                fill="#10b981"
-                className="animate-bounce"
-              />
-            </svg>
-            <div className="absolute top-2 right-2 w-2 h-2 bg-green-500 rounded-full animate-ping"></div>
+          <div className="grid grid-cols-2 gap-3">
+            <Card className="bg-white shadow-sm">
+              <CardContent className="p-3 text-center">
+                <div className="text-xs text-gray-500 mb-1">Active Power</div>
+                <div className="text-lg font-bold text-gray-800">245 W</div>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-white shadow-sm">
+              <CardContent className="p-3 text-center">
+                <div className="text-xs text-gray-500 mb-1">Reactive Power</div>
+                <div className="text-lg font-bold text-gray-800">246 VAR</div>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-white shadow-sm">
+              <CardContent className="p-3 text-center">
+                <div className="text-xs text-gray-500 mb-1">Voltage</div>
+                <div className="text-lg font-bold text-gray-800">220 V</div>
+              </CardContent>
+            </Card>
+            
+            <Card className="bg-white shadow-sm">
+              <CardContent className="p-3 text-center">
+                <div className="text-xs text-gray-500 mb-1">Power Factor</div>
+                <div className="text-lg font-bold text-gray-800">0.5</div>
+              </CardContent>
+            </Card>
           </div>
-        </CardContent>
-      </Card>
-
-      {/* Realtime Data Section */}
-      <div className={`transition-all duration-700 delay-500 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-        <h2 className="text-sm font-bold text-gray-800 mb-2">Realtime Data</h2>
-        
-        {/* Real-time Data Grid */}
-        <div className="grid grid-cols-2 gap-2">
-          <Card className="bg-white hover:scale-105 hover:shadow-xl transition-all duration-300">
-            <CardContent className="p-2 text-center">
-              <p className="text-xs text-gray-600 mb-0.5">Active Power</p>
-              <p className="text-lg font-bold text-gray-800 animate-pulse" key={currentPower}>
-                {currentPower || "245"} W
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white hover:scale-105 hover:shadow-xl transition-all duration-300">
-            <CardContent className="p-2 text-center">
-              <p className="text-xs text-gray-600 mb-0.5">Reactive Power</p>
-              <p className="text-lg font-bold text-gray-800">246 VAR</p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white hover:scale-105 hover:shadow-xl transition-all duration-300">
-            <CardContent className="p-2 text-center">
-              <p className="text-xs text-gray-600 mb-0.5">Voltage</p>
-              <p className="text-lg font-bold text-gray-800">220 V</p>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white hover:scale-105 hover:shadow-xl transition-all duration-300">
-            <CardContent className="p-2 text-center">
-              <p className="text-xs text-gray-600 mb-0.5">Power Factor</p>
-              <p className="text-lg font-bold text-gray-800">0.92</p>
-            </CardContent>
-          </Card>
         </div>
       </div>
+
+      <BottomNavigation />
     </div>
   );
 }
