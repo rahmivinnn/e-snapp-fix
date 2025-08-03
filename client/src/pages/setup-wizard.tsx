@@ -76,8 +76,14 @@ export default function SetupWizard() {
   };
 
   const handleSkip = () => {
-    localStorage.setItem('setupCompleted', 'true');
-    setLocation("/home");
+    // Skip QR scan and go to next step (wifi-list) like after successful scan
+    if (currentStep === "qr-scan" || currentStep === "device") {
+      setCurrentStep("wifi-list");
+    } else {
+      // For other steps, complete setup and go to home
+      localStorage.setItem('setupCompleted', 'true');
+      setLocation("/home");
+    }
   };
 
   const handleApplianceToggle = (appliance: string) => {
