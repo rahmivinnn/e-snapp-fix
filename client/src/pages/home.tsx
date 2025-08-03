@@ -3,11 +3,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { EnergyUsageChart, HomePerformanceChart, BillingCycleChart } from "@/components/charts/interactive-energy-charts";
+import { RedesignedEnergyUsageChart, RedesignedHomePerformanceChart, RedesignedBillingCycleChart } from "@/components/charts/redesigned-energy-charts";
 import { useEnergyData } from "@/hooks/use-energy-data";
 import { Zap, Home, Lightbulb, Leaf, TrendingUp, RotateCcw, Activity, ChevronRight, Clock, Euro, Menu, BarChart3 } from "lucide-react";
 import type { BillingData } from "@shared/schema";
 import logoImage from "@assets/e snapp logo 1 (1)_1754149374420.png";
+import trendIcon from "@assets/Frame 427319515_1754191563621.png";
 
 export default function HomePage() {
   const { billingData } = useEnergyData();
@@ -53,13 +54,13 @@ export default function HomePage() {
       {/* Interactive Charts Section */}
       <div className={`space-y-3 transition-all duration-700 delay-300 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
         {/* Billing Cycle Chart */}
-        <BillingCycleChart />
+        <RedesignedBillingCycleChart />
         
         {/* Energy Usage Chart */}
-        <EnergyUsageChart />
+        <RedesignedEnergyUsageChart />
         
         {/* Home Performance Chart */}
-        <HomePerformanceChart />
+        <RedesignedHomePerformanceChart />
       </div>
 
       {/* CO2 Emissions Card */}
@@ -150,7 +151,12 @@ export default function HomePage() {
           </button>
           
           <button className="flex flex-col items-center p-2 text-gray-400 hover:text-primary transition-colors">
-            <TrendingUp className="h-5 w-5" />
+            <img 
+              src={trendIcon} 
+              alt="Trend" 
+              className="h-5 w-5"
+              style={{ imageRendering: 'crisp-edges' }}
+            />
             <span className="text-xs mt-1">Trend</span>
           </button>
           

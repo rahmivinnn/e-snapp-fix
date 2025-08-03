@@ -19,7 +19,8 @@ export function EnergyUsageChart() {
       <img 
         src={energyUsageImage}
         alt="Energy Usage by Category"
-        className={`w-full h-auto transition-all duration-300 ${isHovered ? 'brightness-110 scale-105' : 'brightness-100'}`}
+        className={`w-full h-auto transition-all duration-300 ${isHovered ? 'brightness-105 scale-[1.02]' : 'brightness-100'}`}
+        style={{ imageRendering: 'crisp-edges' }}
       />
       {/* Interactive overlay */}
       <div className={`absolute inset-0 bg-blue-500/10 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
@@ -48,7 +49,8 @@ export function HomePerformanceChart() {
       <img 
         src={homePerformanceImage}
         alt="Home Performance"
-        className={`w-full h-auto transition-all duration-300 ${isHovered ? 'brightness-110 scale-105' : 'brightness-100'}`}
+        className={`w-full h-auto transition-all duration-300 ${isHovered ? 'brightness-105 scale-[1.02]' : 'brightness-100'}`}
+        style={{ imageRendering: 'crisp-edges' }}
       />
       {/* Interactive overlay */}
       <div className={`absolute inset-0 bg-orange-500/10 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
@@ -77,7 +79,8 @@ export function BillingCycleChart() {
       <img 
         src={billingCycleImage}
         alt="Current Billing Cycle"
-        className={`w-full h-auto transition-all duration-300 ${isHovered ? 'brightness-110 scale-105' : 'brightness-100'}`}
+        className={`w-full h-auto transition-all duration-300 ${isHovered ? 'brightness-105 scale-[1.02]' : 'brightness-100'}`}
+        style={{ imageRendering: 'crisp-edges' }}
       />
       {/* Interactive overlay */}
       <div className={`absolute inset-0 bg-cyan-500/10 transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
